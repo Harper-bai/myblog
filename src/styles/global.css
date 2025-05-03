@@ -1,0 +1,127 @@
+@import '@fontsource-variable/inter' layer(base);
+@import '@fontsource-variable/newsreader' layer(base);
+@import '@fontsource-variable/newsreader/wght-italic.css' layer(base);
+
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+    --text-main: #171717;
+    --bg-main: #f2f1ec;
+    --bg-muted: #eae9e1;
+    --border-main: #171717;
+}
+html.dark {
+    --text-main: #f2f1ec;
+    --bg-main: #171717;
+    --bg-muted: #242424;
+    --border-main: #f2f1ec;
+}
+
+/* Cyan */
+/*
+:root {
+    --text-main: #162a2b;
+    --bg-main: #d6e0e2;
+    --bg-muted: #ccd8db;
+    --border-main: #162a2b;
+}
+html.dark {
+    --text-main: #d6e0e2;
+    --bg-main: #162a2b;
+    --bg-muted: #1c3537;
+    --border-main: #d6e0e2;
+}
+*/
+
+/* Green */
+/*
+:root {
+    --text-main: #3a4238;
+    --bg-main: #f3efe6;
+    --bg-muted: #eee9dc;
+    --border-main: #3a4238;
+}
+html.dark {
+    --text-main: #f3efe6;
+    --bg-main: #5e6c5b;
+    --bg-muted: #596756;
+    --border-main: #f3efe6;
+}
+*/
+
+@theme inline {
+    --font-sans: 'Inter Variable', sans-serif;
+    --font-serif: 'Newsreader Variable', serif;
+    --font-cang: 'MyCustomFont',serif;
+    --text-color-main: var(--text-main);
+    --background-color-main: var(--bg-main);
+    --background-color-muted: var(--bg-muted);
+    --border-color-main: var(--border-main);
+}
+
+@layer utilities {
+    .prose {
+        --tw-prose-body: var(--text-color-main);
+        --tw-prose-headings: var(--text-color-main);
+        --tw-prose-lead: var(--text-color-main);
+        --tw-prose-links: var(--text-color-main);
+        --tw-prose-bold: var(--text-color-main);
+        --tw-prose-counters: var(--text-color-main);
+        --tw-prose-bullets: var(--text-color-main);
+        --tw-prose-hr: var(--border-color-main);
+        --tw-prose-quotes: var(--text-color-main);
+        --tw-prose-quote-borders: var(--border-color-main);
+        --tw-prose-captions: var(--text-color-main);
+        --tw-prose-kbd: var(--text-color-main);
+        --tw-prose-code: var(--text-color-main);
+        --tw-prose-th-borders: var(--border-color-main);
+        --tw-prose-td-borders: var(--border-color-main);
+    }
+
+    .prose a {
+        @apply underline font-normal decoration-1 underline-offset-2 decoration-dashed hover:decoration-solid;
+    }
+
+    .prose :where(h1, h2, h3, h4, h5, h6) {
+        @apply font-cang font-medium;
+    }
+
+    .prose :where(code, strong) {
+        @apply font-medium;
+    }
+
+    .prose blockquote {
+        @apply font-cang font-normal italic border-l-4 border-gray-300 pl-4 text-base leading-relaxed sm:text-lg;
+    }   
+
+}
+
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('/fonts/cang-er-jin-kai.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'MyCustomFont', sans-serif;
+}
+/* 定义浅色和深色模式的变量 */
+:root {
+    --code-bg: #f5f5f5; /* 浅色模式代码块背景 */
+    --code-text: #2d2d2d; /* 浅色模式代码块文字 */
+    --code-border: #ddd; /* 浅色模式代码块边框 */
+    --inline-code-bg: #eaeaea; /* 浅色模式内联代码背景 */
+    --inline-code-text: #d6336c; /* 浅色模式内联代码文字 */
+}
+
+html.dark {
+    --code-bg: #2d2d2d; /* 深色模式代码块背景 */
+    --code-text: #f8f8f2; /* 深色模式代码块文字 */
+    --code-border: #444; /* 深色模式代码块边框 */
+    --inline-code-bg: #444; /* 深色模式内联代码背景 */
+    --inline-code-text: #ff79c6; /* 深色模式内联代码文字 */
+}
