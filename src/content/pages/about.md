@@ -8,4 +8,4 @@ seo:
     alt: A person sitting at a desk in front of a computer
 ---
 
-I'm Shannon.
+I'm Harper.

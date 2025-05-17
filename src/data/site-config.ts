@@ -40,13 +40,13 @@ export type SiteConfig = {
 
 const siteConfig: SiteConfig = {
     website: 'https://example.com',
-    title: 'Shannon',
-    subtitle: '',
+    title: ' ',
+    // subtitle: 'A Thinker, Writer, and Learner',
     description: 'A personal blog and portfolio site built with Astro.js and Tailwind CSS',
-    image: {
-        src: '/dante-preview.jpg',
-        alt: 'Dante - Astro.js and Tailwind CSS theme'
-    },
+    // image: {
+    //     src: '/dante-preview.jpg',
+    //     alt: 'Dante - Astro.js and Tailwind CSS theme'
+    // },
     headerNavLinks: [
         {
             text: 'Home',
@@ -106,8 +106,8 @@ const siteConfig: SiteConfig = {
         }
     ],
     hero: {
-        title: 'Hi There & Welcome to My Corner of the Web!',
-        text: "I am a passionate reader and writer who believes in the power of individuals to create value and change the world. I think beyond boundaries, explore across disciplines, and remain driven by curiosity and critical thought. My motto: <em>Let everything happen</em>. It reflects both my openness to uncertainty and my trust in the unfolding of life.<br>",
+        title: 'Welcome to My Corner of the Web!',
+        text: "Hi👋 I am Harper.<br>I am a passionate learner.<br> I am learning JavaScript! <br>I am also a experienced thinker and writer.<br>I am glad to share with my life & my opinion & my notes here.",
         //image: {
         //    src: '/hero.jpeg',
         //    alt: 'A person sitting at a desk in front of a computer'
@@ -119,11 +119,11 @@ const siteConfig: SiteConfig = {
         //    }
         //]
     },
-    subscribe: {
-        title: 'Subscribe to Dante Newsletter',
-        text: 'One update per week. All the latest posts directly in your inbox.',
-        formUrl: '#'
-    },
+    // subscribe: {
+    // title: 'Subscribe to Dante Newsletter',
+    // text: 'One update per week. All the latest posts directly in your inbox.',
+    // formUrl: '#'
+    // },
     postsPerPage: 8,
     projectsPerPage: 8
 };
