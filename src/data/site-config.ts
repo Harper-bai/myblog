@@ -39,7 +39,7 @@ export type SiteConfig = {
 };
 
 const siteConfig: SiteConfig = {
-    website: 'https://example.com',
+    website: 'https://harp83.us.kg',
     title: ' ',
     // subtitle: 'A Thinker, Writer, and Learner',
     description: 'A personal blog and portfolio site built with Astro.js and Tailwind CSS',
