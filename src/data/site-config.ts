@@ -40,9 +40,9 @@ export type SiteConfig = {
 
 const siteConfig: SiteConfig = {
     website: 'https://harp83.us.kg',
-    title: ' ',
+    title: 'Harper\s Blog',
     // subtitle: 'A Thinker, Writer, and Learner',
-    description: 'A personal blog and portfolio site built with Astro.js and Tailwind CSS',
+    description: 'I write cause I live, I live cause I write.',
     // image: {
     //     src: '/dante-preview.jpg',
     //     alt: 'Dante - Astro.js and Tailwind CSS theme'
