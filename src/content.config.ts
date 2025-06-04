@@ -39,6 +39,19 @@ const notes = defineCollection({
     })
 });
 
+const diary = defineCollection({
+    loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/diary' }),
+    schema: z.object({
+        title: z.string(),
+        excerpt: z.string().optional(),
+        publishDate: z.coerce.date(),
+        updatedDate: z.coerce.date().optional(),
+        isFeatured: z.boolean().default(false),
+        tags: z.array(z.string()).default([]),
+        seo: seoSchema.optional()
+    })
+});
+
 const pages = defineCollection({
     loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/pages' }),
     schema: z.object({
@@ -58,4 +71,4 @@ const projects = defineCollection({
     })
 });
 
-export const collections = { blog, pages, projects, notes };
+export const collections = { blog, pages, projects, notes, diary };

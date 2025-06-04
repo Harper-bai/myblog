@@ -40,7 +40,7 @@ export type SiteConfig = {
 
 const siteConfig: SiteConfig = {
     website: 'https://harp83.us.kg',
-    title: 'Harper\s Blog',
+    title: "Harper's Blog",
     // subtitle: 'A Thinker, Writer, and Learner',
     description: 'I write cause I live, I live cause I write.',
     // image: {
@@ -67,6 +67,10 @@ const siteConfig: SiteConfig = {
         {
             text: 'Notes',
             href: '/notes'
+        },
+        {
+            text: 'Diary',
+            href: '/diary'
         },
         {
             text: 'About',
@@ -129,3 +133,4 @@ const siteConfig: SiteConfig = {
 };
 
 export default siteConfig;
+
