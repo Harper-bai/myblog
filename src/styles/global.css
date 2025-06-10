@@ -125,3 +125,8 @@ html.dark {
     --inline-code-bg: #444; /* 深色模式内联代码背景 */
     --inline-code-text: #ff79c6; /* 深色模式内联代码文字 */
 }
+
+strong {
+  color:rgb(224, 138, 138); /* 或替换为你网站的主题强调色 */
+  font-weight: normal; /* 避免中文粗体难看 */
+}
