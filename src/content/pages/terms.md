@@ -50,3 +50,4 @@ To the fullest extent permitted by law, we shall not be liable for any direct, i
 These Terms are governed by and construed in accordance with the laws of [Your Jurisdiction], without regard to its conflict of laws principles. Any disputes arising under these Terms shall be subject to the exclusive jurisdiction of the courts of [Your Jurisdiction].
 
 _Thank you for reading our Terms of Service. By using the Website, you agree to be bound by these Terms._
+
