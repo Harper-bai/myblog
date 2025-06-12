@@ -90,10 +90,10 @@ const siteConfig: SiteConfig = {
             text: '/List',
             href: '/lists'
         },
-        {
-            text: 'Terms',
-            href: '/terms'
-        },
+        // {
+        //     text: 'Terms',
+        //     href: '/terms'
+        // },
         //{
         //    text: 'Download theme',
         //    href: 'https://github.com/JustGoodUI/dante-astro-theme'
