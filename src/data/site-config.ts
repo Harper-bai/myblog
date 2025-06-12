@@ -86,6 +86,10 @@ const siteConfig: SiteConfig = {
             text: '/Contact',
             href: '/contact'
         },
+        {
+            text: '/List',
+            href: '/recomReadingList'
+        },
         //{
         //    text: 'Terms',
         //    href: '/terms'
@@ -111,7 +115,7 @@ const siteConfig: SiteConfig = {
     ],
     hero: {
         title: 'Welcome to My Corner of the Web!',
-        text: "Hi👋 I am Harper.<br>I am a passionate learner.<br> I am learning JavaScript! <br>I am also a experienced thinker and writer.<br>I am glad to share with my life & my opinion & my notes here.<br>I am also writting a public dairy on [Jike](https://web.okjike.com/u/1fd1142d-6d5b-4035-a112-194890e42f61).",
+        text: "Hi👋 I am Harper.<br>I am a passionate learner.<br> I am learning JavaScript! <br>I am also a experienced thinker and writer.<br>I am glad to share with my life & my opinion & my notes here.<br>I am also writting a public dairy on here.",
         //image: {
         //    src: '/hero.jpeg',
         //    alt: 'A person sitting at a desk in front of a computer'
