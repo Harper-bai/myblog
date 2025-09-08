@@ -40,7 +40,7 @@ export type SiteConfig = {
 
 const siteConfig: SiteConfig = {
     website: 'https://harp83.us.kg',
-    title: "Harper's Blog",
+    title: "Hi,Here!",
     // subtitle: 'A Thinker, Writer, and Learner',
     description: 'I write cause I live, I live cause I write.',
     // image: {
@@ -114,7 +114,7 @@ const siteConfig: SiteConfig = {
         }
     ],
     hero: {
-        title: 'Welcome to My Corner of the Web!',
+        title: 'This is my message to the world',
         text: "Hi👋 I am Harper.<br>I am a passionate learner.<br> I am learning JavaScript! <br>I am also a experienced thinker and writer.<br>I am glad to share with my life & my opinion & my notes here.<br>I am also writting a public dairy on here.",
         //image: {
         //    src: '/hero.jpeg',
