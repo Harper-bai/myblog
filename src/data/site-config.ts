@@ -40,7 +40,7 @@ export type SiteConfig = {
 
 const siteConfig: SiteConfig = {
     website: 'https://harp83.us.kg',
-    title: "Hi,Here!",
+    title: "Marginalia",
     // subtitle: 'A Thinker, Writer, and Learner',
     description: 'I write cause I live, I live cause I write.',
     // image: {
@@ -48,10 +48,10 @@ const siteConfig: SiteConfig = {
     //     alt: 'Dante - Astro.js and Tailwind CSS theme'
     // },
     headerNavLinks: [
-        {
-            text: 'Home',
-            href: '/'
-        },
+        //{
+        //    text: 'Home',
+        //    href: '/'
+        //},
         //{
         //    text: 'Projects',
         //    href: '/projects'
@@ -60,18 +60,18 @@ const siteConfig: SiteConfig = {
             text: 'Blog',
             href: '/blog'
         },
+        {
+            text: 'Tags',
+            href: '/tags'
+        },
         //{
-        //    text: 'Tags',
-        //    href: '/tags'
-        //}
-        {
-            text: 'Notes',
-            href: '/notes'
-        },
-        {
-            text: 'Diary',
-            href: '/diary'
-        },
+        //    text: 'Notes',
+        //    href: '/notes'
+        //},
+        //{
+        //    text: 'Diary',
+        //    href: '/diary'
+        //},
         {
             text: 'About',
             href: '/about'
@@ -114,18 +114,23 @@ const siteConfig: SiteConfig = {
         }
     ],
     hero: {
-        title: 'This is my message to the world',
-        text: "Hi👋 I am Harper.<br>I am a passionate learner.<br> I am learning JavaScript! <br>I am also a experienced thinker and writer.<br>I am glad to share with my life & my opinion & my notes here.<br>I am also writting a public dairy on here.",
+        title: '',
+        text: "Hi 👋 I am Harper.<br><br>" +
+            "This is my personal repository for <b>curiosity and synthesis</b>.<br><br>" +
+            "<b>Reading & Learning:</b> Converting new knowledge into long-term understanding.<br>" +
+            "<b>Thinking:</b> Connecting the dots between books, logic, and daily life.<br>" +
+            "<b>Writing:</b> Documenting the evolution of my thoughts so they don't fade away.<br><br>" +
+            "<i>“Writing is the process by which we figure out what we think.”</i>",
         //image: {
         //    src: '/hero.jpeg',
         //    alt: 'A person sitting at a desk in front of a computer'
         //},
-        //actions: [
-        //    {
-        //        text: 'Get in Touch',
-        //        href: '/contact'
-        //    }
-        //]
+        actions: [
+            {
+                text: 'All Posts',
+                href: '/blog'
+            }
+        ]
     },
     // subscribe: {
     // title: 'Subscribe to Dante Newsletter',
