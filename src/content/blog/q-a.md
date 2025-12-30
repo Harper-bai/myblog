@@ -5,7 +5,7 @@ publishDate: 'Oct 16 2024'
 author: 'Harper'
 language: "zh"
 tags: 
-- thinking
+- Think
 ---
 
 
