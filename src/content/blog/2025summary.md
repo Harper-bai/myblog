@@ -22,7 +22,7 @@ tags:
 
 3. 为自己的人生负责，也是一种能力。
 
-“I act like I don't wnat anything, because I never got anything I wanted." 这一年，我尝试打破这种自我保护式的“无所谓”的心理。我意识到，无论是后悔的情绪，还是一些执念，最终都需要自己一而再、再而三地将自己从水火中拯救出来。这种对自己负责的能力，包括了接受平庸、接受不确定性，并依然保持前进。
+“I act like I don't want anything, because I never got anything I wanted." 这一年，我尝试打破这种自我保护式的“无所谓”的心理。我意识到，无论是后悔的情绪，还是一些执念，最终都需要自己一而再、再而三地将自己从水火中拯救出来。这种对自己负责的能力，包括了接受平庸、接受不确定性，并依然保持前进。
 
 4. 莫向外求。
 
