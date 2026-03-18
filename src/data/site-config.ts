@@ -34,13 +34,17 @@ export type SiteConfig = {
     socialLinks?: Link[];
     hero?: Hero;
     subscribe?: Subscribe;
+    readingTools?: {
+        progressBar?: boolean;
+        backToTop?: boolean;
+    };
     postsPerPage?: number;
     projectsPerPage?: number;
 };
 
 const siteConfig: SiteConfig = {
     website: 'https://harp83.us.kg',
-    title: "Marginalia",
+    title: 'Harp83',
     // subtitle: 'A Thinker, Writer, and Learner',
     description: 'I write cause I live, I live cause I write.',
     // image: {
@@ -57,12 +61,16 @@ const siteConfig: SiteConfig = {
         //    href: '/projects'
         //},
         {
-            text: 'Blog',
+            text: '全部',
             href: '/blog'
         },
         {
-            text: 'Tags',
-            href: '/tags'
+            text: '周刊',
+            href: '/tags/weekly'
+        },
+        {
+            text: '技术',
+            href: '/tags/tech'
         },
         //{
         //    text: 'Notes',
@@ -73,23 +81,11 @@ const siteConfig: SiteConfig = {
         //    href: '/diary'
         //},
         {
-            text: 'About',
+            text: '关于',
             href: '/about'
         },
     ],
     footerNavLinks: [
-        {
-            text: '/CV ',
-            href: 'https://baishancv.vercel.app/'
-        },
-        {
-            text: '/Contact',
-            href: '/contact'
-        },
-        {
-            text: '/List',
-            href: '/lists'
-        },
         // {
         //     text: 'Terms',
         //     href: '/terms'
@@ -115,12 +111,7 @@ const siteConfig: SiteConfig = {
     ],
     hero: {
         title: '',
-        text: "Hi 👋 I am Harper.<br><br>" +
-            "This is my personal repository for <b>curiosity and synthesis</b>.<br><br>" +
-            "<b>Reading & Learning:</b> Converting new knowledge into long-term understanding.<br>" +
-            "<b>Thinking:</b> Connecting the dots between books, logic, and daily life.<br>" +
-            "<b>Writing:</b> Documenting the evolution of my thoughts so they don't fade away.<br><br>" +
-            "<i>“Writing is the process by which we figure out what we think.”</i>",
+        text: '你好，这里是Harper的个人博客，我在试图理解自己，更好生活。',
         //image: {
         //    src: '/hero.jpeg',
         //    alt: 'A person sitting at a desk in front of a computer'
@@ -137,9 +128,12 @@ const siteConfig: SiteConfig = {
     // text: 'One update per week. All the latest posts directly in your inbox.',
     // formUrl: '#'
     // },
+    readingTools: {
+        progressBar: true,
+        backToTop: true
+    },
     postsPerPage: 8,
     projectsPerPage: 8
 };
 
 export default siteConfig;
-

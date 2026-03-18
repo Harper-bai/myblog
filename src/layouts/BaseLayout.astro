@@ -2,7 +2,6 @@
 import { ClientRouter } from 'astro:transitions';
 import BaseHead, { type Props as HeadProps } from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
 import Nav from '../components/Nav.astro';
 
 export type Props = HeadProps & { showHeader?: boolean };
@@ -15,17 +14,71 @@ const { showHeader = true, ...head } = Astro.props;
     <head>
         <BaseHead {...head} />
         <script>
-            if (localStorage.theme === 'dark') {
-                document.documentElement.classList.add('dark');
-            }
+            (() => {
+                const THEME_KEY = 'theme';
+
+                const getStoredTheme = () => {
+                    try {
+                        return localStorage.getItem(THEME_KEY);
+                    } catch {
+                        return null;
+                    }
+                };
+
+                const getPreferredTheme = () => {
+                    const storedTheme = getStoredTheme();
+                    if (storedTheme === 'dark' || storedTheme === 'light') return storedTheme;
+                    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                };
+
+                const applyTheme = (theme) => {
+                    document.documentElement.classList.toggle('dark', theme === 'dark');
+                    const toggle = document.querySelector('[data-theme-toggle]');
+                    if (toggle instanceof HTMLButtonElement) {
+                        toggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+                    }
+                };
+
+                const setTheme = (theme) => {
+                    applyTheme(theme);
+                    try {
+                        localStorage.setItem(THEME_KEY, theme);
+                    } catch {}
+                };
+
+                const syncTheme = () => applyTheme(getPreferredTheme());
+
+                if (!window.__themeBound) {
+                    document.addEventListener('click', (event) => {
+                        const target = event.target;
+                        if (!(target instanceof Element)) return;
+                        const toggle = target.closest('[data-theme-toggle]');
+                        if (!toggle) return;
+
+                        const nextTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+                        setTheme(nextTheme);
+                    });
+
+                    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                    mediaQuery.addEventListener('change', () => {
+                        if (!getStoredTheme()) syncTheme();
+                    });
+
+                    document.addEventListener('astro:after-swap', syncTheme);
+                    document.addEventListener('astro:page-load', syncTheme);
+                    window.__themeBound = true;
+                }
+
+                syncTheme();
+            })();
         </script>
         <ClientRouter />
     </head>
     <body class="bg-main text-main">
-        <div class="flex flex-col min-h-screen px-4 md:px-8">
+        <div class="flex flex-col min-h-screen px-4 md:px-6">
             <Nav />
 
-            <main class="grow w-full max-w-3xl mx-auto">
+            <main class="grow w-full max-w-2xl mx-auto pt-8 sm:pt-10">
                 <slot />
             </main>
             <Footer />

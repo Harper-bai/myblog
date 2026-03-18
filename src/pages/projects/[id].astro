@@ -1,11 +1,17 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import ProjectPreview from '../../components/ProjectPreview.astro';
+import ReadingTools from '../../components/ReadingTools.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { sortItemsByDateDesc } from '../../utils/data-utils';
 
 export async function getStaticPaths() {
-    const projects = (await getCollection('projects')).sort(sortItemsByDateDesc);
+    let projects: CollectionEntry<'projects'>[] = [];
+    try {
+        projects = (await getCollection('projects')).sort(sortItemsByDateDesc);
+    } catch {
+        projects = [];
+    }
     const projectCount = projects.length;
     return projects.map((project, index) => ({
         params: { id: project.id },
@@ -29,7 +35,7 @@ const { Content } = await render(project);
 ---
 
 <BaseLayout title={seo?.title ?? title} description={seo?.description ?? description} image={seo?.image} pageType="article" showHeader={false}>
-    <article class="mb-16 sm:mb-24">
+    <article class="mb-16 sm:mb-24" data-reading-root>
         <header class="mb-8">
             <h1 class="text-3xl leading-tight font-serif font-medium sm:text-5xl sm:leading-tight">{title}</h1>
         </header>
@@ -46,4 +52,5 @@ const { Content } = await render(project);
             </div>
         )
     }
+    <ReadingTools />
 </BaseLayout>

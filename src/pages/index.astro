@@ -1,7 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import Button from '../components/Button.astro';
-import Hero from '../components/Hero.astro';
 import PostPreview from '../components/PostPreview.astro';
 import siteConfig from '../data/site-config';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -9,55 +7,79 @@ import { sortItemsByDateDesc } from '../utils/data-utils';
 
 const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
 const featuredPosts = posts.filter(({ data }) => data.isFeatured);
+const nonFeaturedPosts = posts.filter(({ data }) => !data.isFeatured);
+const homePosts = [...featuredPosts, ...nonFeaturedPosts].slice(0, 8);
+const hero = siteConfig.hero;
 
-const projects = (await getCollection('projects')).sort(sortItemsByDateDesc);
-const featuredProjects = projects.filter(({ data }) => data.isFeatured);
+function normalizeText(text = '') {
+    return text.replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+}
+
+const normalizedHeroText = normalizeText(hero?.text || '');
+const introText = normalizedHeroText.slice(0, 170) || siteConfig.description;
 ---
 
 <BaseLayout description={siteConfig.description} image={siteConfig.image}>
-    <Hero />
-    <!--  <div class="divider"></div>
-
-    <style>
-        .divider {
-            width: 3.5rem;
-            margin: 2rem auto;
-            border-style: solid;
-            border-width: 1px;
-            border-color: #e5e5e5; /* truegray-200 */
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .divider {
-                border-color: #1f1f1f; /* truegray-800 */
-            }
-        }
-    </style>
-
-  {
-        featuredProjects?.length > 0 && (
-            <div class="mb-16 sm:mb-24">
-                <h2 class="mb-12 text-xl font-serif italic sm:mb-16 sm:text-2xl">Projects</h2>
-                {featuredProjects.map((project) => (
-                    <ProjectPreview project={project} class="mb-10 sm:mb-12" headingLevel="h3" />
-                ))}
-                <div class="mt-12 sm:mt-16">
-                    <Button href="/projects">View All Projects</Button>
-                </div>
-            </div>
-        )
-    }-->
+    <section class="home-intro mb-12 sm:mb-14">
+        <p class="home-summary">
+            {introText}
+            {normalizedHeroText.length > 170 ? '...' : ''}
+            {' '}
+            在这里记录了一些<a href="/tags/weekly">生活的日常</a>、<a href="/tags/tech">技术的学习</a>，也可以<a href="/blog">随便看看</a>。
+        </p>
+    </section>
     {
-        featuredPosts?.length > 0 && (
-            <div class="mb-16 sm:mb-24">
-                <h2 class="mb-12 text-xl font-serif italic sm:mb-16 sm:text-2xl">Posts</h2>
-                {featuredPosts.map((post) => (
-                    <PostPreview post={post} class="mb-6 sm:mb-8" headingLevel="h3" />
-                ))}
-                <div class="mt-12 sm:mt-16">
-                    <Button href="/blog">View All Posts</Button>
+        homePosts.length > 0 && (
+            <section class="mb-16 sm:mb-20">
+                <header class="mb-5 flex items-end justify-between gap-4 border-b border-main/10 pb-3 sm:mb-6">
+                    <h2 class="text-base font-serif tracking-wide text-main/75">Recent Writing</h2>
+                </header>
+                {homePosts.map((post) => <PostPreview post={post} headingLevel="h3" />)}
+                <div class="pt-4">
+                    <a class="home-link text-sm" href="/blog">更多文章</a>
                 </div>
-            </div>
+            </section>
         )
     }
 </BaseLayout>
+
+<style>
+    .home-intro {
+        max-width: 44rem;
+    }
+
+    .home-summary {
+        margin-top: 0.1rem;
+        max-width: 40rem;
+        font-family: 'Newsreader Variable', serif;
+        font-size: clamp(1rem, 0.92rem + 0.35vw, 1.2rem);
+        line-height: 1.62;
+        color: color-mix(in srgb, var(--text-main) 78%, transparent);
+    }
+
+    .home-summary a {
+        color: color-mix(in srgb, var(--text-main) 88%, transparent);
+        text-decoration: none;
+        border-bottom: 1px solid color-mix(in srgb, var(--text-main) 28%, transparent);
+        transition: border-color 180ms ease, color 180ms ease;
+    }
+
+    .home-summary a:hover {
+        color: var(--text-main);
+        border-color: color-mix(in srgb, var(--text-main) 58%, transparent);
+    }
+
+    .home-link {
+        font-family: 'Inter Variable', sans-serif;
+        letter-spacing: 0.01em;
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2px;
+    }
+
+    @media (max-width: 640px) {
+        .home-summary {
+            max-width: 100%;
+        }
+    }
+</style>

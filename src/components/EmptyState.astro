@@ -1,0 +1,19 @@
+---
+import Button from './Button.astro';
+
+type Props = {
+    title: string;
+    text: string;
+    ctaHref?: string;
+    ctaText?: string;
+    class?: string;
+};
+
+const { title, text, ctaHref, ctaText, class: className } = Astro.props;
+---
+
+<section class:list={['border border-dashed border-main bg-muted/40 px-6 py-10 text-center sm:px-10', className]}>
+    <h2 class="text-2xl font-cang font-medium leading-tight sm:text-3xl">{title}</h2>
+    <p class="mx-auto mt-3 max-w-xl text-sm leading-relaxed sm:text-base">{text}</p>
+    {ctaHref && ctaText && <Button class="mt-6" href={ctaHref}>{ctaText}</Button>}
+</section>

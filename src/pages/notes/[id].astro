@@ -1,15 +1,21 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Button from '../../components/Button.astro';
+import CopyLinkButton from '../../components/CopyLinkButton.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import PostPreview from '../../components/PostPreview.astro';
+import ReadingTools from '../../components/ReadingTools.astro';
 import Subscribe from '../../components/Subscribe.astro';
 import { sortItemsByDateDesc } from '../../utils/data-utils';
 import { slugify } from '../../utils/common-utils';
 
 export async function getStaticPaths() {
-    const posts = (await getCollection('notes')).sort(sortItemsByDateDesc);
+    let posts: CollectionEntry<'notes'>[] = [];
+    try {
+        posts = (await getCollection('notes')).sort(sortItemsByDateDesc);
+    } catch {
+        posts = [];
+    }
     const postCount = posts.length;
     return posts.map((post, index) => ({
         params: { id: post.id },
@@ -30,7 +36,7 @@ const { Content } = await render(post);
 ---
 
 <BaseLayout title={seo?.title ?? title} description={seo?.description ?? excerpt} image={seo?.image} pageType="article" showHeader={false}>
-    <article class="mb-16 sm:mb-24">
+    <article class="mb-16 sm:mb-24" data-reading-root>
         <header class="mb-8">
             <h1 class="text-3xl leading-tight font-cang font-medium sm:text-5xl sm:leading-tight">{title}</h1>
             <div class="mt-4 text-sm">
@@ -62,7 +68,7 @@ const { Content } = await render(post);
                     </div>
                 )
             }
-            <Button class="copy-url-button" aria-label="Copy link" data-url={href} data-tooltip-default="Copy link" data-tooltip-success="Copied">Share</Button>
+            <CopyLinkButton href={href} />
         </div>
     </article>
     {
@@ -75,26 +81,5 @@ const { Content } = await render(post);
         )
     }
     <Subscribe class="my-16 sm:my-24" />
+    <ReadingTools />
 </BaseLayout>
-
-<script>
-    document.addEventListener('astro:page-load', () => {
-        const copyUrlButton = document.querySelector('.copy-url-button') as HTMLButtonElement;
-        copyUrlButton?.addEventListener('click', async () => {
-            await copyUrl(copyUrlButton);
-        });
-
-        async function copyUrl(button: HTMLButtonElement) {
-            let url = button.getAttribute('data-url') || '';
-            let label = button.innerText;
-
-            await navigator.clipboard.writeText(url);
-
-            button.innerText = 'Copied';
-
-            setTimeout(() => {
-                button.innerText = label;
-            }, 2500);
-        }
-    });
-</script>

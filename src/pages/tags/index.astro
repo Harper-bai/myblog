@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import Subscribe from '../../components/Subscribe.astro';
-import ArrowRight from '../../icons/ArrowRight.astro';
+import EmptyState from '../../components/EmptyState.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAllTags, getPostsByTag, sortItemsByDateDesc } from '../../utils/data-utils';
 
@@ -18,26 +17,30 @@ const tags = getAllTags(posts).sort((tagA, tagB) => {
     description="Explore tag directory for easy navigation and discovery. Find a wide range of topics, articles, and insights organized by tags, making it effortless to locate the content that interests you most."
     showHeader={false}
 >
-    <h1 class="mb-12 text-2xl font-cang italic sm:mb-16 sm:text-4xl">All Tags</h1>
-    {
-        tags.map((tag) => {
-            const postCount = getPostsByTag(posts, tag.id).length;
-            return (
-                <a class="mb-10 flex justify-between items-start gap-8 group sm:mb-12" href={`/tags/${tag.id}`}>
-                    <div class="grow">
-                        <h2 class="text-xl leading-tight font-cang font-medium group-hover:underline group-hover:decoration-dashed group-hover:underline-offset-4 group-hover:decoration-1 sm:text-2xl">
-                            {tag.name}
-                        </h2>
-                        <div class="mt-1 text-sm leading-normal">
+    <header class="mb-4 border-b border-main/20 pb-3 sm:mb-6">
+        <h1 class="text-2xl leading-tight font-cang font-medium sm:text-3xl">Tags</h1>
+        <p class="mt-1 text-sm text-main/65">Browse posts by topic.</p>
+    </header>
+    {tags.length > 0 ? (
+        <>
+            {tags.map((tag) => {
+                const postCount = getPostsByTag(posts, tag.id).length;
+                return (
+                    <a class="block border-b border-main/10 py-5 last:border-b-0 sm:py-6" href={`/tags/${tag.id}`}>
+                        <h2 class="text-xl leading-tight font-cang font-medium sm:text-2xl">{tag.name}</h2>
+                        <div class="mt-1 text-sm leading-normal text-main/65">
                             {postCount} {postCount === 1 ? 'post' : 'posts'}
                         </div>
-                    </div>
-                    <div class="hidden font-cang italic opacity-0 transition group-hover:opacity-100 sm:inline-flex sm:gap-1 sm:items-center sm:shrink-0">
-                        View Tag Archive <ArrowRight class="fill-current w-4 h-4" />
-                    </div>
-                </a>
-            );
-        })
-    }
-    <Subscribe class="my-16 sm:my-24" />
+                    </a>
+                );
+            })}
+        </>
+    ) : (
+        <EmptyState
+            title="No tags yet"
+            text="Tags will appear automatically as posts are published with tag metadata."
+            ctaHref="/blog"
+            ctaText="View Blog"
+        />
+    )}
 </BaseLayout>

@@ -1,46 +1,97 @@
 ---
-import type { GetStaticPathsOptions, Page } from 'astro';
 import { type CollectionEntry, getCollection } from 'astro:content';
-import Pagination from '../../../components/Pagination.astro';
 import PostPreview from '../../../components/PostPreview.astro';
-import Subscribe from '../../../components/Subscribe.astro';
-import siteConfig from '../../../data/site-config';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getAllTags, getPostsByTag, sortItemsByDateDesc } from '../../../utils/data-utils';
 
-export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+export async function getStaticPaths() {
     const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
     const tags = getAllTags(posts);
 
-    return tags.flatMap((tag) => {
-        const filteredPosts = getPostsByTag(posts, tag.id);
-        return paginate(filteredPosts, {
-            params: { id: tag.id },
-            pageSize: 1000000 || 4
-        });
-    });
+    return tags.map((tag) => ({
+        params: { id: tag.id, page: undefined },
+        props: {
+            posts: getPostsByTag(posts, tag.id),
+            currentTagName: tag.name
+        }
+    }));
 }
 
-type Props = { page: Page<CollectionEntry<'blog'>> };
+type Props = { posts: CollectionEntry<'blog'>[]; currentTagName: string };
 
-const { page } = Astro.props;
-const blog = page.data;
-const params = Astro.params;
-const allPosts = await getCollection('blog');
-const allTags = getAllTags(allPosts);
-const currentTag = allTags.find((tag) => {
-    return tag.id === params.id;
-});
+const { posts, currentTagName } = Astro.props;
+const tagId = Astro.params.id || '';
+const tagMeta: Record<string, { title: string; description: string }> = {
+    weekly: { title: '周刊', description: '零散的日常。' },
+    tech: { title: '技术', description: '输出即学习。' }
+};
+const resolvedTagMeta = tagMeta[tagId] || { title: `Tag: ${currentTagName}`, description: 'Entries grouped under this tag.' };
 ---
 
 <BaseLayout
-    title={`Posts Tagged ${currentTag?.name}`}
-    description={`Explore a curated collection of blog posts under ${currentTag?.name}`}
+    title={resolvedTagMeta.title}
+    description={resolvedTagMeta.description}
     image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }}
     showHeader={false}
 >
-    <h1 class="mb-12 text-2xl leading-tight font-cang italic sm:mb-16 sm:text-4xl">Posts Tagged "{currentTag?.name}"</h1>
-    {blog.map((post) => <PostPreview post={post} class="mb-10 sm:mb-12" />)}
-    <!-- <Pagination page={page} class="my-16 sm:my-24" /> 
-    <Subscribe class="my-16 sm:my-24" /> -->
+    <header class="mb-4 border-b border-main/20 pb-3 sm:mb-6">
+        <div class="flex flex-wrap items-end gap-x-3 gap-y-1">
+            <h1 class="text-2xl leading-tight font-cang font-medium sm:text-3xl">{resolvedTagMeta.title}</h1>
+            <p class="text-sm text-main/65 sm:pb-0.5">{resolvedTagMeta.description}</p>
+        </div>
+    </header>
+    {posts.map((post) => (
+        <div data-reveal>
+            <PostPreview post={post} />
+        </div>
+    ))}
 </BaseLayout>
+
+<style>
+    [data-reveal] {
+        opacity: 0;
+        transform: translateY(8px);
+        transition:
+            opacity 0.42s ease,
+            transform 0.42s ease;
+    }
+
+    [data-reveal].is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        [data-reveal] {
+            opacity: 1;
+            transform: none;
+            transition: none;
+        }
+    }
+</style>
+
+<script>
+    (() => {
+        const revealItems = () => {
+            const items = Array.from(document.querySelectorAll('[data-reveal]'));
+            if (items.length === 0) return;
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (!entry.isIntersecting) return;
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    });
+                },
+                { threshold: 0.08, rootMargin: '0px 0px -8% 0px' }
+            );
+
+            items.forEach((item) => observer.observe(item));
+        };
+
+        document.addEventListener('astro:page-load', revealItems);
+        document.addEventListener('astro:after-swap', revealItems);
+        revealItems();
+    })();
+</script>

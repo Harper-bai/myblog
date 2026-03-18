@@ -15,3 +15,24 @@ export function slugify(input?: string) {
 
     return slug;
 }
+
+export function getEstimatedWordCount(input = '') {
+    if (!input) return 0;
+
+    const stripped = input
+        .replace(/```[\s\S]*?```/g, ' ')
+        .replace(/`[^`]*`/g, ' ')
+        .replace(/!\[[^\]]*]\([^)]*\)/g, ' ')
+        .replace(/\[[^\]]*]\([^)]*\)/g, ' ')
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/[#>*_\-]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    if (!stripped) return 0;
+
+    const cjkChars = (stripped.match(/[\u4E00-\u9FFF]/g) || []).length;
+    const latinWords = (stripped.replace(/[\u4E00-\u9FFF]/g, ' ').match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g) || []).length;
+
+    return cjkChars + latinWords;
+}

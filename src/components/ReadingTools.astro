@@ -1,0 +1,48 @@
+---
+import siteConfig from '../data/site-config';
+
+const readingTools = siteConfig.readingTools ?? {};
+const showProgress = readingTools.progressBar ?? true;
+---
+
+{
+    showProgress && (
+        <>
+            {showProgress && (
+                <div class="pointer-events-none fixed inset-x-0 top-0 z-40 h-1.5 bg-transparent" aria-hidden="true">
+                    <span data-reading-progress class="block h-full w-0 bg-main transition-[width] duration-100"></span>
+                </div>
+            )}
+        </>
+    )
+}
+
+<script>
+    (() => {
+        if (window.__readingToolsBound) return;
+
+        const updateReadingState = () => {
+            const article = document.querySelector('[data-reading-root]');
+            const progressBar = document.querySelector('[data-reading-progress]');
+
+            if (!article) {
+                if (progressBar) progressBar.style.width = '0%';
+                return;
+            }
+
+            const maxScroll = Math.max(article.scrollHeight - window.innerHeight, 1);
+            const articleStart = article.getBoundingClientRect().top + window.scrollY;
+            const amount = Math.max(0, window.scrollY - articleStart);
+            const ratio = Math.min(100, Math.round((amount / maxScroll) * 100));
+
+            if (progressBar) progressBar.style.width = `${ratio}%`;
+        };
+
+        document.addEventListener('astro:page-load', updateReadingState);
+        document.addEventListener('astro:after-swap', updateReadingState);
+        window.addEventListener('scroll', updateReadingState, { passive: true });
+        window.addEventListener('resize', updateReadingState);
+        window.__readingToolsBound = true;
+        updateReadingState();
+    })();
+</script>

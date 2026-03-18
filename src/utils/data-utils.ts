@@ -20,6 +20,9 @@ export function getAllTags(posts: CollectionEntry<'blog' | 'notes' | 'diary'>[])
 }
 
 export function getPostsByTag(posts: CollectionEntry<'blog' | 'notes' | 'diary'>[], tagId: string) {
-    const filteredPosts = posts.filter((post) => (post.data.tags || []).map((tag) => slugify(tag)).includes(tagId));
+    const filteredPosts = posts.filter((post) => {
+        const postTagIds = (post.data.tags || []).map((tag) => slugify(tag));
+        return postTagIds.includes(tagId);
+    });
     return filteredPosts;
 }

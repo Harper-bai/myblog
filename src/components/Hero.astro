@@ -8,17 +8,17 @@ const hero = siteConfig.hero;
 
 {
     (hero?.title || hero?.image?.src || hero?.text || (hero?.actions && hero.actions.length > 0)) && (
-        <section class="w-full flex flex-col gap-8 mb-16 sm:mb-24">
-            {hero.title && <h1 class="text-3xl leading-tight font-serif font-medium sm:text-5xl sm:leading-tight">{hero.title}</h1>}
+        <section class="w-full flex flex-col gap-8">
+            {hero.title && <h1 class="hero-title text-3xl leading-tight font-cang font-medium sm:text-5xl sm:leading-tight">{hero.title}</h1>}
             {hero.image?.src && (
-                <figure>
-                    <img class="w-full" src={hero.image.src} loading="lazy" decoding="async" alt={hero.image.alt || ''} />
-                    {hero.image.caption && <figcaption class="mt-1.5 text-xs sm:text-sm">{hero.image.caption}</figcaption>}
+                <figure class="hero-image-shell">
+                    <img class="hero-image w-full" src={hero.image.src} loading="lazy" decoding="async" alt={hero.image.alt || ''} />
+                    {hero.image.caption && <figcaption class="mt-1.5 text-xs sm:text-sm opacity-80">{hero.image.caption}</figcaption>}
                 </figure>
             )}
-            {hero.text && <div class="font-serif max-w-none prose sm:prose-lg" set:html={marked.parse(hero.text)} />}
+            {hero.text && <div class="hero-prose font-serif max-w-none prose sm:prose-lg" set:html={marked.parse(hero.text)} />}
             {hero.actions && hero.actions.length > 0 && (
-                <div class="flex flex-wrap gap-4">
+                <div class="hero-actions flex flex-wrap gap-4">
                     {hero.actions.map((action) => (
                         <Button href={action.href}>{action.text}</Button>
                     ))}
@@ -27,3 +27,62 @@ const hero = siteConfig.hero;
         </section>
     )
 }
+
+<style>
+    .hero-title {
+        letter-spacing: 0.01em;
+        text-wrap: balance;
+    }
+
+    .hero-prose {
+        max-width: 48rem;
+    }
+
+    .hero-prose p:first-child {
+        font-size: clamp(1.05rem, 0.92rem + 0.55vw, 1.42rem);
+        line-height: 1.58;
+    }
+
+    .hero-prose :global(b) {
+        font-weight: 500;
+        border-bottom: 1px dashed currentColor;
+    }
+
+    .hero-prose :global(i) {
+        opacity: 0.82;
+    }
+
+    .hero-image-shell {
+        overflow: hidden;
+        border: 1px dashed var(--border-main);
+        border-radius: 0.9rem;
+        background: var(--bg-main);
+    }
+
+    .hero-image {
+        transition: transform 0.3s ease;
+    }
+
+    .hero-image-shell:hover .hero-image {
+        transform: scale(1.01);
+    }
+
+    .hero-actions {
+        margin-top: 0.3rem;
+    }
+
+    .hero-actions :global(a),
+    .hero-actions :global(button) {
+        box-shadow: 0 1px 0 rgba(23, 23, 23, 0.08);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .hero-image {
+            transition: none;
+        }
+
+        .hero-image-shell:hover .hero-image {
+            transform: none;
+        }
+    }
+</style>

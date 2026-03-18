@@ -23,14 +23,14 @@ const canonicalURL = new URL(Astro.request.url, Astro.site);
  * Enforce some standard canonical URL formatting across the site.
  */
 function formatCanonicalURL(url: string | URL) {
-    const path = url.toString();
-    const hasQueryParams = path.includes('?');
-    // If there are query params, make sure the URL has no trailing slash
-    if (hasQueryParams) {
-        path.replace(/\/?$/, '');
+    const canonical = new URL(url.toString());
+    canonical.hash = '';
+    if (canonical.search) {
+        canonical.pathname = canonical.pathname.replace(/\/$/, '');
+    } else {
+        canonical.pathname = canonical.pathname.replace(/\/?$/, '/');
     }
-    // otherwise, canonical URL always has a trailing slash
-    return path.replace(/\/?$/, hasQueryParams ? '' : '/');
+    return canonical.toString();
 }
 ---
 

@@ -6,7 +6,7 @@ import IconButton from './IconButton.astro';
 const { page, class: className } = Astro.props;
 ---
 
-<nav aria-label="Pagination" class:list={['px-12 py-2 relative text-center', className]}>
+<nav aria-label="Pagination" class:list={['px-12 py-2 relative text-center border-t border-main/15', className]}>
     {
         page.url.prev && (
             <IconButton
@@ -18,7 +18,9 @@ const { page, class: className } = Astro.props;
             </IconButton>
         )
     }
-    <span class="text-sm" aria-current="page">Page {page.currentPage} of {page.lastPage}</span>
+    <span class="text-sm text-main/70" aria-current="page">
+        Page {page.currentPage} of {page.lastPage}
+    </span>
     {
         page.url.next && (
             <IconButton

@@ -1,0 +1,48 @@
+---
+import Button from './Button.astro';
+
+type Props = {
+    href: string;
+    class?: string;
+    text?: string;
+};
+
+const { href, class: className, text = 'Share' } = Astro.props;
+---
+
+<Button class:list={['copy-url-button', className]} aria-label="Copy link" data-copy-url={href} data-label={text}>
+    {text}
+</Button>
+
+<script>
+    (() => {
+        if (window.__copyLinkBound) return;
+
+        const onClick = async (event) => {
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+            const button = target.closest('[data-copy-url]');
+            if (!(button instanceof HTMLButtonElement)) return;
+
+            const url = button.getAttribute('data-copy-url') || '';
+            const label = button.getAttribute('data-label') || 'Share';
+            if (!url || !navigator.clipboard?.writeText) return;
+
+            try {
+                await navigator.clipboard.writeText(url);
+                button.textContent = 'Copied';
+                window.setTimeout(() => {
+                    button.textContent = label;
+                }, 2000);
+            } catch {
+                button.textContent = 'Unavailable';
+                window.setTimeout(() => {
+                    button.textContent = label;
+                }, 2000);
+            }
+        };
+
+        document.addEventListener('click', onClick);
+        window.__copyLinkBound = true;
+    })();
+</script>
