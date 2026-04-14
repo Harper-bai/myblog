@@ -3,7 +3,7 @@ title: 2025年、23岁：找到了生活的锚点
 description: 
 publishDate: 'December 30 2025'
 tags:
-  - Yearly
+  - yearly
 ---
 
 从心境来说，今年比去年的这个时候更加平和。

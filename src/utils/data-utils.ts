@@ -1,8 +1,27 @@
-import { type CollectionEntry } from 'astro:content';
-import { slugify } from './common-utils';
+import { type CollectionEntry, getCollection } from 'astro:content';
+import { getEstimatedWordCount, slugify } from './common-utils';
 
-export function sortItemsByDateDesc(itemA: CollectionEntry<'blog' | 'projects' | 'notes' | 'diary'>, itemB: CollectionEntry<'blog' | 'projects' | 'notes' | 'diary'>) {
+type ContentCollection = 'blog' | 'projects' | 'notes' | 'diary';
+
+export function sortItemsByDateDesc(itemA: CollectionEntry<ContentCollection>, itemB: CollectionEntry<ContentCollection>) {
     return new Date(itemB.data.publishDate).getTime() - new Date(itemA.data.publishDate).getTime();
+}
+
+export async function getCollectionItemCount(collection: ContentCollection) {
+    try {
+        return (await getCollection(collection)).length;
+    } catch {
+        return 0;
+    }
+}
+
+export async function getBlogTotalWordCount() {
+    try {
+        const posts = await getCollection('blog');
+        return posts.reduce((sum, post) => sum + getEstimatedWordCount(post.body), 0);
+    } catch {
+        return 0;
+    }
 }
 
 export function getAllTags(posts: CollectionEntry<'blog' | 'notes' | 'diary'>[]) {

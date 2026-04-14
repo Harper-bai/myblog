@@ -8,22 +8,27 @@ const { post, class: className, headingLevel = 'h2' } = Astro.props;
 const { title, publishDate, excerpt, isFeatured } = post.data;
 const TitleTag = headingLevel;
 const wordCount = getEstimatedWordCount(post.body);
-const compactDate = publishDate.toISOString().slice(0, 10);
+const compactDate = `${publishDate.getFullYear()}-${String(publishDate.getMonth() + 1).padStart(2, '0')}-${String(publishDate.getDate()).padStart(2, '0')}`;
 ---
 
 <a class:list={['post-preview group block py-3 sm:py-4', className]} href={`/${post.collection}/${post.id}/`}>
     <div class="grid grid-cols-[8.5rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-4">
         <div class="pt-1 text-xs font-sans text-main/60 sm:text-sm">
             <div class="leading-tight whitespace-nowrap">
-                <time datetime={publishDate.toISOString()}>{compactDate}</time>
+                <time datetime={compactDate}>{compactDate}</time>
                 <span class="post-divider-inline" aria-hidden="true"> · </span>
                 <span>{wordCount}字</span>
-                {isFeatured && (
-                    <>
-                        <span class="post-divider-inline" aria-hidden="true"> · </span>
-                        <span class="featured-mark">置顶</span>
-                    </>
-                )}
+                {
+                    isFeatured && (
+                        <>
+                            <span class="post-divider-inline" aria-hidden="true">
+                                {' '}
+                                ·{' '}
+                            </span>
+                            <span class="featured-mark">置顶</span>
+                        </>
+                    )
+                }
             </div>
         </div>
         <div class="min-w-0">

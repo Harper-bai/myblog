@@ -66,11 +66,15 @@ const siteConfig: SiteConfig = {
         },
         {
             text: '周刊',
-            href: '/tags/weekly'
+            href: '/weekly'
         },
         {
             text: '技术',
-            href: '/tags/tech'
+            href: '/tech'
+        },
+        {
+            text: '生活志',
+            href: '/life'
         },
         //{
         //    text: 'Notes',

@@ -1,8 +1,11 @@
 ---
 import siteConfig from '../data/site-config';
+import { getBlogTotalWordCount } from '../utils/data-utils';
 
 const socialLinks = siteConfig.socialLinks || [];
 const navLinks = siteConfig.footerNavLinks || [];
+const blogTotalWordCount = await getBlogTotalWordCount();
+const blogTotalWordCountText = blogTotalWordCount.toLocaleString('zh-CN');
 ---
 
 <footer class="footer-shell w-full max-w-2xl mx-auto pt-10 pb-9 sm:pt-12 sm:pb-10">
@@ -17,26 +20,29 @@ const navLinks = siteConfig.footerNavLinks || [];
             </div>
         )
     }
-    <div class:list={['pt-4 flex flex-col gap-3 border-t border-main/10', { 'sm:flex-row sm:items-center sm:justify-between': socialLinks.length > 0 }]}>
-        <p class="text-xs font-sans tracking-wide text-main/55 sm:text-sm">
-            &copy; {new Date().getFullYear()} <a class="footer-link" href="/">Harp83</a>
-        </p>
-        {
-            socialLinks.length > 0 && (
-                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-sm">
-                    {socialLinks.map((link) => (
-                        <a
-                            class="footer-link inline-flex items-center justify-center"
-                            href={link.href}
-                            target="_blank"
-                            rel="noopener noreferer"
-                        >
-                            {link.text}
-                        </a>
-                    ))}
-                </div>
-            )
-        }
+    <div class="pt-4 border-t border-main/10">
+        <div class="flex flex-col gap-2 sm:grid sm:grid-cols-3 sm:items-center">
+            <p class="text-xs font-sans tracking-wide text-main/55 sm:text-sm sm:justify-self-start">
+                &copy; {new Date().getFullYear()}
+                <a class="footer-link" href="/">Harp83</a>
+            </p>
+            <p class="text-xs font-sans tracking-wide text-main/55 sm:text-sm sm:justify-self-center">
+                博客累计 {blogTotalWordCountText} 字
+            </p>
+            {
+                socialLinks.length > 0 ? (
+                    <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:justify-self-end sm:text-sm">
+                        {socialLinks.map((link) => (
+                            <a class="footer-link inline-flex items-center justify-center" href={link.href} target="_blank" rel="noopener noreferer">
+                                {link.text}
+                            </a>
+                        ))}
+                    </div>
+                ) : (
+                    <div class="hidden sm:block" />
+                )
+            }
+        </div>
     </div>
 </footer>
 

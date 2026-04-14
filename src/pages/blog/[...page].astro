@@ -25,18 +25,15 @@ type Props = { postsByYear: Record<string, CollectionEntry<'blog'>[]> };
 
 const { postsByYear } = Astro.props;
 const yearGroups = Object.entries(postsByYear).sort(([yearA], [yearB]) => Number(yearB) - Number(yearA));
+const totalPostCount = yearGroups.reduce((sum, [, posts]) => sum + posts.length, 0);
 ---
 
-<BaseLayout
-    title="全部文章"
-    description="保持记录，无限进步"
-    image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }}
-    showHeader={false}
->
+<BaseLayout title="全部文章" description="保持记录，无限进步" image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }} showHeader={false}>
     <header class="mb-4 border-b border-main/20 pb-3 sm:mb-6">
         <div class="flex flex-wrap items-end gap-x-3 gap-y-1">
             <h1 class="text-2xl leading-tight font-cang font-medium sm:text-3xl">全部文章</h1>
             <p class="text-sm text-main/65 sm:pb-0.5">保持记录，无限进步</p>
+            <p class="text-sm text-main/55 sm:pb-0.5">共 {totalPostCount} 篇</p>
         </div>
     </header>
     {
@@ -45,7 +42,7 @@ const yearGroups = Object.entries(postsByYear).sort(([yearA], [yearB]) => Number
                 <div class="timeline-year mb-2 flex items-center gap-3 text-main/50">
                     <span class="text-xs font-sans tracking-wider">{year}</span>
                     <span class="text-xs font-sans tracking-wide">{posts.length}篇</span>
-                    <span class="h-px grow bg-main/10"></span>
+                    <span class="h-px grow bg-main/10" />
                 </div>
                 {posts.map((post) => (
                     <div data-reveal>

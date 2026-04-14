@@ -5,7 +5,7 @@ publishDate: 'Dec 27 2024'
 author: 'Harper'
 language: "zh"
 tags: 
-- Yearly
+- yearly
 ---
 
 ### 1.2024去过哪些城市

@@ -4,7 +4,7 @@ description:
 publishDate: 'December 30 2025'
 isFeatured: true
 tags:
-  - Yearly
+  - yearly
 ---
 
 1. 核心生存： Q1Q2完成入职。

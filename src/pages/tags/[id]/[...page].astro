@@ -11,19 +11,27 @@ export async function getStaticPaths() {
     return tags.map((tag) => ({
         params: { id: tag.id, page: undefined },
         props: {
-            posts: getPostsByTag(posts, tag.id),
+            postsByYear: getPostsByTag(posts, tag.id).reduce<Record<string, CollectionEntry<'blog'>[]>>((acc, post) => {
+                const year = String(post.data.publishDate.getFullYear());
+                if (!acc[year]) acc[year] = [];
+                acc[year].push(post);
+                return acc;
+            }, {}),
             currentTagName: tag.name
         }
     }));
 }
 
-type Props = { posts: CollectionEntry<'blog'>[]; currentTagName: string };
+type Props = { postsByYear: Record<string, CollectionEntry<'blog'>[]>; currentTagName: string };
 
-const { posts, currentTagName } = Astro.props;
+const { postsByYear, currentTagName } = Astro.props;
+const yearGroups = Object.entries(postsByYear).sort(([yearA], [yearB]) => Number(yearB) - Number(yearA));
+const totalPostCount = yearGroups.reduce((sum, [, posts]) => sum + posts.length, 0);
 const tagId = Astro.params.id || '';
 const tagMeta: Record<string, { title: string; description: string }> = {
-    weekly: { title: '周刊', description: '零散的日常。' },
-    tech: { title: '技术', description: '输出即学习。' }
+    life: { title: '生活志', description: '零散的日常' },
+    weekly: { title: '周刊', description: '在时间的缝隙里打捞思想' },
+    tech: { title: '技术', description: '输出即学习' }
 };
 const resolvedTagMeta = tagMeta[tagId] || { title: `Tag: ${currentTagName}`, description: 'Entries grouped under this tag.' };
 ---
@@ -38,13 +46,25 @@ const resolvedTagMeta = tagMeta[tagId] || { title: `Tag: ${currentTagName}`, des
         <div class="flex flex-wrap items-end gap-x-3 gap-y-1">
             <h1 class="text-2xl leading-tight font-cang font-medium sm:text-3xl">{resolvedTagMeta.title}</h1>
             <p class="text-sm text-main/65 sm:pb-0.5">{resolvedTagMeta.description}</p>
+            <p class="text-sm text-main/55 sm:pb-0.5">共 {totalPostCount} 篇</p>
         </div>
     </header>
-    {posts.map((post) => (
-        <div data-reveal>
-            <PostPreview post={post} />
-        </div>
-    ))}
+    {
+        yearGroups.map(([year, posts]) => (
+            <section class="mb-8 last:mb-0 sm:mb-10">
+                <div class="timeline-year mb-2 flex items-center gap-3 text-main/50">
+                    <span class="text-xs font-sans tracking-wider">{year}</span>
+                    <span class="text-xs font-sans tracking-wide">{posts.length}篇</span>
+                    <span class="h-px grow bg-main/10" />
+                </div>
+                {posts.map((post) => (
+                    <div data-reveal>
+                        <PostPreview post={post} />
+                    </div>
+                ))}
+            </section>
+        ))
+    }
 </BaseLayout>
 
 <style>

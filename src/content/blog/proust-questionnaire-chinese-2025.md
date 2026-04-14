@@ -3,7 +3,7 @@ title: 2025年普鲁斯特问卷
 description: 
 publishDate: 'December 29 2025'
 tags:
-  - Yearly
+  - yearly
 ---
 
 ### 01 你认为最完美的幸福是怎样的？

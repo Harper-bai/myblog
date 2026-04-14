@@ -1,11 +1,11 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostPreview from '../../components/PostPreview.astro';
 import ReadingTools from '../../components/ReadingTools.astro';
 import Subscribe from '../../components/Subscribe.astro';
-import { sortItemsByDateDesc } from '../../utils/data-utils';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getEstimatedWordCount, slugify } from '../../utils/common-utils';
+import { sortItemsByDateDesc } from '../../utils/data-utils';
 
 export async function getStaticPaths() {
     const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
@@ -62,8 +62,8 @@ function formatChineseDate(date: Date) {
         <div class="relative">
             {
                 headings.length > 0 && (
-                    <aside class="mb-6 border-b border-main/8 pb-4 lg:absolute lg:top-0 lg:right-full lg:mr-10 lg:mb-0 lg:w-48 lg:border-0 lg:pb-0">
-                        <div class="lg:sticky lg:top-24">
+                    <aside class="toc-floating mb-6 border-b border-main/8 pb-4 lg:mb-0 lg:w-48 lg:border-0 lg:pb-0">
+                        <div>
                             <p class="mb-2 text-[11px] tracking-[0.18em] uppercase text-main/40">目录</p>
                             <nav aria-label="文章目录">
                                 <ol class="space-y-1.5 text-sm leading-6 text-main/55">
@@ -102,7 +102,9 @@ function formatChineseDate(date: Date) {
     .post-meta-tag {
         text-decoration: none;
         border-bottom: 1px solid color-mix(in srgb, var(--text-color-main) 28%, transparent);
-        transition: border-color 180ms ease, color 180ms ease;
+        transition:
+            border-color 180ms ease,
+            color 180ms ease;
     }
 
     .post-meta-tag:hover {
@@ -113,12 +115,29 @@ function formatChineseDate(date: Date) {
     .toc-link {
         text-decoration: none;
         border-bottom: 1px solid transparent;
-        transition: border-color 180ms ease, color 180ms ease;
+        transition:
+            border-color 180ms ease,
+            color 180ms ease;
     }
 
     .toc-link:hover {
         border-color: color-mix(in srgb, var(--text-color-main) 38%, transparent);
     }
+
+    @media (min-width: 1024px) {
+        .toc-floating {
+            --toc-width: 12rem;
+            --toc-gap: 2.5rem;
+            --content-max-width: 42rem;
+            position: fixed;
+            top: 6rem;
+            left: max(1.5rem, calc(50vw - (var(--content-max-width) / 2) - var(--toc-gap) - var(--toc-width)));
+            z-index: 10;
+            max-height: calc(100vh - 8rem);
+            overflow: auto;
+        }
+    }
+
     @media (max-width: 1023px) {
         .toc-link {
             line-height: 1.55;

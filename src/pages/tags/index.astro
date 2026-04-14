@@ -10,37 +10,40 @@ const tags = getAllTags(posts).sort((tagA, tagB) => {
     const postCountTagB = getPostsByTag(posts, tagB.id).length;
     return postCountTagB - postCountTagA;
 });
+const totalTagCount = tags.length;
+const totalPostCount = posts.length;
 ---
 
-<BaseLayout
-    title="Tags"
-    description="Explore tag directory for easy navigation and discovery. Find a wide range of topics, articles, and insights organized by tags, making it effortless to locate the content that interests you most."
-    showHeader={false}
->
+<BaseLayout title="标签" description="按主题浏览文章" showHeader={false}>
     <header class="mb-4 border-b border-main/20 pb-3 sm:mb-6">
-        <h1 class="text-2xl leading-tight font-cang font-medium sm:text-3xl">Tags</h1>
-        <p class="mt-1 text-sm text-main/65">Browse posts by topic.</p>
+        <div class="flex flex-wrap items-end gap-x-3 gap-y-1">
+            <h1 class="text-2xl leading-tight font-cang font-medium sm:text-3xl">标签</h1>
+            <p class="text-sm text-main/65 sm:pb-0.5">按主题浏览文章</p>
+            <p class="text-sm text-main/55 sm:pb-0.5">共 {totalTagCount} 个标签 · 覆盖 {totalPostCount} 篇文章</p>
+        </div>
     </header>
-    {tags.length > 0 ? (
-        <>
-            {tags.map((tag) => {
-                const postCount = getPostsByTag(posts, tag.id).length;
-                return (
-                    <a class="block border-b border-main/10 py-5 last:border-b-0 sm:py-6" href={`/tags/${tag.id}`}>
-                        <h2 class="text-xl leading-tight font-cang font-medium sm:text-2xl">{tag.name}</h2>
-                        <div class="mt-1 text-sm leading-normal text-main/65">
-                            {postCount} {postCount === 1 ? 'post' : 'posts'}
-                        </div>
-                    </a>
-                );
-            })}
-        </>
-    ) : (
-        <EmptyState
-            title="No tags yet"
-            text="Tags will appear automatically as posts are published with tag metadata."
-            ctaHref="/blog"
-            ctaText="View Blog"
-        />
-    )}
+    {
+        tags.length > 0 ? (
+            <>
+                {tags.map((tag) => {
+                    const postCount = getPostsByTag(posts, tag.id).length;
+                    return (
+                        <a class="block border-b border-main/10 py-5 last:border-b-0 sm:py-6" href={`/tags/${tag.id}`}>
+                            <h2 class="text-xl leading-tight font-cang font-medium sm:text-2xl">{tag.name}</h2>
+                            <div class="mt-1 text-sm leading-normal text-main/65">
+                                {postCount} {postCount === 1 ? 'post' : 'posts'}
+                            </div>
+                        </a>
+                    );
+                })}
+            </>
+        ) : (
+            <EmptyState
+                title="No tags yet"
+                text="Tags will appear automatically as posts are published with tag metadata."
+                ctaHref="/blog"
+                ctaText="View Blog"
+            />
+        )
+    }
 </BaseLayout>

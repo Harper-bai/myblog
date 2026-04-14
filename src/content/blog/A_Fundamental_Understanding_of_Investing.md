@@ -4,7 +4,7 @@ description:
 publishDate: 'January 21 2026'
 isFeatured: False
 tags:
-  - Read
+  - read
 ---
 
 ## 关于投资的基本认知

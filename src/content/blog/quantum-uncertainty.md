@@ -5,7 +5,7 @@ publishDate: 'Nov 4 2024'
 author: 'Harper'
 language: "zh"
 tags: 
-- Think
+- think
 ---
 
 这是我秋学期《力学导论》的结课作业，写完之后，觉得很有意思，所以分享一下。
