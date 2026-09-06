@@ -3,8 +3,6 @@ title: 读书#5：《投资中，我相信的事》
 description: 
 publishDate: 'January 21 2026'
 isFeatured: False
-tags:
-  - read
 ---
 
 ## 关于投资的基本认知

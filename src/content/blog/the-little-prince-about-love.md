@@ -2,10 +2,9 @@
 title: 读书#2：《小王子的领悟》关于爱
 description: ""
 publishDate: 'Oct 24 2024'
+isLifeArchive: true
 author: 'Harper'
 language: "zh"
-tags: 
-- read
 ---
 
 

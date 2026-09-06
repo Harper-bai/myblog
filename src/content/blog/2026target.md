@@ -3,8 +3,6 @@ title: 2026年目标
 description: 
 publishDate: 'December 30 2025'
 isFeatured: true
-tags:
-  - yearly
 ---
 
 1. 核心生存： Q1Q2完成入职。
@@ -14,4 +12,3 @@ tags:
 3. 能力内化： 阅读100本书，并产出50篇笔记。
 
 4. 底线维护： 体脂率维持在 20%，24:00前入睡率达到 80%。
-

@@ -1,0 +1,230 @@
+---
+/**
+ * [INPUT]: 依赖 data/media-content 的分类与媒体条目，依赖 BaseLayout 的全站页面壳
+ * [OUTPUT]: 对外提供 Media Consumption 页面、分类切换与双列媒体记录表
+ * [POS]: components 的媒体档案编排器；记录数据由 media-content 单独维护，组件只负责呈现与交互
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
+import mediaContent from '../data/media-content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const { categories } = mediaContent;
+---
+
+<BaseLayout title={mediaContent.title} description={mediaContent.description} showHeader={false}>
+    <article class="media-page">
+        <header class="media-header">
+            <h1>{mediaContent.title}</h1>
+        </header>
+
+        <nav class="media-tabs" aria-label="Media types">
+            {categories.map((category, index) => (
+                <a
+                    id={`media-tab-${category.id}`}
+                    class:list={['media-tab', { 'media-tab-active': index === 0 }]}
+                    href={`/media?type=${category.id}`}
+                    data-media-type={category.id}
+                    aria-current={index === 0 ? 'page' : undefined}
+                >
+                    {category.label}
+                </a>
+            ))}
+        </nav>
+
+        <div class="media-panels">
+            {categories.map((category, index) => (
+                <section
+                    class="media-panel"
+                    data-media-panel={category.id}
+                    aria-labelledby={`media-tab-${category.id}`}
+                    hidden={index !== 0}
+                >
+                    <h2 class="sr-only">{category.label}</h2>
+                    {category.items.length > 0 ? (
+                        <table class="media-table">
+                            <caption class="sr-only">{category.label} records</caption>
+                            <tbody>
+                                {category.items.map((item) => (
+                                    <tr>
+                                        <td>{item.title}</td>
+                                        <td>{item.creator}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <p class="media-empty">Nothing here yet.</p>
+                    )}
+                </section>
+            ))}
+        </div>
+
+        <p class="media-note">{mediaContent.note}</p>
+    </article>
+</BaseLayout>
+
+<script>
+    (() => {
+        const validMediaTypes = new Set(['book', 'movie', 'series', 'anime', 'documentary']);
+
+        const syncMediaType = () => {
+            const requestedType = new URL(window.location.href).searchParams.get('type');
+            const activeType = requestedType && validMediaTypes.has(requestedType) ? requestedType : 'book';
+
+            document.querySelectorAll('[data-media-type]').forEach((tab) => {
+                const isActive = tab.getAttribute('data-media-type') === activeType;
+                tab.classList.toggle('media-tab-active', isActive);
+                if (isActive) {
+                    tab.setAttribute('aria-current', 'page');
+                } else {
+                    tab.removeAttribute('aria-current');
+                }
+            });
+
+            document.querySelectorAll('[data-media-panel]').forEach((panel) => {
+                panel.hidden = panel.getAttribute('data-media-panel') !== activeType;
+            });
+        };
+
+        const selectMediaType = (event) => {
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+
+            const tab = target.closest('[data-media-type]');
+            if (!(tab instanceof HTMLAnchorElement)) return;
+
+            const mediaType = tab.getAttribute('data-media-type');
+            if (!mediaType || !validMediaTypes.has(mediaType)) return;
+
+            event.preventDefault();
+            const url = new URL(window.location.href);
+            url.searchParams.set('type', mediaType);
+            window.history.replaceState({}, '', url);
+            syncMediaType();
+        };
+
+        if (!window.__mediaTabsBound) {
+            document.addEventListener('click', selectMediaType);
+            document.addEventListener('astro:page-load', syncMediaType);
+            document.addEventListener('astro:after-swap', syncMediaType);
+            window.__mediaTabsBound = true;
+        }
+
+        syncMediaType();
+    })();
+</script>
+
+<style>
+    .media-page {
+        width: min(100%, 41rem);
+        margin: 0 auto 4rem;
+        color: var(--text-main);
+        font-family: var(--font-sans);
+    }
+
+    .media-header {
+        margin-bottom: 1.55rem;
+    }
+
+    .media-header h1 {
+        margin: 0;
+        font-family: var(--font-sans);
+        font-size: 2.25rem;
+        font-weight: 500;
+        letter-spacing: -0.025em;
+        line-height: 1.15;
+    }
+
+    .media-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.95rem;
+        margin-bottom: 2rem;
+    }
+
+    .media-tab {
+        display: inline-flex;
+        align-items: center;
+        min-height: 1.75rem;
+        padding: 0.18rem 0.48rem;
+        color: var(--text-main);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.9rem;
+        font-weight: 600;
+        line-height: 1.4;
+        text-decoration: none;
+        opacity: 0.66;
+        transition:
+            background-color 180ms ease,
+            color 180ms ease,
+            opacity 180ms ease;
+    }
+
+    .media-tab:hover {
+        color: var(--title-accent);
+        opacity: 1;
+    }
+
+    .media-tab-active,
+    .media-tab-active:hover {
+        background: var(--text-main);
+        color: var(--bg-main);
+        opacity: 1;
+    }
+
+    .media-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .media-table td {
+        padding: 0.62rem 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--text-main) 10%, transparent);
+        vertical-align: top;
+    }
+
+    .media-table td:first-child {
+        width: 50%;
+        color: color-mix(in srgb, var(--text-main) 88%, transparent);
+    }
+
+    .media-table td + td {
+        color: color-mix(in srgb, var(--text-main) 74%, transparent);
+    }
+
+    .media-empty,
+    .media-note {
+        margin: 0;
+        color: color-mix(in srgb, var(--text-main) 55%, transparent);
+        font-size: 0.8rem;
+        line-height: 1.7;
+    }
+
+    .media-note {
+        margin-top: 1.7rem;
+    }
+
+    @media (max-width: 640px) {
+        .media-header h1 {
+            font-size: 2rem;
+        }
+
+        .media-tabs {
+            gap: 0.65rem;
+            margin-bottom: 1.6rem;
+        }
+
+        .media-table {
+            font-size: 0.85rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .media-tab {
+            transition: none;
+        }
+    }
+</style>

@@ -1,11 +1,45 @@
+---
+/**
+ * [INPUT]: 依赖 BaseLayout 注入的主题状态与 data-theme-toggle 事件契约
+ * [OUTPUT]: 对外提供带低存在感对比度图标的明暗主题切换按钮
+ * [POS]: components 的主题交互节点；由 Nav 消费，状态同步由 BaseLayout 统一维护
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
+---
+
 <button
     data-theme-toggle
-    class="w-8 h-8 -mr-2 flex items-center justify-center cursor-pointer"
+    class="theme-toggle w-8 h-8 flex items-center justify-center cursor-pointer"
     aria-label="Change color scheme"
     aria-pressed="false"
     title="Toggle theme"
 >
-    <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="8" cy="8" r="8"></circle>
+    <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 21.997c-5.523 0-10-4.477-10-10s4.477-10 10-10s10 4.477 10 10s-4.477 10-10 10m0-2a8 8 0 1 0 0-16a8 8 0 0 0 0 16m-5-4.681a8.97 8.97 0 0 0 5.707-2.612a8.97 8.97 0 0 0 2.612-5.707q.49.326.924.757A6 6 0 1 1 7 15.316"></path>
     </svg>
 </button>
+
+<style>
+    .theme-toggle {
+        color: var(--text-main);
+        opacity: 0.6;
+        transition: opacity 180ms ease, color 180ms ease;
+    }
+
+    .theme-toggle:hover {
+        color: var(--title-accent);
+        opacity: 1;
+    }
+
+    .theme-icon {
+        width: 0.95rem;
+        height: 0.95rem;
+        fill: currentColor;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .theme-toggle {
+            transition: none;
+        }
+    }
+</style>

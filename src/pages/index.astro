@@ -1,85 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
-import PostPreview from '../components/PostPreview.astro';
-import siteConfig from '../data/site-config';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { sortItemsByDateDesc } from '../utils/data-utils';
-
-const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
-const featuredPosts = posts.filter(({ data }) => data.isFeatured);
-const nonFeaturedPosts = posts.filter(({ data }) => !data.isFeatured);
-const homePosts = [...featuredPosts, ...nonFeaturedPosts].slice(0, 8);
-const hero = siteConfig.hero;
-
-function normalizeText(text = '') {
-    return text.replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
-}
-
-const normalizedHeroText = normalizeText(hero?.text || '');
-const introText = normalizedHeroText.slice(0, 170) || siteConfig.description;
+/**
+ * [INPUT]: 依赖共享首页组件的中文 Markdown 内容
+ * [OUTPUT]: 对外提供中文个人主页 `/`
+ * [POS]: pages 的品牌首页路由；首页正文只提供 Blog 与 About 入口
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
+import HomePage from '../components/HomePage.astro';
 ---
 
-<BaseLayout description={siteConfig.description} image={siteConfig.image}>
-    <section class="home-intro mb-12 sm:mb-14">
-        <p class="home-summary">
-            {introText}
-            {normalizedHeroText.length > 170 ? '...' : ''}
-            {' '}
-            在这里记录了一些<a href="/tags/weekly">生活的日常</a>、<a href="/tags/tech">技术的学习</a>，也可以<a href="/blog">随便看看</a>。
-        </p>
-    </section>
-    {
-        homePosts.length > 0 && (
-            <section class="mb-16 sm:mb-20">
-                <header class="mb-5 flex items-end justify-between gap-4 border-b border-main/10 pb-3 sm:mb-6">
-                    <h2 class="text-base font-serif tracking-wide text-main/75">Recent Writing</h2>
-                </header>
-                {homePosts.map((post) => <PostPreview post={post} headingLevel="h3" />)}
-                <div class="pt-4">
-                    <a class="home-link text-sm" href="/blog">更多文章</a>
-                </div>
-            </section>
-        )
-    }
-</BaseLayout>
-
-<style>
-    .home-intro {
-        max-width: 44rem;
-    }
-
-    .home-summary {
-        margin-top: 0.1rem;
-        max-width: 40rem;
-        font-family: 'Newsreader Variable', serif;
-        font-size: clamp(1rem, 0.92rem + 0.35vw, 1.2rem);
-        line-height: 1.62;
-        color: color-mix(in srgb, var(--text-main) 78%, transparent);
-    }
-
-    .home-summary a {
-        color: color-mix(in srgb, var(--text-main) 88%, transparent);
-        text-decoration: none;
-        border-bottom: 1px solid color-mix(in srgb, var(--text-main) 28%, transparent);
-        transition: border-color 180ms ease, color 180ms ease;
-    }
-
-    .home-summary a:hover {
-        color: var(--text-main);
-        border-color: color-mix(in srgb, var(--text-main) 58%, transparent);
-    }
-
-    .home-link {
-        font-family: 'Inter Variable', sans-serif;
-        letter-spacing: 0.01em;
-        text-decoration: underline;
-        text-decoration-thickness: 1px;
-        text-underline-offset: 2px;
-    }
-
-    @media (max-width: 640px) {
-        .home-summary {
-            max-width: 100%;
-        }
-    }
-</style>
+<HomePage />

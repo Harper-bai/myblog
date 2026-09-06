@@ -4,8 +4,6 @@ description: "一篇面向初学者的 AI 入门笔记：工具、模型、LLM �
 publishDate: 'Mar 27 2026'
 author: 'Harper'
 language: "zh"
-tags:
-- tech
 ---
 
 **从零开始了解人工智能。**

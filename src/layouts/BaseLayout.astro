@@ -1,6 +1,13 @@
 ---
+/**
+ * [INPUT]: 依赖 BaseHead、Nav、Footer、BackToTop 与主题状态脚本
+ * [OUTPUT]: 对外提供全站 HTML 骨架、公共导航、页尾、主题初始化与回顶入口
+ * [POS]: layouts 的公共页面壳；所有路由通过它获得统一布局与浏览辅助，不承载页面正文
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import { ClientRouter } from 'astro:transitions';
 import BaseHead, { type Props as HeadProps } from '../components/BaseHead.astro';
+import BackToTop from '../components/BackToTop.astro';
 import Footer from '../components/Footer.astro';
 import Nav from '../components/Nav.astro';
 
@@ -83,5 +90,6 @@ const { showHeader = true, ...head } = Astro.props;
             </main>
             <Footer />
         </div>
+        <BackToTop />
     </body>
 </html>

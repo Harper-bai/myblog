@@ -1,4 +1,10 @@
 ---
+/**
+ * [INPUT]: 依赖 data/site-config 的站点身份与可选 logo 配置
+ * [OUTPUT]: 对外提供全站站点标识与可选副标题
+ * [POS]: components 的站点标题组件；标题强调色由全局 --title-accent 提供
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import siteConfig from '../data/site-config';
 ---
 
@@ -9,10 +15,16 @@ import siteConfig from '../data/site-config';
                 <img src={siteConfig.logo.src} alt={siteConfig.logo.alt || ''} class="max-h-12" />
             </a>
         ) : (
-            <a class="font-serif text-2xl leading-tight font-medium text-theme-foreground sm:text-4xl" href="/">
+            <a class="site-title font-serif text-2xl leading-tight font-medium text-theme-foreground sm:text-4xl" href="/">
                 {siteConfig.title}
             </a>
         )
     }
     {siteConfig.subtitle && <p class="text-sm leading-tight mt-1">{siteConfig.subtitle}</p>}
 </header>
+
+<style>
+    .site-title {
+        color: var(--title-accent);
+    }
+</style>

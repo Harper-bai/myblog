@@ -1,3 +1,9 @@
+/*
+ * [INPUT]: 全站字体、主题变量与 Tailwind 基础样式
+ * [OUTPUT]: 对外提供全局颜色变量、排版规则与公共视觉工具类
+ * [POS]: styles 的全局视觉契约；标题强调色集中由 --title-accent 控制，便于后续微调
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 @import '@fontsource-variable/inter' layer(base);
 @import '@fontsource-variable/newsreader' layer(base);
 @import '@fontsource-variable/newsreader/wght-italic.css' layer(base);
@@ -9,25 +15,24 @@
 
 :root {
     --text-main: #171717;
-    --bg-main: #f2f1ec;
-    --bg-muted: #eae9e1;
+    --title-accent: #002FA7;
+    --bg-main: #ffffff;
+    --bg-muted: #f5f5f5;
     --border-main: #171717;
     --code-bg: #f5f5f5;
     --code-text: #2d2d2d;
-    --code-border: #ddd;
-    --inline-code-bg: #eaeaea;
-    --inline-code-text: #d6336c;
+    --inline-code-bg: #f0f0ee;
+    --inline-code-text: #262626;
 }
 html.dark {
     --text-main: #f2f1ec;
-    --bg-main: #171717;
-    --bg-muted: #242424;
+    --bg-main: #050505;
+    --bg-muted: #111111;
     --border-main: #f2f1ec;
     --code-bg: #2d2d2d;
     --code-text: #f8f8f2;
-    --code-border: #444;
-    --inline-code-bg: #444;
-    --inline-code-text: #ff79c6;
+    --inline-code-bg: #303030;
+    --inline-code-text: #f2f1ec;
 }
 
 /* Cyan */
@@ -63,9 +68,9 @@ html.dark {
 */
 
 @theme inline {
-    --font-sans: 'Inter Variable', sans-serif;
+    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
     --font-serif: 'Newsreader Variable', serif;
-    --font-cang: 'MyCustomFont', serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --text-color-main: var(--text-main);
     --background-color-main: var(--bg-main);
     --background-color-muted: var(--bg-muted);
@@ -104,7 +109,7 @@ html.dark {
     }
 
     .prose :where(h1, h2, h3, h4, h5, h6) {
-        @apply font-cang font-medium;
+        @apply font-sans font-medium;
     }
 
     .prose :where(code, strong) {
@@ -112,20 +117,99 @@ html.dark {
     }
 
     .prose blockquote {
-        @apply font-cang font-normal italic border-l-4 border-gray-300 pl-4 text-base leading-relaxed sm:text-lg;
+        @apply font-sans font-normal italic border-l-4 border-gray-300 pl-4 text-base leading-relaxed sm:text-lg;
     }
 }
 
-@font-face {
-    font-family: 'MyCustomFont';
-    src: url('/fonts/cang-er-jin-kai.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
+body {
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
 }
 
-body {
-    font-family: 'MyCustomFont', sans-serif;
-    text-rendering: optimizeLegibility;
+/* About 复用 Blog 的窄内容列、轻标题和克莱因蓝链接，不改变内容架构。 */
+.content-page.about-page {
+    width: min(100%, 41rem);
+    margin-inline: auto;
+}
+
+.content-page.about-page .content-page-header {
+    margin: 0 0 2rem;
+    padding: 0;
+    border: 0;
+}
+
+.content-page.about-page .content-page-title {
+    color: var(--title-accent);
+    font-family: var(--font-sans);
+    font-size: 1.875rem;
+    font-weight: 400;
+    line-height: 2.25rem;
+}
+
+.content-page.about-page .content-page-body.prose {
+    max-width: none;
+    color: color-mix(in srgb, var(--text-main) 86%, transparent);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.content-page.about-page .content-page-body.prose :where(h2, h3, h4) {
+    color: color-mix(in srgb, var(--text-main) 92%, transparent);
+    letter-spacing: 0;
+}
+
+.content-page.about-page .content-page-body.prose h2 {
+    margin: 2.75rem 0 0.75rem;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+.content-page.about-page .content-page-body.prose h3 {
+    margin: 2rem 0 0.6rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    opacity: 0.76;
+}
+
+.content-page.about-page .content-page-body.prose p {
+    margin: 0 0 1.25rem;
+}
+
+.content-page.about-page .content-page-body.prose :where(ul, ol) {
+    margin: 0 0 1.25rem;
+    padding-left: 1.25rem;
+}
+
+.content-page.about-page .content-page-body.prose li {
+    margin: 0.35rem 0;
+}
+
+.content-page.about-page .content-page-body.prose a {
+    color: var(--title-accent);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--title-accent) 52%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: color 180ms ease, text-decoration-color 180ms ease;
+}
+
+.content-page.about-page .content-page-body.prose a:hover {
+    color: color-mix(in srgb, var(--title-accent) 78%, var(--text-main));
+    text-decoration-color: var(--title-accent);
+}
+
+.content-page.about-page .content-page-body.prose strong {
+    color: color-mix(in srgb, var(--text-main) 96%, transparent);
+    font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .content-page.about-page .content-page-body.prose a {
+        transition: none;
+    }
 }
 
 :focus-visible {
@@ -136,7 +220,8 @@ body {
 .prose pre {
     background: var(--code-bg);
     color: var(--code-text);
-    border: 1px dashed var(--code-border);
+    border: 0;
+    font-family: var(--font-mono);
 }
 
 .prose :not(pre) > code {
@@ -144,62 +229,105 @@ body {
     color: var(--inline-code-text);
     padding: 0.1rem 0.35rem;
     border-radius: 0.35rem;
+    font-family: var(--font-mono);
+}
+
+.prose pre code {
+    background: transparent;
+    color: inherit;
+    border: 0;
+    border-radius: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 400;
+    line-height: inherit;
+    padding: 0;
+}
+
+.prose pre code::before,
+.prose pre code::after {
+    content: none;
 }
 
 .article-body.prose {
     --tw-prose-headings: color-mix(in srgb, var(--text-color-main) 94%, transparent);
     --tw-prose-body: color-mix(in srgb, var(--text-color-main) 88%, transparent);
-    font-family:
-        'Newsreader Variable',
-        'MyCustomFont',
-        serif;
+    max-width: 65ch;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.75;
 }
 
-.article-body.prose :where(h1, h2, h3) {
-    color: color-mix(in srgb, var(--text-color-main) 97%, transparent);
-    line-height: 1.3;
-    letter-spacing: 0.01em;
+.article-body.prose a {
+    color: var(--title-accent);
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 0;
+}
+
+.article-body.prose a:hover {
+    color: var(--title-accent);
+}
+
+.article-body.prose :where(h1, h2, h3, h4, h5, h6) {
+    color: color-mix(in srgb, var(--text-color-main) 94%, transparent);
+    font-family: var(--font-sans);
+    letter-spacing: 0;
 }
 
 .article-body.prose h1 {
-    font-size: clamp(1.78rem, 2.5vw, 2.18rem);
-    font-weight: 700;
-    margin-top: 1.25em;
-    margin-bottom: 0.58em;
+    font-size: 2.25em;
+    font-weight: 800;
+    line-height: 1.11;
+    margin-top: 0;
+    margin-bottom: 0.89em;
 }
 
 .article-body.prose h2 {
-    font-size: clamp(1.5rem, 1.95vw, 1.76rem);
-    font-weight: 680;
-    margin-top: 1.7em;
-    margin-bottom: 0.5em;
+    font-size: 1.5em;
+    font-weight: 700;
+    line-height: 1.33;
+    margin-top: 2em;
+    margin-bottom: 1em;
 }
 
 .article-body.prose h3 {
-    font-size: clamp(1.26rem, 1.4vw, 1.42rem);
-    font-weight: 650;
-    margin-top: 1.36em;
-    margin-bottom: 0.36em;
+    font-size: 1.25em;
+    font-weight: 600;
+    line-height: 1.6;
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+    opacity: 0.72;
+}
+
+.article-body.prose h4,
+.article-body.prose h5 {
+    font-size: 1em;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.article-body.prose h6 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    line-height: 1.5;
+    opacity: 0.5;
+    text-transform: uppercase;
 }
 
 .article-body.prose p {
-    line-height: 1.72;
-    margin-top: 0.72em;
-    margin-bottom: 0.72em;
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
 }
 
 .article-body.prose strong {
     color: color-mix(in srgb, var(--text-color-main) 96%, transparent);
-    font-weight: 650;
-}
-
-.article-body.prose :not(pre) > code {
-    padding: 0.04rem 0.34rem;
-    border-radius: 0.24rem;
-    border: 1px solid color-mix(in srgb, var(--text-color-main) 20%, transparent);
-    background: color-mix(in srgb, var(--bg-muted) 90%, transparent);
-    color: color-mix(in srgb, var(--text-color-main) 90%, transparent);
-    font-size: 0.88em;
+    font-weight: 600;
 }
 
 .article-body.prose :not(pre) > code::before,
@@ -207,26 +335,181 @@ body {
     content: none;
 }
 
-.article-body.prose :where(ul, ol) {
-    margin-top: 0.78em;
-    margin-bottom: 0.78em;
-    line-height: 1.68;
+.article-body.prose :where(ol, ul) {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    list-style-type: none;
+}
+
+.article-body.prose :where(ol, ul) > li {
+    position: relative;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.article-body.prose ol > li,
+.article-body.prose ul > li {
+    padding-left: 1.75em;
+}
+
+.article-body.prose ol > li::before {
+    content: counter(list-item, decimal) '.';
+    position: absolute;
+    left: 0;
+    color: color-mix(in srgb, var(--text-color-main) 56%, transparent);
+    font-weight: 400;
+}
+
+.article-body.prose ul > li::before {
+    content: '';
+    position: absolute;
+    top: calc(0.875em - 0.1875em);
+    left: 0.25em;
+    width: 0.375em;
+    height: 0.375em;
+    border-radius: 50%;
+    background-color: color-mix(in srgb, var(--text-color-main) 28%, transparent);
+}
+
+.article-body.prose :where(ul ul, ul ol, ol ul, ol ol) {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+}
+
+.article-body.prose > :first-child {
+    margin-top: 0;
+}
+
+.article-body.prose > :last-child {
+    margin-bottom: 0;
+}
+
+.article-body.prose hr {
+    margin-top: 3em;
+    margin-bottom: 3em;
+    border-color: color-mix(in srgb, var(--text-color-main) 30%, transparent);
+}
+
+.article-body.prose :where(img, video, figure) {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.article-body.prose figure > * {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.article-body.prose figure figcaption {
+    margin-top: 0.857em;
+    color: color-mix(in srgb, var(--text-color-main) 60%, transparent);
+    font-size: 0.875em;
+    line-height: 1.428;
 }
 
 .article-body.prose blockquote {
-    border-left: 2px solid color-mix(in srgb, var(--text-color-main) 20%, transparent);
-    padding-left: 0.9rem;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    color: color-mix(in srgb, var(--text-color-main) 78%, transparent);
+    border-left-width: 0.25rem;
+    border-left-color: color-mix(in srgb, var(--text-color-main) 30%, transparent);
+    padding-left: 1em;
+    margin-top: 1.6em;
+    margin-bottom: 1.6em;
+    color: inherit;
+    font-weight: 500;
     font-style: italic;
+    quotes: '\201C' '\201D' '\2018' '\2019';
+}
+
+.article-body.prose blockquote p:first-of-type::before {
+    content: open-quote;
+}
+
+.article-body.prose blockquote p:last-of-type::after {
+    content: close-quote;
 }
 
 .article-body.prose pre {
-    border-radius: 0.5rem;
-    border: 1px solid color-mix(in srgb, var(--text-color-main) 12%, transparent);
-    padding: 0.95rem 1rem;
-    line-height: 1.56;
+    overflow-x: auto;
+    border-radius: 0.375rem;
+    border: 0;
+    background: var(--code-bg);
+    color: var(--code-text);
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    line-height: 1.714;
+    margin-top: 1.714em;
+    margin-bottom: 1.714em;
+    padding: 0.857em 1.142em;
+}
+
+.article-body.prose :not(pre) > code {
+    border: 0;
+    border-radius: 0.25rem;
+    background: var(--inline-code-bg);
+    color: var(--inline-code-text);
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    font-weight: 500;
+    margin: -0.2em 0;
+    padding: 0.2em 0.3em;
+}
+
+.article-body.prose h2 code {
+    font-size: 0.875em;
+}
+
+.article-body.prose h3 code {
+    font-size: 0.9em;
+}
+
+.article-body.prose table {
+    width: 100%;
+    table-layout: auto;
+    text-align: left;
+    font-size: 0.875em;
+    line-height: 1.714;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.article-body.prose thead {
+    color: color-mix(in srgb, var(--text-color-main) 82%, transparent);
+    font-weight: 600;
+    border-bottom: 1px solid color-mix(in srgb, var(--text-color-main) 22%, transparent);
+}
+
+.article-body.prose thead th {
+    padding: 0 0.57em 0.57em;
+    font-weight: 600;
+    vertical-align: bottom;
+}
+
+.article-body.prose tbody tr {
+    border-bottom: 1px solid color-mix(in srgb, var(--text-color-main) 14%, transparent);
+}
+
+.article-body.prose tbody tr:last-child {
+    border-bottom: 0;
+}
+
+.article-body.prose tbody td {
+    padding: 0.57em;
+    vertical-align: top;
+}
+
+.article-body.prose :is(thead, tbody) :is(th, td):first-child {
+    padding-left: 0;
+}
+
+.article-body.prose :is(thead, tbody) :is(th, td):last-child {
+    padding-right: 0;
+}
+
+.article-body.prose b {
+    color: color-mix(in srgb, var(--text-color-main) 96%, transparent);
+}
+
+.article-body.prose em {
+    color: inherit;
 }
 
 @media (prefers-reduced-motion: reduce) {

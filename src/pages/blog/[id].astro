@@ -1,10 +1,16 @@
 ---
+/**
+ * [INPUT]: 依赖 blog 内容集合中的文章、相邻文章与渲染后的 headings，依赖 BaseLayout、PostPreview、ReadingTools、Subscribe
+ * [OUTPUT]: 对外提供带元信息、响应式目录、正文、相关文章与阅读工具的静态文章详情页
+ * [POS]: pages/blog 的文章详情路由；负责组织文章阅读结构，不承载全站主题与内容集合查询实现
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import PostPreview from '../../components/PostPreview.astro';
 import ReadingTools from '../../components/ReadingTools.astro';
 import Subscribe from '../../components/Subscribe.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getEstimatedWordCount, slugify } from '../../utils/common-utils';
+import { getEstimatedWordCount } from '../../utils/common-utils';
 import { sortItemsByDateDesc } from '../../utils/data-utils';
 
 export async function getStaticPaths() {
@@ -23,7 +29,7 @@ export async function getStaticPaths() {
 type Props = { post: CollectionEntry<'blog'>; prevPost: CollectionEntry<'blog'>; nextPost: CollectionEntry<'blog'> };
 
 const { post, prevPost, nextPost } = Astro.props;
-const { title, publishDate, excerpt, tags = [], seo } = post.data;
+const { title, publishDate, excerpt, seo } = post.data;
 const { Content, headings } = await render(post);
 const wordCount = getEstimatedWordCount(post.body);
 
@@ -37,50 +43,39 @@ function formatChineseDate(date: Date) {
 
 <BaseLayout title={seo?.title ?? title} description={seo?.description ?? excerpt} image={seo?.image} pageType="article" showHeader={false}>
     <article class="mb-16 sm:mb-20" data-reading-root>
-        <header class="mb-8 border-b border-main/10 pb-4 sm:mb-9 sm:pb-5">
-            <h1 class="text-3xl leading-tight font-cang font-medium sm:text-4xl sm:leading-tight">{title}</h1>
-            <div class="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-sans text-main/60 sm:text-sm">
+        <header class="article-header mb-10 sm:mb-12">
+            <h1 class="text-3xl leading-tight font-sans font-semibold sm:text-4xl sm:leading-tight">{title}</h1>
+            <div class="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-sans text-main/50 sm:text-sm">
                 <span>{formatChineseDate(publishDate)}</span>
                 <span aria-hidden="true">·</span>
                 <span>{wordCount}字</span>
-                {
-                    tags.length > 0 && (
-                        <>
-                            <span aria-hidden="true">·</span>
-                            <div class="flex flex-wrap items-center gap-x-2">
-                                {tags.map((tag) => (
-                                    <a class="post-meta-tag" href={`/tags/${slugify(tag)}`}>
-                                        #{tag}
-                                    </a>
-                                ))}
-                            </div>
-                        </>
-                    )
-                }
             </div>
         </header>
         <div class="relative">
             {
                 headings.length > 0 && (
-                    <aside class="toc-floating mb-6 border-b border-main/8 pb-4 lg:mb-0 lg:w-48 lg:border-0 lg:pb-0">
-                        <div>
-                            <p class="mb-2 text-[11px] tracking-[0.18em] uppercase text-main/40">目录</p>
+                    <aside class="toc-floating mb-6 border-b border-main/8 pb-4">
+                        <details class="toc-disclosure">
+                            <summary class="toc-summary">
+                                <span>目录</span>
+                                <span class="toc-summary-count">{headings.length} 节</span>
+                            </summary>
                             <nav aria-label="文章目录">
                                 <ol class="space-y-1.5 text-sm leading-6 text-main/55">
                                     {headings.map((heading) => (
                                         <li class={heading.depth > 2 ? 'pl-3' : ''}>
-                                            <a class="toc-link block hover:text-main" href={`#${heading.slug}`}>
+                                            <a class="toc-link block" href={`#${heading.slug}`}>
                                                 {heading.text}
                                             </a>
                                         </li>
                                     ))}
                                 </ol>
                             </nav>
-                        </div>
+                        </details>
                     </aside>
                 )
             }
-            <div class="article-body max-w-none prose sm:prose-lg">
+            <div class="article-body prose">
                 <Content />
             </div>
         </div>
@@ -98,21 +93,80 @@ function formatChineseDate(date: Date) {
     <ReadingTools />
 </BaseLayout>
 
-<style>
-    .post-meta-tag {
-        text-decoration: none;
-        border-bottom: 1px solid color-mix(in srgb, var(--text-color-main) 28%, transparent);
-        transition:
-            border-color 180ms ease,
-            color 180ms ease;
+<script>
+    const syncTocDisclosure = () => {
+        const isDesktopLayout = window.matchMedia('(min-width: 64rem)').matches;
+
+        document.querySelectorAll('.toc-disclosure').forEach((toc) => {
+            if (isDesktopLayout) {
+                toc.setAttribute('open', '');
+            } else {
+                toc.removeAttribute('open');
+            }
+        });
+    };
+
+    if (!window.__tocResponsiveBound) {
+        window.addEventListener('resize', syncTocDisclosure);
+        document.addEventListener('astro:page-load', syncTocDisclosure);
+        window.__tocResponsiveBound = true;
     }
 
-    .post-meta-tag:hover {
-        color: var(--text-color-main);
-        border-color: color-mix(in srgb, var(--text-color-main) 68%, transparent);
+    syncTocDisclosure();
+</script>
+
+<style>
+    .toc-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        list-style: none;
+        color: color-mix(in srgb, var(--text-color-main) 52%, transparent);
+        font-family: var(--font-sans);
+        font-size: 0.6875rem;
+        letter-spacing: 0.18em;
+        line-height: 1.5;
+        text-transform: uppercase;
+    }
+
+    .toc-summary:focus-visible {
+        outline-color: var(--title-accent);
+    }
+
+    .toc-summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .toc-summary::after {
+        content: '+';
+        font-size: 1rem;
+        letter-spacing: 0;
+        line-height: 1;
+    }
+
+    .toc-disclosure[open] .toc-summary::after {
+        content: '−';
+    }
+
+    .toc-summary-count {
+        margin-left: auto;
+        margin-right: 0.75rem;
+        letter-spacing: 0.02em;
+        text-transform: none;
+    }
+
+    .toc-disclosure > nav {
+        display: none;
+        margin-top: 1rem;
+    }
+
+    .toc-disclosure[open] > nav {
+        display: block;
     }
 
     .toc-link {
+        color: color-mix(in srgb, var(--text-color-main) 54%, transparent);
         text-decoration: none;
         border-bottom: 1px solid transparent;
         transition:
@@ -121,24 +175,43 @@ function formatChineseDate(date: Date) {
     }
 
     .toc-link:hover {
-        border-color: color-mix(in srgb, var(--text-color-main) 38%, transparent);
+        color: var(--title-accent);
+        border-color: color-mix(in srgb, var(--title-accent) 46%, transparent);
     }
 
-    @media (min-width: 1024px) {
+    @media (min-width: 64rem) {
+        .toc-summary {
+            display: none;
+        }
+
+        .toc-disclosure > nav {
+            display: block !important;
+            margin-top: 0;
+        }
+
         .toc-floating {
-            --toc-width: 12rem;
-            --toc-gap: 2.5rem;
+            --toc-width: 8rem;
+            --toc-gap: 1.5rem;
             --content-max-width: 42rem;
             position: fixed;
-            top: 6rem;
+            top: 8.25rem;
             left: max(1.5rem, calc(50vw - (var(--content-max-width) / 2) - var(--toc-gap) - var(--toc-width)));
             z-index: 10;
-            max-height: calc(100vh - 8rem);
+            width: var(--toc-width);
+            max-height: calc(100vh - 10rem);
             overflow: auto;
+            margin-bottom: 0;
+            border: 0;
+            padding-bottom: 0;
+        }
+
+        .toc-floating ol {
+            font-size: 0.6875rem;
+            line-height: 1.55;
         }
     }
 
-    @media (max-width: 1023px) {
+    @media (max-width: 63.99rem) {
         .toc-link {
             line-height: 1.55;
         }

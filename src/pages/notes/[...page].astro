@@ -1,0 +1,26 @@
+---
+/**
+ * [INPUT]: 依赖 notes 内容集合与日期排序工具，依赖 ArchiveList 与 BaseLayout 组织笔记索引
+ * [OUTPUT]: 对外提供 Notes 分类列表页，并将集合数据交给共用归档容器
+ * [POS]: pages/notes 的数据入口；负责 Notes 集合查询，不承载 Blog/Notes 共用列表的视觉结构
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
+import { type CollectionEntry, getCollection } from 'astro:content';
+import ArchiveList from '../../components/ArchiveList.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { sortItemsByDateDesc } from '../../utils/data-utils';
+
+export async function getStaticPaths() {
+    const posts = (await getCollection('notes')).sort(sortItemsByDateDesc);
+
+    return [{ params: { page: undefined }, props: { posts } }];
+}
+
+type Props = { posts: CollectionEntry<'notes'>[] };
+
+const { posts } = Astro.props;
+---
+
+<BaseLayout title="Notes" description="Short notes and working thoughts" image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }} showHeader={false}>
+    <ArchiveList posts={posts} activeSection="notes" />
+</BaseLayout>

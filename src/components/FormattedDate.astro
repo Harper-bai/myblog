@@ -1,4 +1,10 @@
 ---
+/**
+ * [INPUT]: 接收调用方提供的 Date 实例
+ * [OUTPUT]: 对外提供带 datetime 语义的英文日期节点
+ * [POS]: components 的日期展示原语；不承担时区转换或排序逻辑
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 type Props = { date: Date };
 
 const { date } = Astro.props;

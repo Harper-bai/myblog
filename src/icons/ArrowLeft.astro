@@ -1,4 +1,10 @@
 ---
+/**
+ * [INPUT]: 依赖 Astro SVG 属性与调用方传入的 class/属性
+ * [OUTPUT]: 对外提供向左箭头 SVG 图标
+ * [POS]: icons 的基础图形资源；被 Pagination 等交互组件消费
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import type { HTMLAttributes } from 'astro/types';
 
 type Props = HTMLAttributes<'svg'>;

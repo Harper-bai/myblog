@@ -1,4 +1,10 @@
 ---
+/**
+ * [INPUT]: 依赖 data/site-config 的阅读工具开关与文章 data-reading-root 标记
+ * [OUTPUT]: 对外提供文章阅读进度条及其页面事件同步行为
+ * [POS]: components 的文章阅读辅助；由文章详情页挂载，不负责回顶按钮
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import siteConfig from '../data/site-config';
 
 const readingTools = siteConfig.readingTools ?? {};

@@ -1,4 +1,10 @@
 ---
+/**
+ * [INPUT]: 依赖 data/site-config 的 hero 内容与 Button 组件
+ * [OUTPUT]: 对外提供配置驱动的首页主视觉、正文与行动入口
+ * [POS]: components 的通用 hero 渲染器；主标题强调色与首页标题共用全局主题变量
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import { marked } from 'marked';
 import siteConfig from '../data/site-config';
 import Button from './Button.astro';
@@ -9,7 +15,7 @@ const hero = siteConfig.hero;
 {
     (hero?.title || hero?.image?.src || hero?.text || (hero?.actions && hero.actions.length > 0)) && (
         <section class="w-full flex flex-col gap-8">
-            {hero.title && <h1 class="hero-title text-3xl leading-tight font-cang font-medium sm:text-5xl sm:leading-tight">{hero.title}</h1>}
+            {hero.title && <h1 class="hero-title text-3xl leading-tight font-sans font-medium sm:text-5xl sm:leading-tight">{hero.title}</h1>}
             {hero.image?.src && (
                 <figure class="hero-image-shell">
                     <img class="hero-image w-full" src={hero.image.src} loading="lazy" decoding="async" alt={hero.image.alt || ''} />
@@ -30,6 +36,7 @@ const hero = siteConfig.hero;
 
 <style>
     .hero-title {
+        color: var(--title-accent);
         letter-spacing: 0.01em;
         text-wrap: balance;
     }

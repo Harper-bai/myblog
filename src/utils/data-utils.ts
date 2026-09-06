@@ -1,5 +1,11 @@
+/**
+ * [INPUT]: 依赖 Astro Content Collections 与正文阅读时长工具
+ * [OUTPUT]: 对外提供内容排序、集合计数与博客总字数聚合函数
+ * [POS]: utils 的内容数据层；被列表、RSS 与布局消费，不反向依赖页面组件
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import { type CollectionEntry, getCollection } from 'astro:content';
-import { getEstimatedWordCount, slugify } from './common-utils';
+import { getEstimatedWordCount } from './common-utils';
 
 type ContentCollection = 'blog' | 'projects' | 'notes' | 'diary';
 
@@ -22,26 +28,4 @@ export async function getBlogTotalWordCount() {
     } catch {
         return 0;
     }
-}
-
-export function getAllTags(posts: CollectionEntry<'blog' | 'notes' | 'diary'>[]) {
-    const tags: string[] = [...new Set(posts.flatMap((post) => post.data.tags || []).filter(Boolean))];
-    return tags
-        .map((tag) => {
-            return {
-                name: tag,
-                id: slugify(tag)
-            };
-        })
-        .filter((obj, pos, arr) => {
-            return arr.map((mapObj) => mapObj.id).indexOf(obj.id) === pos;
-        });
-}
-
-export function getPostsByTag(posts: CollectionEntry<'blog' | 'notes' | 'diary'>[], tagId: string) {
-    const filteredPosts = posts.filter((post) => {
-        const postTagIds = (post.data.tags || []).map((tag) => slugify(tag));
-        return postTagIds.includes(tagId);
-    });
-    return filteredPosts;
 }

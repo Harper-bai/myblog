@@ -1,4 +1,10 @@
 ---
+/**
+ * [INPUT]: 依赖 Astro 分页对象、左右箭头图标与 IconButton
+ * [OUTPUT]: 对外提供内容集合的前后翻页控制与当前页语义
+ * [POS]: components 的分页编排器；只消费分页结果，不负责集合查询
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import ArrowLeft from '../icons/ArrowLeft.astro';
 import ArrowRight from '../icons/ArrowRight.astro';
 import IconButton from './IconButton.astro';

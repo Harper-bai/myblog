@@ -1,4 +1,10 @@
 ---
+/**
+ * [INPUT]: 依赖 Button 组件与调用方提供的空状态标题、说明和可选 CTA
+ * [OUTPUT]: 对外提供无内容页面的统一说明区域
+ * [POS]: components 的回流提示原语；不负责集合查询或页面路由
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import Button from './Button.astro';
 
 type Props = {
@@ -13,7 +19,7 @@ const { title, text, ctaHref, ctaText, class: className } = Astro.props;
 ---
 
 <section class:list={['border border-dashed border-main bg-muted/40 px-6 py-10 text-center sm:px-10', className]}>
-    <h2 class="text-2xl font-cang font-medium leading-tight sm:text-3xl">{title}</h2>
+    <h2 class="text-2xl font-sans font-medium leading-tight sm:text-3xl">{title}</h2>
     <p class="mx-auto mt-3 max-w-xl text-sm leading-relaxed sm:text-base">{text}</p>
     {ctaHref && ctaText && <Button class="mt-6" href={ctaHref}>{ctaText}</Button>}
 </section>

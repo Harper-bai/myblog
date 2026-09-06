@@ -2,8 +2,6 @@
 title: Mac上一元笔记法工具推荐
 description: 
 publishDate: 'March 20 2026'
-tags:
-  - tech
 ---
 
 使用的 Macbook 的人一定不会对 Raycast 这个软件陌生，它是“聚焦”这个软件的升级版本。两年前我第一次用上 Macbook 的时候就安装它，但是我对它的功能开发不足十分之一。我只用到了快速查找文件、快速打开软件、快速打开特定网页的几个功能。

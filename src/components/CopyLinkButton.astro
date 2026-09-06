@@ -1,4 +1,10 @@
 ---
+/**
+ * [INPUT]: 依赖 Button 组件与调用方提供的文章 URL、按钮文案
+ * [OUTPUT]: 对外提供复制当前文章链接的可访问按钮与反馈状态
+ * [POS]: components 的文章分享交互；页面事件绑定由本组件脚本负责
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import Button from './Button.astro';
 
 type Props = {

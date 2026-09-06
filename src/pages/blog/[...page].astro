@@ -1,104 +1,26 @@
 ---
+/**
+ * [INPUT]: 依赖 blog 内容集合与日期排序工具，依赖 ArchiveList 与 BaseLayout 组织文章索引
+ * [OUTPUT]: 对外提供 Blog 分类列表页，并将集合数据交给共用归档容器
+ * [POS]: pages/blog 的数据入口；负责 Blog 集合查询，不承载 Blog/Notes 共用列表的视觉结构
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import { type CollectionEntry, getCollection } from 'astro:content';
-import PostPreview from '../../components/PostPreview.astro';
+import ArchiveList from '../../components/ArchiveList.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { sortItemsByDateDesc } from '../../utils/data-utils';
 
 export async function getStaticPaths() {
     const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
-    const postsByYear = posts.reduce<Record<string, CollectionEntry<'blog'>[]>>((acc, post) => {
-        const year = String(post.data.publishDate.getFullYear());
-        if (!acc[year]) acc[year] = [];
-        acc[year].push(post);
-        return acc;
-    }, {});
 
-    return [
-        {
-            params: { page: undefined },
-            props: { postsByYear }
-        }
-    ];
+    return [{ params: { page: undefined }, props: { posts } }];
 }
 
-type Props = { postsByYear: Record<string, CollectionEntry<'blog'>[]> };
+type Props = { posts: CollectionEntry<'blog'>[] };
 
-const { postsByYear } = Astro.props;
-const yearGroups = Object.entries(postsByYear).sort(([yearA], [yearB]) => Number(yearB) - Number(yearA));
-const totalPostCount = yearGroups.reduce((sum, [, posts]) => sum + posts.length, 0);
+const { posts } = Astro.props;
 ---
 
-<BaseLayout title="全部文章" description="保持记录，无限进步" image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }} showHeader={false}>
-    <header class="mb-4 border-b border-main/20 pb-3 sm:mb-6">
-        <div class="flex flex-wrap items-end gap-x-3 gap-y-1">
-            <h1 class="text-2xl leading-tight font-cang font-medium sm:text-3xl">全部文章</h1>
-            <p class="text-sm text-main/65 sm:pb-0.5">保持记录，无限进步</p>
-            <p class="text-sm text-main/55 sm:pb-0.5">共 {totalPostCount} 篇</p>
-        </div>
-    </header>
-    {
-        yearGroups.map(([year, posts]) => (
-            <section class="mb-8 last:mb-0 sm:mb-10">
-                <div class="timeline-year mb-2 flex items-center gap-3 text-main/50">
-                    <span class="text-xs font-sans tracking-wider">{year}</span>
-                    <span class="text-xs font-sans tracking-wide">{posts.length}篇</span>
-                    <span class="h-px grow bg-main/10" />
-                </div>
-                {posts.map((post) => (
-                    <div data-reveal>
-                        <PostPreview post={post} />
-                    </div>
-                ))}
-            </section>
-        ))
-    }
+<BaseLayout title="Blog" description="Blog posts and essays" image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }} showHeader={false}>
+    <ArchiveList posts={posts} activeSection="blog" />
 </BaseLayout>
-
-<style>
-    [data-reveal] {
-        opacity: 0;
-        transform: translateY(8px);
-        transition:
-            opacity 0.42s ease,
-            transform 0.42s ease;
-    }
-
-    [data-reveal].is-visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        [data-reveal] {
-            opacity: 1;
-            transform: none;
-            transition: none;
-        }
-    }
-</style>
-
-<script>
-    (() => {
-        const revealItems = () => {
-            const items = Array.from(document.querySelectorAll('[data-reveal]'));
-            if (items.length === 0) return;
-
-            const observer = new IntersectionObserver(
-                (entries) => {
-                    entries.forEach((entry) => {
-                        if (!entry.isIntersecting) return;
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    });
-                },
-                { threshold: 0.08, rootMargin: '0px 0px -8% 0px' }
-            );
-
-            items.forEach((item) => observer.observe(item));
-        };
-
-        document.addEventListener('astro:page-load', revealItems);
-        document.addEventListener('astro:after-swap', revealItems);
-        revealItems();
-    })();
-</script>

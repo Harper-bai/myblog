@@ -1,0 +1,197 @@
+---
+/**
+ * [INPUT]: 依赖 data/home-content 的品牌标题与 Markdown 正文、site-config 的全站图片与社交链接，以及即刻官方 favicon
+ * [OUTPUT]: 对外提供中文个人首页的品牌标题、Blog/About 入口、引用文本与带品牌图标的社交链接
+ * [POS]: components 的首页编排器；保持首页克制且不重复个人身份信息，不承担详细 About 页职责
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
+import { marked } from 'marked';
+import homeContent from '../data/home-content';
+import siteConfig from '../data/site-config';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const socialLinks = siteConfig.socialLinks || [];
+const jikeIconUrl = 'https://web.okjike.com/favicon.ico';
+---
+
+<BaseLayout description={homeContent.description} image={siteConfig.image}>
+    <article class="home-prose" lang="zh-CN">
+        <header class="home-header">
+            <h1 class="home-title">{homeContent.title}</h1>
+        </header>
+        <div class="home-content" set:html={marked.parse(homeContent.content)} />
+
+        <hr class="home-divider" />
+
+        {socialLinks.length > 0 && (
+            <>
+                <p class="home-label">{homeContent.socialLabel}</p>
+                <p class="home-links home-social-links">
+                    {socialLinks.map((link) => (
+                        <a
+                            class="home-social-link"
+                            href={link.href}
+                            target={link.href.startsWith('mailto:') ? undefined : '_blank'}
+                            rel={link.href.startsWith('mailto:') ? undefined : 'noreferrer'}
+                        >
+                            {
+                                link.text.toLowerCase().includes('github') && (
+                                    <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.084-.73.084-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path>
+                                    </svg>
+                                )
+                            }
+                            {
+                                link.text.toLowerCase().includes('telegram') && (
+                                    <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path d="M21.6 3.2 2.75 10.47c-1.286.516-1.279 1.23-.235 1.55l4.84 1.51 1.86 5.72c.226.624.115.872.78.872.514 0 .74-.234 1.01-.514l2.34-2.274 4.86 3.59c.895.494 1.54.237 1.763-.83l3.18-15.01c.326-1.303-.497-1.89-1.548-1.384ZM8.095 13.19l10.95-6.91c.546-.333 1.045-.15.635.217l-8.91 8.043-.347 3.71-1.73-5.06c-.217-.63-.04-.88-.598-1.00Z"></path>
+                                    </svg>
+                                )
+                            }
+                            {
+                                link.text.toLowerCase().includes('x/') && (
+                                    <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.657l-5.214-6.817-5.966 6.817H1.68l7.73-8.835L1.254 2.25h6.826l4.713 6.231 5.451-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"></path>
+                                    </svg>
+                                )
+                            }
+                            {
+                                (link.text.toLowerCase().includes('jike') || link.text.includes('即刻')) && (
+                                    <img class="social-icon social-image-icon" src={jikeIconUrl} alt="" aria-hidden="true" />
+                                )
+                            }
+                            {
+                                link.text.toLowerCase().includes('email') && (
+                                    <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path d="M3.75 5.5h16.5A1.75 1.75 0 0 1 22 7.25v9.5a1.75 1.75 0 0 1-1.75 1.75H3.75A1.75 1.75 0 0 1 2 16.75v-9.5A1.75 1.75 0 0 1 3.75 5.5Zm.1 2.1 7.57 5.67a.96.96 0 0 0 1.16 0l7.57-5.67V7.25H3.85v.35Zm16.4 1.88-6.4 4.8a2.95 2.95 0 0 1-3.5 0l-6.4-4.8v7.27h16.3V9.48Z"></path>
+                                    </svg>
+                                )
+                            }
+                            <span>{link.text}</span>
+                        </a>
+                    ))}
+                </p>
+            </>
+        )}
+    </article>
+</BaseLayout>
+
+<style>
+    .home-prose {
+        max-width: 41rem;
+        margin: 0 auto;
+        color: color-mix(in srgb, var(--text-main) 82%, transparent);
+        font-family: 'Inter Variable', sans-serif;
+        font-size: 1rem;
+        line-height: 1.75;
+    }
+
+    .home-prose p {
+        margin: 0 0 1.25rem;
+    }
+
+    .home-header {
+        margin-bottom: 2.75rem;
+    }
+
+    .home-title {
+        margin: 0;
+        color: var(--title-accent);
+        font-family: 'Inter Variable', sans-serif;
+        font-size: clamp(2rem, 5vw, 2.75rem);
+        font-weight: 500;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+    }
+
+    .home-content :global(p) {
+        margin-bottom: 1.75rem;
+    }
+
+    .home-content :global(blockquote) {
+        margin: 1.8rem 0;
+        padding-left: 1rem;
+        border-left: 2px solid color-mix(in srgb, var(--title-accent) 72%, transparent);
+        color: color-mix(in srgb, var(--text-main) 76%, transparent);
+        font-style: italic;
+    }
+
+    .home-content :global(blockquote p) {
+        margin-bottom: 0.85rem;
+    }
+
+    .home-prose :global(a) {
+        color: var(--title-accent);
+        text-decoration: underline;
+        text-decoration-color: color-mix(in srgb, var(--title-accent) 52%, transparent);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.2em;
+        transition: text-decoration-color 180ms ease;
+    }
+
+    .home-prose :global(a:hover) {
+        color: color-mix(in srgb, var(--title-accent) 78%, var(--text-main));
+        text-decoration-color: var(--title-accent);
+    }
+
+    .home-label {
+        margin-top: 2.7rem !important;
+        margin-bottom: 0.55rem !important;
+        color: color-mix(in srgb, var(--text-main) 56%, transparent);
+        font-size: 0.88rem;
+    }
+
+    .home-divider {
+        width: 2.5rem;
+        margin: 2.4rem auto 1.8rem;
+        border: 0;
+        border-top: 1px solid color-mix(in srgb, var(--text-main) 28%, transparent);
+    }
+
+    .home-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem 1.15rem;
+    }
+
+    .home-social-links {
+        gap: 0.3rem 1.2rem;
+    }
+
+    .home-prose .home-social-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.38rem;
+        color: var(--text-main);
+        text-decoration-color: color-mix(in srgb, var(--text-main) 38%, transparent);
+    }
+
+    .home-prose .home-social-link:hover {
+        color: var(--title-accent);
+        text-decoration-color: var(--title-accent);
+    }
+
+    .social-icon {
+        width: 0.95em;
+        height: 0.95em;
+        flex: 0 0 auto;
+        fill: currentColor;
+    }
+
+    .social-image-icon {
+        border-radius: 0.22em;
+        object-fit: contain;
+    }
+
+    @media (max-width: 640px) {
+        .home-prose {
+            font-size: 0.98rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .home-prose :global(a) {
+            transition: none;
+        }
+    }
+</style>

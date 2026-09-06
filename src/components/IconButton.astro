@@ -1,4 +1,10 @@
 ---
+/**
+ * [INPUT]: 依赖 Astro HTML 属性与调用方传入的 href/class/图标内容
+ * [OUTPUT]: 对外提供统一视觉的图标链接或按钮壳
+ * [POS]: components 的紧凑交互原语；被翻页控制消费，不承载图标本身
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import type { HTMLAttributes } from 'astro/types';
 
 type AnchorProps = HTMLAttributes<'a'> & { type?: never };

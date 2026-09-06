@@ -1,4 +1,10 @@
 ---
+/**
+ * [INPUT]: 依赖 Astro HTML 属性与调用方传入的 href/class/内容
+ * [OUTPUT]: 对外提供统一视觉的链接或按钮壳，并透传原生属性
+ * [POS]: components 的基础交互原语；被表单、空状态与分享动作复用
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import type { HTMLAttributes } from 'astro/types';
 
 type AnchorProps = HTMLAttributes<'a'> & { type?: never };
@@ -8,7 +14,7 @@ type Props = ButtonProps | AnchorProps;
 
 const { href, class: className, ...rest } = Astro.props;
 const buttonClasses =
-    'inline-flex items-center justify-center px-6 py-2 font-cang leading-tight italic text-main bg-main border border-main rounded-full transition hover:bg-muted';
+    'inline-flex items-center justify-center px-6 py-2 font-sans leading-tight italic text-main bg-main border border-main rounded-full transition hover:bg-muted';
 ---
 
 {

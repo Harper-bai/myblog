@@ -1,12 +1,18 @@
 ---
+/**
+ * [INPUT]: 依赖 blog 内容集合中的 isLifeArchive 标记、文章预览组件与日期排序工具
+ * [OUTPUT]: 对外提供 /life 公开生活档案页，按年份展示指定的生活、阅读与年度文章
+ * [POS]: pages 的次级档案入口；保留个人声音，同时与首页品牌内容流隔离
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import { type CollectionEntry, getCollection } from 'astro:content';
 import PostPreview from '../../components/PostPreview.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getPostsByTag, sortItemsByDateDesc } from '../../utils/data-utils';
+import { sortItemsByDateDesc } from '../../utils/data-utils';
 
 export async function getStaticPaths() {
     const allPosts = (await getCollection('blog')).sort(sortItemsByDateDesc);
-    const posts = getPostsByTag(allPosts, 'life');
+    const posts = allPosts.filter(({ data }) => data.isLifeArchive);
     const postsByYear = posts.reduce<Record<string, CollectionEntry<'blog'>[]>>((acc, post) => {
         const year = String(post.data.publishDate.getFullYear());
         if (!acc[year]) acc[year] = [];
@@ -29,11 +35,11 @@ const yearGroups = Object.entries(postsByYear).sort(([yearA], [yearB]) => Number
 const totalPostCount = yearGroups.reduce((sum, [, posts]) => sum + posts.length, 0);
 ---
 
-<BaseLayout title="生活志" description="零散的日常" image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }} showHeader={false}>
+<BaseLayout title="生活档案" description="保留公开的生活、阅读与年度记录" image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }} showHeader={false}>
     <header class="mb-8 border-b border-main/20 pb-3 sm:mb-10">
         <div class="flex flex-wrap items-end gap-x-3 gap-y-1">
-            <h1 class="text-2xl leading-tight font-cang font-medium sm:text-3xl">生活志</h1>
-            <p class="text-sm text-main/65 sm:pb-0.5">零散的日常</p>
+            <h1 class="text-2xl leading-tight font-sans font-medium sm:text-3xl">生活档案</h1>
+            <p class="text-sm text-main/65 sm:pb-0.5">保留公开的生活、阅读与年度记录</p>
             <p class="text-sm text-main/55 sm:pb-0.5">共 {totalPostCount} 篇</p>
         </div>
     </header>

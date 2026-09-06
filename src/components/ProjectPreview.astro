@@ -1,4 +1,10 @@
 ---
+/**
+ * [INPUT]: 依赖 projects 内容条目与右箭头图标，接收可选标题层级和外部 class
+ * [OUTPUT]: 对外提供项目标题、描述与项目详情入口
+ * [POS]: components 的遗留项目列表条目；项目页面移出本站后保留为可复用模板
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import { type CollectionEntry } from 'astro:content';
 import ArrowRight from '../icons/ArrowRight.astro';
 
@@ -12,7 +18,7 @@ const TitleTag = headingLevel;
 <a class:list={['flex justify-between items-start gap-8 group', className]} href={`/projects/${project.id}/`}>
     <div class="grow">
         <TitleTag
-            class="text-xl leading-tight font-cang font-medium group-hover:underline group-hover:decoration-dashed group-hover:underline-offset-4 group-hover:decoration-1 sm:text-2xl"
+            class="text-xl leading-tight font-sans font-medium group-hover:underline group-hover:decoration-dashed group-hover:underline-offset-4 group-hover:decoration-1 sm:text-2xl"
         >
             {title}
         </TitleTag>

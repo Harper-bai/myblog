@@ -1,71 +1,132 @@
 ---
+/**
+ * [INPUT]: 依赖 blog/notes/diary 内容条目与字数、阅读时长统计工具，接收可选的标题层级、展示变体与外部 class
+ * [OUTPUT]: 对外提供带标题、日期、字数或预计阅读时长和置顶标识的文章列表入口
+ * [POS]: components 的列表条目组件，被博客与其他内容归档页复用；保持索引项轻量，不承担正文摘要
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import { type CollectionEntry } from 'astro:content';
-import { getEstimatedWordCount } from '../utils/common-utils';
+import { getEstimatedReadingMinutes, getEstimatedWordCount } from '../utils/common-utils';
 
-type Props = { post: CollectionEntry<'blog' | 'notes' | 'diary'>; class?: string; headingLevel?: 'h2' | 'h3' };
+type Props = {
+    post: CollectionEntry<'blog' | 'notes' | 'diary'>;
+    class?: string;
+    headingLevel?: 'h2' | 'h3';
+    variant?: 'default' | 'archive';
+};
 
-const { post, class: className, headingLevel = 'h2' } = Astro.props;
-const { title, publishDate, excerpt, isFeatured } = post.data;
+const { post, class: className, headingLevel = 'h2', variant = 'default' } = Astro.props;
+const { title, publishDate, isFeatured, language = 'zh' } = post.data;
 const TitleTag = headingLevel;
 const wordCount = getEstimatedWordCount(post.body);
+const readingMinutes = getEstimatedReadingMinutes(post.body);
 const compactDate = `${publishDate.getFullYear()}-${String(publishDate.getMonth() + 1).padStart(2, '0')}-${String(publishDate.getDate()).padStart(2, '0')}`;
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const archiveDate = `${monthNames[publishDate.getMonth()]} ${publishDate.getDate()}`;
+const variantClass = variant === 'archive' ? 'post-preview--archive' : '';
+const languageLabel = language === 'zh' ? '中文' : 'EN';
 ---
 
-<a class:list={['post-preview group block py-3 sm:py-4', className]} href={`/${post.collection}/${post.id}/`}>
-    <div class="grid grid-cols-[8.5rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-4">
-        <div class="pt-1 text-xs font-sans text-main/60 sm:text-sm">
-            <div class="leading-tight whitespace-nowrap">
-                <time datetime={compactDate}>{compactDate}</time>
-                <span class="post-divider-inline" aria-hidden="true"> · </span>
-                <span>{wordCount}字</span>
-                {
-                    isFeatured && (
-                        <>
-                            <span class="post-divider-inline" aria-hidden="true">
-                                {' '}
-                                ·{' '}
-                            </span>
-                            <span class="featured-mark">置顶</span>
-                        </>
-                    )
-                }
-            </div>
+<a class:list={['post-preview group block no-underline', variantClass, className]} href={`/${post.collection}/${post.id}/`}>
+    <div class="post-preview-layout flex flex-col gap-1.5 md:flex-row md:items-baseline md:justify-between md:gap-4">
+        <div class="min-w-0 flex flex-wrap items-center gap-x-2">
+            {variant === 'archive' && <span class="post-language-badge post-language-badge--desktop">{languageLabel}</span>}
+            <TitleTag class="post-preview-title text-lg leading-[1.35] font-sans font-normal sm:text-xl">{title}</TitleTag>
+            {isFeatured && <span class="featured-mark text-xs text-main/45">置顶</span>}
         </div>
-        <div class="min-w-0">
-            <TitleTag class="post-preview-title text-lg leading-tight font-cang font-medium sm:text-xl">{title}</TitleTag>
-            {excerpt && <p class="mt-1.5 text-sm leading-relaxed text-main/80">{excerpt}</p>}
+        <div class="post-preview-meta flex shrink-0 items-center gap-2 text-sm text-main/50 md:justify-end">
+            <time class="post-preview-meta-date" datetime={compactDate}>{variant === 'archive' ? archiveDate : compactDate}</time>
+            <span class="post-preview-meta-separator" aria-hidden="true">·</span>
+            <span class="post-preview-meta-detail">{variant === 'archive' ? `${readingMinutes}min` : `${wordCount}字`}</span>
+            {variant === 'archive' && <span class="post-language-badge post-language-badge--mobile">{languageLabel}</span>}
         </div>
     </div>
 </a>
 
 <style>
     .post-preview {
-        transition: background-color 0.18s ease;
+        margin: 0;
+        padding: 0.45rem 0;
     }
 
     .post-preview-title {
         transition:
-            opacity 0.18s ease,
-            text-decoration-color 0.18s ease;
+            color 0.18s ease;
     }
 
     .post-preview:hover .post-preview-title {
-        opacity: 0.88;
-        text-decoration: underline;
-        text-decoration-thickness: 1px;
-        text-underline-offset: 3px;
-    }
-
-    .post-divider-inline {
-        opacity: 0.5;
+        color: var(--title-accent);
     }
 
     .featured-mark {
         letter-spacing: 0.03em;
     }
 
+    /* Blog 与 Notes 共用参考站的“年份占位 + 标题紧跟元信息”节奏。 */
+    .post-preview--archive {
+        margin: 0.5rem 0 1.5rem;
+        padding: 0;
+        opacity: 0.6;
+    }
+
+    .post-preview--archive .post-preview-layout {
+        gap: 0.5rem;
+    }
+
+    .post-preview--archive .post-preview-title {
+        font-size: 1.125rem;
+        line-height: 1.2;
+    }
+
+    .post-preview--archive .post-preview-meta {
+        gap: 0.5rem;
+        color: var(--text-main);
+    }
+
+    .post-preview--archive .post-preview-meta-date {
+        opacity: 0.5;
+    }
+
+    .post-preview--archive .post-preview-meta-separator,
+    .post-preview--archive .post-preview-meta-detail {
+        opacity: 0.4;
+    }
+
+    .post-language-badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 0.25rem;
+        padding: 0.125rem 0.25rem;
+        color: var(--text-main);
+        background: color-mix(in srgb, var(--text-main) 9%, transparent);
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        font-weight: 400;
+        line-height: 1rem;
+    }
+
+    .post-language-badge--desktop {
+        display: none;
+    }
+
+    @media (min-width: 768px) {
+        .post-preview--archive .post-preview-layout {
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .post-language-badge--desktop {
+            display: inline-flex;
+            margin-left: -3rem;
+            margin-right: 0.5rem;
+        }
+
+        .post-language-badge--mobile {
+            display: none;
+        }
+    }
+
     @media (prefers-reduced-motion: reduce) {
-        .post-preview,
         .post-preview-title {
             transition: none;
         }

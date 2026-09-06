@@ -1,0 +1,130 @@
+---
+/**
+ * [INPUT]: 依赖 data/site-config 的 readingTools.backToTop 开关与全局主题变量
+ * [OUTPUT]: 对外提供全站右下角的可访问回到顶部按钮与平滑滚动行为
+ * [POS]: components 的全局浏览辅助；由 BaseLayout 挂载，不参与文章目录或阅读进度
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
+import siteConfig from '../data/site-config';
+
+const showBackToTop = siteConfig.readingTools?.backToTop ?? true;
+---
+
+{showBackToTop && (
+    <button
+        class="back-to-top"
+        type="button"
+        data-back-to-top
+        aria-label="Scroll to top"
+        title="Scroll to top"
+        aria-hidden="true"
+        tabindex="-1"
+    >
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 19V5m0 0-6 6m6-6 6 6" />
+        </svg>
+    </button>
+)}
+
+<script>
+    (() => {
+        if (window.__backToTopBound) return;
+
+        const updateBackToTop = () => {
+            const button = document.querySelector('[data-back-to-top]');
+            if (!(button instanceof HTMLButtonElement)) return;
+
+            const isVisible = window.scrollY > 240;
+            button.classList.toggle('is-visible', isVisible);
+            button.setAttribute('aria-hidden', String(!isVisible));
+            button.tabIndex = isVisible ? 0 : -1;
+        };
+
+        const scrollToTop = () => {
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+        };
+
+        document.addEventListener('click', (event) => {
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+
+            const button = target.closest('[data-back-to-top]');
+            if (!(button instanceof HTMLButtonElement)) return;
+
+            scrollToTop();
+        });
+
+        document.addEventListener('astro:page-load', updateBackToTop);
+        document.addEventListener('astro:after-swap', updateBackToTop);
+        window.addEventListener('scroll', updateBackToTop, { passive: true });
+        window.__backToTopBound = true;
+        updateBackToTop();
+    })();
+</script>
+
+<style>
+    .back-to-top {
+        position: fixed;
+        right: max(0.75rem, env(safe-area-inset-right));
+        bottom: max(0.75rem, env(safe-area-inset-bottom));
+        z-index: 100;
+        display: grid;
+        width: 2.5rem;
+        height: 2.5rem;
+        padding: 0;
+        place-items: center;
+        border: 0;
+        border-radius: 9999px;
+        background: transparent;
+        color: var(--text-main);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(0.25rem);
+        transition:
+            opacity 300ms ease,
+            background-color 300ms ease,
+            color 300ms ease,
+            transform 300ms ease;
+    }
+
+    .back-to-top.is-visible {
+        opacity: 0.3;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+
+    .back-to-top.is-visible:hover,
+    .back-to-top.is-visible:focus-visible {
+        background: color-mix(in srgb, var(--text-main) 10%, transparent);
+        color: var(--text-main);
+        opacity: 1;
+    }
+
+    .back-to-top:focus-visible {
+        outline: 1px solid color-mix(in srgb, var(--title-accent) 55%, transparent);
+        outline-offset: 2px;
+    }
+
+    .back-to-top svg {
+        width: 1.15rem;
+        height: 1.15rem;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.7;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .back-to-top {
+            transition: none;
+        }
+    }
+
+    @media print {
+        .back-to-top {
+            display: none;
+        }
+    }
+</style>

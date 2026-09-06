@@ -4,8 +4,6 @@ description: ""
 publishDate: 'Oct 15 2024'
 author: 'Harper'
 language: "zh"
-tags: 
-- read
 ---
 
 
@@ -61,5 +59,4 @@ tags:
 6.基于客观事实的思考和处理才能产生洞见。大部分人都在 bullshit ，在用别人的嘴说话，真正的洞见基于事实的观测和推理，这是基础学科让我感到着迷的原因。
 
 感谢你看到了这里，下次再聊～
-
 

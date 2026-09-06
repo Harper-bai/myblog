@@ -1,0 +1,161 @@
+---
+/**
+ * [INPUT]: 依赖 blog/notes 内容条目与 PostPreview，接收当前分类并按发布时间分组
+ * [OUTPUT]: 对外提供参考站式 Blog/Notes 列表容器、分类切换、年份水印与文章列表
+ * [POS]: components 的内容归档编排器；路由只负责查询集合，本组件负责列表结构、年份水印与分类导航
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
+import { type CollectionEntry } from 'astro:content';
+import PostPreview from './PostPreview.astro';
+import { sortItemsByDateDesc } from '../utils/data-utils';
+
+type ArchivePost = CollectionEntry<'blog'> | CollectionEntry<'notes'>;
+
+type Props = {
+    posts: ArchivePost[];
+    activeSection: 'blog' | 'notes';
+};
+
+const { posts, activeSection } = Astro.props;
+const postsByYear = [...posts].sort(sortItemsByDateDesc).reduce<Record<string, ArchivePost[]>>((acc, post) => {
+    const year = String(post.data.publishDate.getFullYear());
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(post);
+    return acc;
+}, {});
+const yearGroups = Object.entries(postsByYear).sort(([yearA], [yearB]) => Number(yearB) - Number(yearA));
+const activeTitle = activeSection === 'blog' ? 'Blog' : 'Notes';
+---
+
+<div class="archive-shell">
+    <header class="archive-header">
+        <h1 class="sr-only">{activeTitle}</h1>
+        <nav class="archive-tabs" aria-label="Content types">
+            <a
+                class:list={['archive-tab', { 'archive-tab-active': activeSection === 'blog' }]}
+                aria-current={activeSection === 'blog' ? 'page' : undefined}
+                href="/blog/"
+            >Blog</a>
+            <a
+                class:list={['archive-tab', { 'archive-tab-active': activeSection === 'notes' }]}
+                aria-current={activeSection === 'notes' ? 'page' : undefined}
+                href="/notes/"
+            >Notes</a>
+        </nav>
+    </header>
+
+    {
+        yearGroups.length > 0 ? (
+            <ul class="archive-list">
+                {yearGroups.map(([year, yearPosts]) => (
+                    <li class="archive-year-group">
+                        <h2 class="archive-year-heading">{year}</h2>
+                        <div class="archive-year-posts">
+                            {yearPosts.map((post) => (
+                                <div class="archive-post">
+                                    <PostPreview post={post} headingLevel="h3" variant="archive" />
+                                </div>
+                            ))}
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        ) : (
+            <p class="archive-empty">Nothing here yet.</p>
+        )
+    }
+</div>
+
+<style>
+    .archive-shell {
+        width: 100%;
+    }
+
+    .archive-header,
+    .archive-list,
+    .archive-empty {
+        width: min(100%, 41rem);
+        margin-inline: auto;
+    }
+
+    .archive-header {
+        height: 2.25rem;
+        margin-bottom: 2rem;
+        user-select: none;
+    }
+
+    .archive-tabs {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        height: 2.25rem;
+    }
+
+    .archive-tab {
+        color: var(--text-main);
+        font-family: var(--font-sans);
+        font-size: 1.875rem;
+        font-weight: 400;
+        line-height: 2.25rem;
+        text-decoration: none;
+        opacity: 0.3;
+        transition: color 180ms ease, opacity 180ms ease;
+    }
+
+    .archive-tab:hover,
+    .archive-tab-active {
+        color: var(--title-accent);
+        opacity: 1;
+    }
+
+    .archive-list {
+        margin-top: 0;
+        margin-bottom: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .archive-year-group {
+        position: relative;
+        margin: 0;
+        padding-top: 5rem;
+    }
+
+    .archive-year-heading {
+        position: absolute;
+        top: -2rem;
+        left: -3rem;
+        margin: 0;
+        color: transparent;
+        font-family: var(--font-sans);
+        font-size: 8em;
+        font-weight: 700;
+        letter-spacing: normal;
+        line-height: 1.75;
+        opacity: 0.1;
+        pointer-events: none;
+        user-select: none;
+        -webkit-text-stroke: 2px color-mix(in srgb, var(--text-main) 70%, transparent);
+    }
+
+    .archive-year-posts {
+        position: relative;
+        z-index: 1;
+    }
+
+    .archive-empty {
+        margin-top: 0;
+        margin-bottom: 0;
+        color: var(--text-main);
+        font-family: var(--font-sans);
+        font-size: 0.875rem;
+        line-height: 1.75rem;
+        opacity: 0.5;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .archive-tab {
+            transition: none;
+        }
+    }
+</style>

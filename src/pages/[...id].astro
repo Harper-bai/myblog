@@ -1,4 +1,10 @@
 ---
+/**
+ * [INPUT]: 依赖 pages 内容集合、Markdown 渲染能力与 BaseLayout，按页面 id 识别 About 专属视觉壳
+ * [OUTPUT]: 对外提供 About、Terms 等静态内容页路由与渲染结果
+ * [POS]: pages 根级 catch-all 路由；负责内容页数据装配，不把 About 文案复制到页面代码
+ * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
+ */
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
@@ -17,14 +23,15 @@ type Props = { page: CollectionEntry<'pages'> };
 const { page } = Astro.props;
 const { title, seo } = page.data;
 const { Content } = await render(page);
+const isAboutPage = page.id === 'about';
 ---
 
 <BaseLayout title={seo?.title ?? title} description={seo?.description} image={seo?.image} showHeader={false}>
-    <article class="mb-16 sm:mb-24">
-        <header class="mb-8 border-b border-main/10 pb-4 sm:mb-9 sm:pb-5">
-            <h1 class="text-3xl leading-tight font-cang font-medium sm:text-4xl sm:leading-tight">{title}</h1>
+    <article class:list={['content-page mb-16 sm:mb-24', { 'about-page': isAboutPage }]}>
+        <header class="content-page-header mb-8 border-b border-main/10 pb-4 sm:mb-9 sm:pb-5">
+            <h1 class="content-page-title text-3xl leading-tight font-sans font-medium sm:text-4xl sm:leading-tight">{title}</h1>
         </header>
-        <div class="max-w-none prose sm:prose-lg">
+        <div class="content-page-body max-w-none prose sm:prose-lg">
             <Content />
         </div>
     </article>
