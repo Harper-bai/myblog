@@ -1,7 +1,7 @@
 ---
 /**
  * [INPUT]: 依赖 site-config 的导航项与 GitHub 社交链接，依赖 NavLink 的当前页判断，依赖 ThemeToggle 的主题切换
- * [OUTPUT]: 对外提供左侧站点入口、右侧主导航、Projects 占位项、GitHub 图标与主题切换的全站导航栏
+ * [OUTPUT]: 对外提供左侧站点入口、右侧主导航、GitHub 图标与主题切换的全站导航栏
  * [POS]: components 的全站导航编排器；桌面端保持宽幅留白，移动端收束为可展开菜单
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -16,7 +16,7 @@ const githubLink = siteConfig.socialLinks?.find((link) => link.text.toLowerCase(
 <nav class="site-nav">
     <div class="site-nav-inner">
         <a href="/" class="nav-avatar z-30 relative" aria-label="返回首页">
-            <img src="/avatar.png" alt="Harper Bai" width="48" height="48" decoding="async" />
+            <img src="/avatar.webp" alt="Harper Bai" width="48" height="48" decoding="async" />
         </a>
 
         <div class="site-nav-right">

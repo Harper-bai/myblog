@@ -1,7 +1,7 @@
 ---
 /**
  * [INPUT]: 依赖站点配置、当前页面 props 与全局样式
- * [OUTPUT]: 对外提供页面标题、描述、canonical、Feed 与社交分享元数据
+ * [OUTPUT]: 对外提供页面标题、描述、canonical、favicon、Feed 与社交分享元数据
  * [POS]: components 的 HTML head 适配器；被 BaseLayout 消费，不承载页面正文
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -53,7 +53,7 @@ function formatCanonicalURL(url: string | URL) {
 
 -->
 <!-- Low Priority Global Metadata -->
-<link rel="icon" type="image/png" href="/avatar.png" sizes="256x256" />
+<link rel="icon" type="image/webp" href="/avatar.webp" sizes="256x256" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="RSS" />
 
