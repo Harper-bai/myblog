@@ -67,10 +67,6 @@ const siteConfig: SiteConfig = {
         //    text: 'Home',
         //    href: '/'
         //},
-        //{
-        //    text: 'Projects',
-        //    href: '/projects'
-        //},
         {
             text: 'Blog',
             href: '/blog'
@@ -80,21 +76,12 @@ const siteConfig: SiteConfig = {
             href: '/media'
         },
         {
-            text: 'Projects',
-            href: '/projects',
-            disabled: true
-        },
-        {
             text: 'About',
             href: '/about'
         }
         //{
         //    text: 'Notes',
         //    href: '/notes'
-        //},
-        //{
-        //    text: 'Diary',
-        //    href: '/diary'
         //},
     ],
     footerNavLinks: [

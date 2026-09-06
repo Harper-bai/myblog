@@ -9,7 +9,7 @@ content/pages/: Astro 静态内容集合；`about.md` 按个人档案信息架�
 data/: 站点身份、导航与全局设置，以及中文首页 Markdown 文案源。
 icons/: 跨组件复用的 SVG 图标资源；不承载页面级交互。
 layouts/: 全站 HTML、头部元数据与公共布局。
-pages/: 路由入口；`/` 提供中文个人主页且只引向 Blog 与 About；`/blog` 与 `/notes` 共用参考站式年份列表壳，分别消费 Blog 与 Notes 集合；`/about` 与 `/terms` 复用内容页路由壳，About 额外对齐 Blog 的窄列与轻排版；`/media` 提供 Media Consumption 记录页；项目展示已移出本站，Projects 仅保留为导航占位，`/life` 仅展示带 `isLifeArchive` 标记的公开生活档案。
+pages/: 路由入口；`/` 提供中文个人主页且只引向 Blog 与 About；`/blog` 与 `/notes` 共用参考站式年份列表壳，分别消费 Blog 与 Notes 集合；`/about` 与 `/terms` 复用内容页路由壳，About 额外对齐 Blog 的窄列与轻排版；`/media` 提供 Media Consumption 记录页；项目展示已移出本站，项目入口暂不公开，`/life` 仅展示带 `isLifeArchive` 标记的公开生活档案。
 styles/: 全局主题、字体与排版样式。
 utils/: 内容排序、字数统计与预计阅读时长的通用工具函数。
 

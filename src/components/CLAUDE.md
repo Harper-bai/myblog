@@ -14,7 +14,7 @@ Hero.astro: 将站点配置中的 hero 内容转换为主视觉、正文与行�
 HomePage.astro: 编排 data/home-content 的品牌标题、中文 Markdown 正文、Blog/About 入口与默认克制的社交入口，复用 BaseLayout 形成不重复身份信息的简版首页。
 IconButton.astro: 提供带图标场景的链接/按钮视觉壳，复用统一边框与主题状态。
 MediaPage.astro: 编排 Media Consumption 的分类切换与双列媒体记录表，消费 data/media-content 的结构化记录。
-Nav.astro: 渲染左侧头像入口、右侧主导航、Projects 占位项、GitHub 图标和主题切换，协调 NavLink 与 ThemeToggle 的页面级交互，并提供宽幅桌面导航与移动端菜单。
+Nav.astro: 渲染左侧头像入口、右侧主导航、GitHub 图标和主题切换，协调 NavLink 与 ThemeToggle 的页面级交互，并提供宽幅桌面导航与移动端菜单。
 NavLink.astro: 根据当前 URL 注入克莱因蓝活动状态与 aria-current 语义，保持导航项的路由判断单一化。
 ArchiveList.astro: 编排 Blog/Notes 共用的分类导航、年份水印与文章列表，路由只提供内容集合数据。
 Pagination.astro: 渲染内容集合的前后翻页控制，消费 Astro 分页对象并复用 IconButton。

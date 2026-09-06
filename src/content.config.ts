@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 Astro Content Collections 的 glob loader、文档文件排除规则与 Zod schema 能力
- * [OUTPUT]: 对外提供 blog、pages、projects、notes、diary 五类内容集合契约
+ * [OUTPUT]: 对外提供 blog、pages、projects、notes 四类内容集合契约
  * [POS]: src 的内容边界定义；用 isLifeArchive 区分公开生活档案与首页品牌内容，不改变文章路径
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
@@ -46,19 +46,6 @@ const notes = defineCollection({
     })
 });
 
-const diary = defineCollection({
-    loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/diary' }),
-    schema: z.object({
-        title: z.string(),
-        excerpt: z.string().optional(),
-        publishDate: z.coerce.date(),
-        updatedDate: z.coerce.date().optional(),
-        language: z.enum(['zh', 'en']).optional(),
-        isFeatured: z.boolean().default(false),
-        seo: seoSchema.optional()
-    })
-});
-
 const pages = defineCollection({
     loader: glob({ pattern: ['**/*.{md,mdx}', '!**/CLAUDE.md'], base: './src/content/pages' }),
     schema: z.object({
@@ -78,4 +65,4 @@ const projects = defineCollection({
     })
 });
 
-export const collections = { blog, pages, projects, notes, diary };
+export const collections = { blog, pages, projects, notes };

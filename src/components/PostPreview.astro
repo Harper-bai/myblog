@@ -1,6 +1,6 @@
 ---
 /**
- * [INPUT]: 依赖 blog/notes/diary 内容条目与字数、阅读时长统计工具，接收可选的标题层级、展示变体与外部 class
+ * [INPUT]: 依赖 blog/notes 内容条目与字数、阅读时长统计工具，接收可选的标题层级、展示变体与外部 class
  * [OUTPUT]: 对外提供带标题、日期、字数或预计阅读时长和置顶标识的文章列表入口
  * [POS]: components 的列表条目组件，被博客与其他内容归档页复用；保持索引项轻量，不承担正文摘要
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -9,7 +9,7 @@ import { type CollectionEntry } from 'astro:content';
 import { getEstimatedReadingMinutes, getEstimatedWordCount } from '../utils/common-utils';
 
 type Props = {
-    post: CollectionEntry<'blog' | 'notes' | 'diary'>;
+    post: CollectionEntry<'blog' | 'notes'>;
     class?: string;
     headingLevel?: 'h2' | 'h3';
     variant?: 'default' | 'archive';

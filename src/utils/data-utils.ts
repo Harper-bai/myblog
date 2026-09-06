@@ -7,7 +7,7 @@
 import { type CollectionEntry, getCollection } from 'astro:content';
 import { getEstimatedWordCount } from './common-utils';
 
-type ContentCollection = 'blog' | 'projects' | 'notes' | 'diary';
+type ContentCollection = 'blog' | 'projects' | 'notes';
 
 export function sortItemsByDateDesc(itemA: CollectionEntry<ContentCollection>, itemB: CollectionEntry<ContentCollection>) {
     return new Date(itemB.data.publishDate).getTime() - new Date(itemA.data.publishDate).getTime();
