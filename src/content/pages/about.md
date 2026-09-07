@@ -3,7 +3,7 @@
 # [OUTPUT]: 对外提供按个人档案信息架构组织的 About 页面内容
 # [POS]: content/pages 的详细个人背景页；与首页简版介绍分工，不承载文章列表
 # [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
-title: 关于 Harper
+title: 关于 Harper‘s Blog
 seo:
   title: About Harper
   description: Harper Bai 的个人档案：法律学习背景、青少年数理化教学、AI 咨询与分享，以及海外工具站与内容项目。
