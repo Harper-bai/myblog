@@ -20,7 +20,7 @@ export type MediaCategory = {
 const mediaContent = {
     title: 'Media Consumption',
     description: 'Books, films, anime, series, and documentaries I have enjoyed.',
-    note: 'These are records of things I have read or watched. Not exhaustive, and not necessarily recommendations.',
+    note: 'Personal records, not recommendations.',
     categories: [
         {
             id: 'book',

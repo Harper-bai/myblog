@@ -16,7 +16,15 @@ const githubLink = siteConfig.socialLinks?.find((link) => link.text.toLowerCase(
 <nav class="site-nav">
     <div class="site-nav-inner">
         <a href="/" class="nav-avatar z-30 relative" aria-label="返回首页">
-            <img src="/avatar.webp" alt="Harper Bai" width="48" height="48" decoding="async" />
+            <img
+                src="/avatar.webp"
+                srcset="/avatar-nav.webp 96w, /avatar.webp 256w"
+                sizes="48px"
+                alt="Harper Bai"
+                width="48"
+                height="48"
+                decoding="async"
+            />
         </a>
 
         <div class="site-nav-right">
@@ -189,7 +197,12 @@ const githubLink = siteConfig.socialLinks?.find((link) => link.text.toLowerCase(
     @media (max-width: 767px) {
         .menu {
             @apply invisible opacity-0;
-            width: calc(100% + 1rem);
+            width: min(16rem, calc(100vw - 2rem));
+            max-width: calc(100vw - 2rem);
+            white-space: nowrap;
+        }
+        .menu li {
+            white-space: nowrap;
         }
         .menu.is-visible {
             @apply visible opacity-100;

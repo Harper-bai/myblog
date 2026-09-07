@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://harp83.us.kg/sitemap-index.xml

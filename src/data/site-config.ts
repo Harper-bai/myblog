@@ -54,7 +54,7 @@ export type SiteConfig = {
 
 const siteConfig: SiteConfig = {
     website: 'https://harp83.us.kg',
-    title: 'Harp83',
+    title: 'HarperBai',
     // subtitle: 'A Thinker, Writer, and Learner',
     description: "Harper Bai's personal website about SEO/GEO, content systems, and AI-native workflows.",
     // image: {

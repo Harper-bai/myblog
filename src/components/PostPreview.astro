@@ -12,7 +12,7 @@ type Props = {
     post: CollectionEntry<'blog' | 'notes'>;
     class?: string;
     headingLevel?: 'h2' | 'h3';
-    variant?: 'default' | 'archive';
+    variant?: 'default' | 'archive' | 'related';
 };
 
 const { post, class: className, headingLevel = 'h2', variant = 'default' } = Astro.props;
@@ -23,8 +23,9 @@ const readingMinutes = getEstimatedReadingMinutes(post.body);
 const compactDate = `${publishDate.getFullYear()}-${String(publishDate.getMonth() + 1).padStart(2, '0')}-${String(publishDate.getDate()).padStart(2, '0')}`;
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const archiveDate = `${monthNames[publishDate.getMonth()]} ${publishDate.getDate()}`;
-const variantClass = variant === 'archive' ? 'post-preview--archive' : '';
+const variantClass = variant === 'archive' ? 'post-preview--archive' : variant === 'related' ? 'post-preview--related' : '';
 const languageLabel = language === 'zh' ? '中文' : 'EN';
+const usesReadingTime = variant === 'archive' || variant === 'related';
 ---
 
 <a class:list={['post-preview group block no-underline', variantClass, className]} href={`/${post.collection}/${post.id}/`}>
@@ -32,12 +33,12 @@ const languageLabel = language === 'zh' ? '中文' : 'EN';
         <div class="min-w-0 flex flex-wrap items-center gap-x-2">
             {variant === 'archive' && <span class="post-language-badge post-language-badge--desktop">{languageLabel}</span>}
             <TitleTag class="post-preview-title text-lg leading-[1.35] font-sans font-normal sm:text-xl">{title}</TitleTag>
-            {isFeatured && <span class="featured-mark text-xs text-main/45">置顶</span>}
+            {isFeatured && <span class="featured-mark text-xs text-main/55">置顶</span>}
         </div>
         <div class="post-preview-meta flex shrink-0 items-center gap-2 text-sm text-main/50 md:justify-end">
-            <time class="post-preview-meta-date" datetime={compactDate}>{variant === 'archive' ? archiveDate : compactDate}</time>
+            <time class="post-preview-meta-date" datetime={compactDate}>{usesReadingTime ? archiveDate : compactDate}</time>
             <span class="post-preview-meta-separator" aria-hidden="true">·</span>
-            <span class="post-preview-meta-detail">{variant === 'archive' ? `${readingMinutes}min` : `${wordCount}字`}</span>
+            <span class="post-preview-meta-detail">{usesReadingTime ? `${readingMinutes}min` : `${wordCount}字`}</span>
             {variant === 'archive' && <span class="post-language-badge post-language-badge--mobile">{languageLabel}</span>}
         </div>
     </div>
@@ -66,7 +67,6 @@ const languageLabel = language === 'zh' ? '中文' : 'EN';
     .post-preview--archive {
         margin: 0.5rem 0 1.5rem;
         padding: 0;
-        opacity: 0.6;
     }
 
     .post-preview--archive .post-preview-layout {
@@ -76,6 +76,7 @@ const languageLabel = language === 'zh' ? '中文' : 'EN';
     .post-preview--archive .post-preview-title {
         font-size: 1.125rem;
         line-height: 1.2;
+        color: color-mix(in srgb, var(--text-main) 86%, transparent);
     }
 
     .post-preview--archive .post-preview-meta {
@@ -84,12 +85,18 @@ const languageLabel = language === 'zh' ? '中文' : 'EN';
     }
 
     .post-preview--archive .post-preview-meta-date {
-        opacity: 0.5;
+        color: color-mix(in srgb, var(--text-main) 72%, transparent);
     }
 
     .post-preview--archive .post-preview-meta-separator,
     .post-preview--archive .post-preview-meta-detail {
-        opacity: 0.4;
+        color: color-mix(in srgb, var(--text-main) 64%, transparent);
+    }
+
+    .post-preview--archive:hover .post-preview-meta-date,
+    .post-preview--archive:hover .post-preview-meta-separator,
+    .post-preview--archive:hover .post-preview-meta-detail {
+        color: var(--text-main);
     }
 
     .post-language-badge {

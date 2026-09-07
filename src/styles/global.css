@@ -26,6 +26,7 @@
 }
 html.dark {
     --text-main: #f2f1ec;
+    --title-accent: #6284E8;
     --bg-main: #050505;
     --bg-muted: #111111;
     --border-main: #f2f1ec;

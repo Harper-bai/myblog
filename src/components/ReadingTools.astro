@@ -16,7 +16,7 @@ const showProgress = readingTools.progressBar ?? true;
         <>
             {showProgress && (
                 <div class="pointer-events-none fixed inset-x-0 top-0 z-40 h-1.5 bg-transparent" aria-hidden="true">
-                    <span data-reading-progress class="block h-full w-0 bg-main transition-[width] duration-100"></span>
+                    <span data-reading-progress class="block h-full w-0 bg-[var(--title-accent)] transition-[width] duration-100"></span>
                 </div>
             )}
         </>

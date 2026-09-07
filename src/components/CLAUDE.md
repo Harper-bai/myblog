@@ -3,6 +3,8 @@
 
 成员清单
 BaseHead.astro: 输出全站 HTML head 与 canonical/Feed 元数据，消费站点配置与页面 props。
+ArticleToc.astro: 将文章 headings 构造成固定桌面目录，提供可访问菜单开关与 hover/focus 显示行为；移动端隐藏。
+ArticleTocList.astro: 递归渲染 ArticleToc 的真实 heading 层级为嵌套 `ul/li` 锚点，不承担开关状态。
 BackToTop.astro: 提供全站右下角的低存在感回顶按钮，消费 `readingTools.backToTop` 开关并复用全局主题变量。
 Button.astro: 提供统一的链接/按钮视觉壳，隔离交互入口的基础样式与属性透传。
 CopyLinkButton.astro: 提供文章链接复制动作，复用 Button 并由页面级事件绑定保持跨路由可用。
@@ -18,7 +20,7 @@ Nav.astro: 渲染左侧头像入口、右侧主导航、GitHub 图标和主题�
 NavLink.astro: 根据当前 URL 注入克莱因蓝活动状态与 aria-current 语义，保持导航项的路由判断单一化。
 ArchiveList.astro: 编排 Blog/Notes 共用的分类导航、年份水印与文章列表，路由只提供内容集合数据。
 Pagination.astro: 渲染内容集合的前后翻页控制，消费 Astro 分页对象并复用 IconButton。
-PostPreview.astro: 渲染轻量文章索引项的标题、日期、字数或预计阅读时长与置顶标识，消费内容集合条目并提供文章入口；标题层级与 `default`/`archive` 展示变体由调用方传入。
+PostPreview.astro: 渲染轻量文章索引项的标题、日期、字数或预计阅读时长与置顶标识，消费内容集合条目并提供文章入口；标题层级与 `default`/`archive`/`related` 展示变体由调用方传入。
 ReadingTools.astro: 输出文章阅读进度，基于页面事件维护带 `data-reading-root` 的文章阅读状态；全站回顶由 BackToTop 承担。
 Subscribe.astro: 根据站点配置输出订阅表单，未配置 formUrl 时不产生页面节点。
 ThemeToggle.astro: 提供低存在感对比度图标的明暗主题切换按钮，具体主题状态由 BaseLayout 统一维护。

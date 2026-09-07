@@ -115,48 +115,50 @@ const { categories } = mediaContent;
 <style>
     .media-page {
         width: min(100%, 41rem);
-        margin: 0 auto 4rem;
+        margin: 0 auto 2.5rem;
         color: var(--text-main);
         font-family: var(--font-sans);
     }
 
     .media-header {
-        margin-bottom: 1.55rem;
+        margin-bottom: 2rem;
     }
 
     .media-header h1 {
         margin: 0;
+        color: var(--title-accent);
         font-family: var(--font-sans);
-        font-size: 2.25rem;
-        font-weight: 500;
-        letter-spacing: -0.025em;
-        line-height: 1.15;
+        font-size: 1.875rem;
+        font-weight: 400;
+        line-height: 2.25rem;
     }
 
     .media-tabs {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: 0.95rem;
-        margin-bottom: 2rem;
+        gap: 0.75rem;
+        margin-bottom: 1.75rem;
     }
 
     .media-tab {
         display: inline-flex;
         align-items: center;
-        min-height: 1.75rem;
-        padding: 0.18rem 0.48rem;
+        min-height: 1.5rem;
+        border: 1px solid transparent;
+        padding: 0.12rem 0.55rem;
         color: var(--text-main);
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        font-size: 0.9rem;
-        font-weight: 600;
-        line-height: 1.4;
+        font-family: var(--font-sans);
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.5rem;
         text-decoration: none;
-        opacity: 0.66;
+        opacity: 0.72;
         transition:
-            background-color 180ms ease,
             color 180ms ease,
-            opacity 180ms ease;
+            opacity 180ms ease,
+            border-color 180ms ease,
+            background-color 180ms ease;
     }
 
     .media-tab:hover {
@@ -164,10 +166,16 @@ const { categories } = mediaContent;
         opacity: 1;
     }
 
+    .media-tab:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--title-accent) 70%, transparent);
+        outline-offset: 2px;
+    }
+
     .media-tab-active,
     .media-tab-active:hover {
-        background: var(--text-main);
-        color: var(--bg-main);
+        color: #fff;
+        border-color: var(--title-accent);
+        background-color: var(--title-accent);
         opacity: 1;
     }
 
@@ -179,9 +187,15 @@ const { categories } = mediaContent;
     }
 
     .media-table td {
-        padding: 0.62rem 0;
-        border-bottom: 1px solid color-mix(in srgb, var(--text-main) 10%, transparent);
+        padding: 0.7rem 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--text-main) 14%, transparent);
         vertical-align: top;
+        transition: background-color 180ms ease;
+    }
+
+    .media-table tr:hover td,
+    .media-table tr:focus-within td {
+        background: color-mix(in srgb, var(--bg-muted) 72%, transparent);
     }
 
     .media-table td:first-child {
@@ -190,29 +204,29 @@ const { categories } = mediaContent;
     }
 
     .media-table td + td {
-        color: color-mix(in srgb, var(--text-main) 74%, transparent);
+        color: color-mix(in srgb, var(--text-main) 70%, transparent);
     }
 
     .media-empty,
     .media-note {
         margin: 0;
-        color: color-mix(in srgb, var(--text-main) 55%, transparent);
-        font-size: 0.8rem;
-        line-height: 1.7;
+        color: color-mix(in srgb, var(--text-main) 52%, transparent);
+        font-size: 0.72rem;
+        line-height: 1.6;
     }
 
     .media-note {
-        margin-top: 1.7rem;
+        margin-top: 1.35rem;
     }
 
     @media (max-width: 640px) {
-        .media-header h1 {
-            font-size: 2rem;
+        .media-page {
+            margin-bottom: 1.5rem;
         }
 
         .media-tabs {
             gap: 0.65rem;
-            margin-bottom: 1.6rem;
+            margin-bottom: 1.5rem;
         }
 
         .media-table {
@@ -221,7 +235,8 @@ const { categories } = mediaContent;
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .media-tab {
+        .media-tab,
+        .media-table td {
             transition: none;
         }
     }
