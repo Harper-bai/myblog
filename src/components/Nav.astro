@@ -288,8 +288,6 @@ const githubLink = siteConfig.socialLinks?.find((link) => link.text.toLowerCase(
                 if (event.key === 'Escape') syncMenuState();
             });
 
-            document.addEventListener('astro:after-swap', syncMenuState);
-            document.addEventListener('astro:page-load', syncMenuState);
             window.__navMenuBound = true;
         } else {
             syncMenuState();

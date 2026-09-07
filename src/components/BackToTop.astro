@@ -55,8 +55,6 @@ const showBackToTop = siteConfig.readingTools?.backToTop ?? true;
             scrollToTop();
         });
 
-        document.addEventListener('astro:page-load', updateBackToTop);
-        document.addEventListener('astro:after-swap', updateBackToTop);
         window.addEventListener('scroll', updateBackToTop, { passive: true });
         window.__backToTopBound = true;
         updateBackToTop();

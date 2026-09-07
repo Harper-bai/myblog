@@ -5,7 +5,6 @@
  * [POS]: layouts 的公共页面壳；所有路由通过它获得统一布局与浏览辅助，不承载页面正文
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  */
-import { ClientRouter } from 'astro:transitions';
 import BaseHead, { type Props as HeadProps } from '../components/BaseHead.astro';
 import BackToTop from '../components/BackToTop.astro';
 import Footer from '../components/Footer.astro';
@@ -71,15 +70,12 @@ const { showHeader = true, ...head } = Astro.props;
                         if (!getStoredTheme()) syncTheme();
                     });
 
-                    document.addEventListener('astro:after-swap', syncTheme);
-                    document.addEventListener('astro:page-load', syncTheme);
                     window.__themeBound = true;
                 }
 
                 syncTheme();
             })();
         </script>
-        <ClientRouter />
     </head>
     <body class="bg-main text-main">
         <div class="flex flex-col min-h-screen px-4 md:px-6">

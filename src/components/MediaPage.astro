@@ -105,8 +105,6 @@ const { categories } = mediaContent;
 
         if (!window.__mediaTabsBound) {
             document.addEventListener('click', selectMediaType);
-            document.addEventListener('astro:page-load', syncMediaType);
-            document.addEventListener('astro:after-swap', syncMediaType);
             window.__mediaTabsBound = true;
         }
 

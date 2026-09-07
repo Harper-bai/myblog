@@ -104,8 +104,6 @@ const totalPostCount = yearGroups.reduce((sum, [, posts]) => sum + posts.length,
             items.forEach((item) => observer.observe(item));
         };
 
-        document.addEventListener('astro:page-load', revealItems);
-        document.addEventListener('astro:after-swap', revealItems);
         revealItems();
     })();
 </script>

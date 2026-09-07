@@ -108,7 +108,6 @@ function formatChineseDate(date: Date) {
 
     if (!window.__tocResponsiveBound) {
         window.addEventListener('resize', syncTocDisclosure);
-        document.addEventListener('astro:page-load', syncTocDisclosure);
         window.__tocResponsiveBound = true;
     }
 

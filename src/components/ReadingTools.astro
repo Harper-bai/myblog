@@ -44,8 +44,6 @@ const showProgress = readingTools.progressBar ?? true;
             if (progressBar) progressBar.style.width = `${ratio}%`;
         };
 
-        document.addEventListener('astro:page-load', updateReadingState);
-        document.addEventListener('astro:after-swap', updateReadingState);
         window.addEventListener('scroll', updateReadingState, { passive: true });
         window.addEventListener('resize', updateReadingState);
         window.__readingToolsBound = true;
