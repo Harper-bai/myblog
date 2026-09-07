@@ -50,7 +50,6 @@ export type SiteConfig = {
         backToTop?: boolean;
     };
     postsPerPage?: number;
-    projectsPerPage?: number;
 };
 
 const siteConfig: SiteConfig = {
@@ -69,15 +68,15 @@ const siteConfig: SiteConfig = {
         //},
         {
             text: 'Blog',
-            href: '/blog'
+            href: '/blog/'
         },
         {
             text: 'Media',
-            href: '/media'
+            href: '/media/'
         },
         {
             text: 'About',
-            href: '/about'
+            href: '/about/'
         }
         //{
         //    text: 'Notes',
@@ -119,11 +118,11 @@ const siteConfig: SiteConfig = {
         actions: [
             {
                 text: 'Blog',
-                href: '/blog'
+                href: '/blog/'
             },
             {
                 text: 'About',
-                href: '/about'
+                href: '/about/'
             }
         ]
     },
@@ -136,8 +135,7 @@ const siteConfig: SiteConfig = {
         progressBar: true,
         backToTop: true
     },
-    postsPerPage: 8,
-    projectsPerPage: 8
+    postsPerPage: 8
 };
 
 export default siteConfig;

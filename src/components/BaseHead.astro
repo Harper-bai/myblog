@@ -13,10 +13,11 @@ export type Props = {
     description?: string;
     image?: { src: string; alt?: string };
     pageType?: 'website' | 'article';
+    exactTitle?: boolean;
 };
 
-const { description = '', image = siteConfig.image, pageType = 'website' } = Astro.props;
-const title = [Astro.props.title, siteConfig.title].filter(Boolean).join(' | ');
+const { description = '', image = siteConfig.image, pageType = 'website', exactTitle = false } = Astro.props;
+const title = exactTitle ? Astro.props.title ?? siteConfig.title : [Astro.props.title, siteConfig.title].filter(Boolean).join(' | ');
 const resolvedImage = image?.src
     ? {
           src: new URL(image.src, Astro.site).toString(),
@@ -70,9 +71,9 @@ function formatCanonicalURL(url: string | URL) {
 {resolvedImage?.alt && <meta property="og:image:alt" content={resolvedImage.alt} />}
 
 <!-- X/Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={formatCanonicalURL(canonicalURL)} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
-{resolvedImage?.src && <meta property="twitter:image" content={resolvedImage.src} />}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={formatCanonicalURL(canonicalURL)} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{resolvedImage?.src && <meta name="twitter:image" content={resolvedImage.src} />}
 {resolvedImage?.alt && <meta name="twitter:image:alt" content={resolvedImage?.alt} />}

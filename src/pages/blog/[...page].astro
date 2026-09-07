@@ -21,6 +21,6 @@ type Props = { posts: CollectionEntry<'blog'>[] };
 const { posts } = Astro.props;
 ---
 
-<BaseLayout title="Blog" description="Blog posts and essays" image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }} showHeader={false}>
+<BaseLayout title="Blog" description="Blog posts and essays" image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }} lang="zh-CN" showHeader={false}>
     <ArchiveList posts={posts} activeSection="blog" />
 </BaseLayout>

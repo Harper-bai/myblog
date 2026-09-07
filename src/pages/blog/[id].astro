@@ -10,7 +10,7 @@ import PostPreview from '../../components/PostPreview.astro';
 import ReadingTools from '../../components/ReadingTools.astro';
 import Subscribe from '../../components/Subscribe.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getEstimatedWordCount } from '../../utils/common-utils';
+import { getEstimatedWordCount, getMetaDescription } from '../../utils/common-utils';
 import { sortItemsByDateDesc } from '../../utils/data-utils';
 
 export async function getStaticPaths() {
@@ -29,7 +29,7 @@ export async function getStaticPaths() {
 type Props = { post: CollectionEntry<'blog'>; prevPost: CollectionEntry<'blog'>; nextPost: CollectionEntry<'blog'> };
 
 const { post, prevPost, nextPost } = Astro.props;
-const { title, publishDate, excerpt, seo } = post.data;
+const { title, publishDate, excerpt, language, seo } = post.data;
 const { Content, headings } = await render(post);
 const wordCount = getEstimatedWordCount(post.body);
 
@@ -39,9 +39,12 @@ function formatChineseDate(date: Date) {
     const day = String(date.getDate());
     return `${year}年${month}月${day}日`;
 }
+
+const fallbackDescription = getMetaDescription(post.body, title);
+const description = [seo?.description, excerpt, fallbackDescription].map((value) => value?.trim()).find(Boolean) ?? title;
 ---
 
-<BaseLayout title={seo?.title ?? title} description={seo?.description ?? excerpt} image={seo?.image} pageType="article" showHeader={false}>
+<BaseLayout title={seo?.title ?? title} description={description} image={seo?.image} pageType="article" lang={language === 'en' ? 'en' : 'zh-CN'} showHeader={false}>
     <article class="mb-16 sm:mb-20" data-reading-root>
         <header class="article-header mb-10 sm:mb-12">
             <h1 class="text-3xl leading-tight font-sans font-semibold sm:text-4xl sm:leading-tight">{title}</h1>

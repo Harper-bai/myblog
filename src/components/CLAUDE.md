@@ -19,7 +19,6 @@ NavLink.astro: 根据当前 URL 注入克莱因蓝活动状态与 aria-current �
 ArchiveList.astro: 编排 Blog/Notes 共用的分类导航、年份水印与文章列表，路由只提供内容集合数据。
 Pagination.astro: 渲染内容集合的前后翻页控制，消费 Astro 分页对象并复用 IconButton。
 PostPreview.astro: 渲染轻量文章索引项的标题、日期、字数或预计阅读时长与置顶标识，消费内容集合条目并提供文章入口；标题层级与 `default`/`archive` 展示变体由调用方传入。
-ProjectPreview.astro: 渲染项目标题、描述与项目入口，消费 projects 内容集合条目。
 ReadingTools.astro: 输出文章阅读进度，基于页面事件维护带 `data-reading-root` 的文章阅读状态；全站回顶由 BackToTop 承担。
 Subscribe.astro: 根据站点配置输出订阅表单，未配置 formUrl 时不产生页面节点。
 ThemeToggle.astro: 提供低存在感对比度图标的明暗主题切换按钮，具体主题状态由 BaseLayout 统一维护。

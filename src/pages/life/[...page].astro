@@ -35,7 +35,7 @@ const yearGroups = Object.entries(postsByYear).sort(([yearA], [yearB]) => Number
 const totalPostCount = yearGroups.reduce((sum, [, posts]) => sum + posts.length, 0);
 ---
 
-<BaseLayout title="生活档案" description="保留公开的生活、阅读与年度记录" image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }} showHeader={false}>
+<BaseLayout title="生活档案" description="保留公开的生活、阅读与年度记录" image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }} lang="zh-CN" showHeader={false}>
     <header class="mb-8 border-b border-main/20 pb-3 sm:mb-10">
         <div class="flex flex-wrap items-end gap-x-3 gap-y-1">
             <h1 class="text-2xl leading-tight font-sans font-medium sm:text-3xl">生活档案</h1>

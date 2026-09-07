@@ -7,6 +7,7 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import siteConfig from '../data/site-config.ts';
+import { getMetaDescription } from '../utils/common-utils.ts';
 import { sortItemsByDateDesc } from '../utils/data-utils.ts';
 
 function toRssDate(date) {
@@ -21,7 +22,7 @@ export async function GET(context) {
         site: context.site,
         items: posts.map((item) => ({
             title: item.data.title,
-            description: item.data.excerpt,
+            description: item.data.excerpt || getMetaDescription(item.body, item.data.title),
             link: `/blog/${item.id}/`,
             pubDate: toRssDate(item.data.publishDate)
         }))

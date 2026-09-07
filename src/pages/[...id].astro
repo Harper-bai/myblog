@@ -26,7 +26,7 @@ const { Content } = await render(page);
 const isAboutPage = page.id === 'about';
 ---
 
-<BaseLayout title={seo?.title ?? title} description={seo?.description} image={seo?.image} showHeader={false}>
+<BaseLayout title={seo?.title ?? title} description={seo?.description ?? title} image={seo?.image} lang={isAboutPage ? 'zh-CN' : 'en'} showHeader={false}>
     <article class:list={['content-page mb-16 sm:mb-24', { 'about-page': isAboutPage }]}>
         <header class="content-page-header mb-8 border-b border-main/10 pb-4 sm:mb-9 sm:pb-5">
             <h1 class="content-page-title text-3xl leading-tight font-sans font-medium sm:text-4xl sm:leading-tight">{title}</h1>

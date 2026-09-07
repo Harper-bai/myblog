@@ -1,6 +1,6 @@
 ---
 /**
- * [INPUT]: 依赖 data/home-content 的品牌标题与 Markdown 正文、site-config 的全站图片与社交链接，以及即刻官方 favicon
+ * [INPUT]: 依赖 data/home-content 的品牌标题与 Markdown 正文、site-config 的全站图片与社交链接，以及内联社交图标
  * [OUTPUT]: 对外提供中文个人首页的品牌标题、Blog/About 入口、引用文本与带品牌图标的社交链接
  * [POS]: components 的首页编排器；保持首页克制且不重复个人身份信息，不承担详细 About 页职责
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -11,10 +11,9 @@ import siteConfig from '../data/site-config';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const socialLinks = siteConfig.socialLinks || [];
-const jikeIconUrl = 'https://web.okjike.com/favicon.ico';
 ---
 
-<BaseLayout description={homeContent.description} image={siteConfig.image}>
+<BaseLayout title={homeContent.title} exactTitle description={homeContent.description} image={siteConfig.image} lang="zh-CN">
     <article class="home-prose" lang="zh-CN">
         <header class="home-header">
             <h1 class="home-title">{homeContent.title}</h1>
@@ -57,7 +56,9 @@ const jikeIconUrl = 'https://web.okjike.com/favicon.ico';
                             }
                             {
                                 (link.text.toLowerCase().includes('jike') || link.text.includes('即刻')) && (
-                                    <img class="social-icon social-image-icon" src={jikeIconUrl} alt="" aria-hidden="true" />
+                                    <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path d="M5 4.5A2.5 2.5 0 0 1 7.5 2h9A2.5 2.5 0 0 1 19 4.5v7.2a8.5 8.5 0 0 1-8.5 8.5H8l-3.7 2.3.8-4.1A8.5 8.5 0 0 1 5 11.7V4.5Zm3 3.25a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2H8Zm0 4.5a1 1 0 0 0 0 2h5a1 1 0 0 0 0-2H8Z" />
+                                    </svg>
                                 )
                             }
                             {
@@ -176,11 +177,6 @@ const jikeIconUrl = 'https://web.okjike.com/favicon.ico';
         height: 0.95em;
         flex: 0 0 auto;
         fill: currentColor;
-    }
-
-    .social-image-icon {
-        border-radius: 0.22em;
-        object-fit: contain;
     }
 
     @media (max-width: 640px) {

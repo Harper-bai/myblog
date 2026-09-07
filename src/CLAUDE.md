@@ -2,7 +2,7 @@
 > L2 | 父级: /Users/harper_by/Documents/myblog/CLAUDE.md
 
 成员清单
-content.config.ts: 定义博客与静态页面内容契约；`isLifeArchive` 控制公开生活档案归类，不改变文章 URL。
+content.config.ts: 定义博客、静态页面与笔记内容契约；`isLifeArchive` 控制公开生活档案归类，不改变文章 URL。
 components/: 页面复用组件与导航、文章预览、阅读工具；`HomePage.astro` 编排中文 Markdown 首页正文，`Footer.astro` 提供轻量许可证与版权页尾。
 content/blog/: Astro 博客文章集合；Weekly 原稿暂存私人档案，完成改写后再逐篇恢复公开，生活档案仍公开但退出首页内容流。
 content/pages/: Astro 静态内容集合；`about.md` 按个人档案信息架构承担详细 About 页面，`terms.md` 承担法律页面，首页正文不在此重复维护。
