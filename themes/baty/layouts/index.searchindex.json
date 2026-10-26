@@ -1,0 +1,22 @@
+{{- /*
+  [INPUT]: 站点所有 posts / journal 页面
+  [OUTPUT]: 输出 search-index.json 数组，字段 title/url/dateISO/date/section/tags/content
+  [POS]: home 的 SearchIndex 输出格式模板。search.js 消费它，不做服务端搜索。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{- $sections := slice "posts" "journal" -}}
+{{- $pages := where site.RegularPages "Section" "in" $sections -}}
+[
+{{- range $i, $p := $pages.ByDate.Reverse -}}
+{{- if $i }},{{ end -}}
+{
+  "title": {{ $p.Title | jsonify }},
+  "url": {{ $p.RelPermalink | jsonify }},
+  "dateISO": {{ $p.Date.Format "2006-01-02" | jsonify }},
+  "date": {{ $p.Date.Format "2006-01-02" | jsonify }},
+  "section": {{ $p.Section | jsonify }},
+  "tags": {{ $p.Params.tags | default (slice) | jsonify }},
+  "content": {{ $p.RawContent | plainify | truncate 4000 "" | jsonify }}
+}
+{{- end -}}
+]

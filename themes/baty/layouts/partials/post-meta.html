@@ -1,0 +1,10 @@
+{{- /*
+  [INPUT]: 当前页的 Date 与 tags taxonomy
+  [OUTPUT]: 输出 ISO 日期 <time> 与小写 #tag 标签链接组成的 .post-meta 内容
+  [POS]: 文章卡片、单篇文章共用的元信息片段。它不包裹容器，由调用方提供 .post-meta。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+{{- range .GetTerms "tags" }}
+<a href="{{ .RelPermalink }}" class="tag">#{{ .LinkTitle | lower }}</a>
+{{- end }}

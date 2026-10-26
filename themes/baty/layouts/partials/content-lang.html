@@ -1,0 +1,12 @@
+{{- /*
+  [INPUT]: 当前页的 .Params.contentLang、.Title 与 .RawContent
+  [OUTPUT]: 返回内容语言字符串：参数优先，否则按汉字自动判定为 zh-CN 或 en
+  [POS]: 内容语言判定片段。baseof 用它决定 body 的 content-zh 类；head 用它按条件加载中文排版；单篇模板用它标注标题与正文的 lang。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{- $lang := .Params.contentLang | default "" -}}
+{{- if not $lang -}}
+  {{- $hasHan := or (gt (len (findRE `\p{Han}` .Title 1)) 0) (gt (len (findRE `\p{Han}` .RawContent 1)) 0) -}}
+  {{- $lang = cond $hasHan "zh-CN" "en" -}}
+{{- end -}}
+{{- return $lang -}}

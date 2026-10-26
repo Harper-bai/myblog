@@ -1,0 +1,19 @@
+{{- /*
+  [INPUT]: 当前 journal 页面的标题、封面、正文；依赖 cover/reply-footer；依赖 content-lang.html 标注内容语言
+  [OUTPUT]: 单篇日记的卡片式阅读页，标题即日期，不显示日期元信息；标题与正文带 lang 属性；中文正文容器追加 reading-zh
+  [POS]: Journal section 的 single 模板。封面在标题下方通栏显示。中文内容由 baseof 追加 content-zh，正文容器追加 reading-zh；英文内容保持原样。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{ define "main" }}
+{{- $contentLang := partial "content-lang.html" . -}}
+<div class="container">
+  <article>
+    <header class="post-header">
+      <h1 class="post-title" lang="{{ $contentLang }}">{{ .Title }}</h1>
+      {{ partial "cover.html" . }}
+    </header>
+    <div class="post-body{{ if hasPrefix $contentLang "zh" }} reading-zh{{ end }}" lang="{{ $contentLang }}">{{ .Content }}</div>
+    {{ partial "reply-footer.html" . }}
+  </article>
+</div>
+{{ end }}

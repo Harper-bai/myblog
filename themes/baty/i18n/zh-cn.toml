@@ -1,0 +1,56 @@
+# 主题界面文案 — 当前站点（中英混排）
+# 模板通过 i18n 读取；新增文案先在此登记，再在模板引用。
+
+[skipToContent]
+other = "跳到正文"
+
+[siteNav]
+other = "站点导航"
+
+[socialLinks]
+other = "社交链接"
+
+[recentPosts]
+other = "Recent posts"
+
+[readMore]
+other = "Read more"
+
+[permalink]
+other = "Permalink"
+
+[updated]
+other = "更新于"
+
+[newer]
+other = "← Newer"
+
+[older]
+other = "Older →"
+
+[pageNav]
+other = "Page navigation"
+
+[search]
+other = "搜索"
+
+[searchPlaceholder]
+other = "搜索文章与日志…"
+
+[replyByEmail]
+other = "Reply by email"
+
+[about]
+other = "关于"
+
+[notFoundTitle]
+other = "Not Found"
+
+[notFoundSubtitle]
+other = "That page isn't here."
+
+[recentContent]
+other = "Recent content on {{ .Title }}"
+
+[noJournalEntries]
+other = "No journal entries yet."

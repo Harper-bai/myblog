@@ -1,0 +1,125 @@
+/*
+  [INPUT]: 依赖 styles.css 的 CSS 变量与基础 prose 样式；由 head.html 在中文内容页与 Journal 列表按条件加载，晚于 styles.css
+  [OUTPUT]: `.reading-zh` 阅读排版：22.4px 正文、762px 文字栏、衬线标题、安静的分隔线；引用沿用 styles.css 原样式
+  [POS]: 主题的第二张样式表。它只调整内容容器的字号、栏宽与垂直节奏，不定义颜色、卡片、暗色主题与列表布局。中文文章正文、中文普通页正文与 Journal 中文卡片正文都通过 `.reading-zh` 套用；首页卡片不带该类，英文内容不带该类。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/
+
+/* ─── 阅读基准 ───────────────────────────────────────────────────── */
+body.content-zh,
+.reading-zh,
+.post-card--zh {
+  --font-zh-serif: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", "Noto Serif SC", "Source Han Serif SC", "Source Han Serif CN", SimSun, serif;
+  --zh-body-size: 1.4rem; /* 22.4px */
+  --zh-flow: 0.9em;
+}
+
+.reading-zh {
+  --measure: 100%;
+  --body-flow: var(--zh-flow);
+  font-size: var(--zh-body-size);
+  line-height: 1.6;
+  text-autospace: normal;
+}
+
+/* 文章页：卡片容器放宽，保证正文 762px；标题栏与 meta 跟随阅读基准 */
+body.content-zh.single-post main .container {
+  max-width: 924px;
+}
+
+body.content-zh.single-post article {
+  --measure: 100%;
+}
+
+body.content-zh.single-post .post-body-wrap {
+  max-width: none;
+}
+
+body.content-zh.single-post .post-header {
+  font-size: var(--zh-body-size);
+}
+
+body.content-zh.single-post .post-title {
+  font-family: var(--font-zh-serif);
+  font-size: 1.5em; /* 33.6px */
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-autospace: normal;
+}
+
+body.content-zh.single-post .post-meta {
+  font-size: 0.8em; /* 17.92px */
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+  justify-content: flex-start;
+  text-autospace: normal;
+}
+
+/* ─── 标题层级 ───────────────────────────────────────────────────── */
+.reading-zh h2,
+.reading-zh h3,
+.reading-zh h4,
+.reading-zh h5,
+.reading-zh h6 {
+  font-family: var(--font-zh-serif);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+  margin-block: 1.68em 1.12em;
+}
+
+.reading-zh h2 { font-size: 1.5em; }   /* 33.6px */
+.reading-zh h3 { font-size: 1.17em; }  /* 26.2px */
+.reading-zh h4 { font-size: 1em; }     /* 22.4px */
+.reading-zh h5 { font-size: 0.94em; }
+.reading-zh h6 { font-size: 0.88em; }
+
+.reading-zh h4,
+.reading-zh h5,
+.reading-zh h6 {
+  margin-block: 1.4em 0.9em;
+}
+
+/* ─── 行内元素与代码 ─────────────────────────────────────────────── */
+.reading-zh code {
+  font-size: 0.9em;
+}
+
+.reading-zh pre {
+  font-size: 0.9em;
+  max-width: 100%;
+}
+
+.reading-zh pre code {
+  font-size: 1em;
+}
+
+/* ─── 分隔线：通栏，不抢戏 ───────────────────────────────────────── */
+.reading-zh hr {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: 0;
+  margin-block: 0.9em;
+  border: none;
+  border-top: 1px solid var(--color-border);
+}
+
+/* ─── 响应式：窄屏保持 20px 与可读字宽 ───────────────────────────── */
+@media (max-width: 900px) {
+  body.content-zh,
+  .reading-zh {
+    --zh-body-size: 1.25rem; /* 20px */
+  }
+
+  body.content-zh.single-post article {
+    --card-pad: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  body.content-zh.single-post article {
+    --card-pad: var(--space-md);
+  }
+}

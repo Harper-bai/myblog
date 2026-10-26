@@ -1,0 +1,20 @@
+# theme.toml — baty
+
+name = "baty"
+# 上游 baty.net 未附 LICENSE 文件，仅 package.json 声明 ISC。
+# 许可状态与衍生关系见 README「许可与来源」。
+license = "ISC"
+licenselink = "https://github.com/jackbaty/baty.net/blob/main/package.json"
+description = "极简个人博客主题：卡片列表、每日日志、标签、搜索与灯箱。"
+homepage = "https://baty.net/"
+tags = ["blog", "personal", "minimal", "dark", "journal"]
+features = ["responsive", "dark mode", "client-side search", "lightbox", "paginated lists", "tags"]
+min_version = "0.128.0"
+
+[author]
+  name = "Jack Baty"
+  homepage = "https://baty.net/"
+
+[original]
+  name = "baty.net"
+  homepage = "https://baty.net/"

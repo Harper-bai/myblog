@@ -1,0 +1,21 @@
+{{- /*
+  [INPUT]: 依赖 .Pages（当前标签下的页面）
+  [OUTPUT]: 标签详情页：小写 #标签标题 + 按日期倒序的归档列表
+  [POS]: 单个 taxonomy term 的模板，例如 /tags/life/。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{ define "main" }}
+<div class="container">
+  <header class="page-header">
+    <h1 class="page-title">#{{ .Title | lower }}</h1>
+  </header>
+  <ul class="post-archive">
+    {{- range .Pages.ByDate.Reverse }}
+    <li>
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+    </li>
+    {{- end }}
+  </ul>
+</div>
+{{ end }}

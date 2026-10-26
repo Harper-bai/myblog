@@ -1,0 +1,76 @@
+# loose page — Hugo site configuration
+# Theme: themes/baty
+
+baseURL = "https://harp83.us.kg/"
+locale = "zh-CN"
+defaultContentLanguage = "zh-cn"
+title = "loose page"
+theme = "baty"
+enableRobotsTXT = true
+ignoreFiles = ['^(?:.*/)?AGENTS\.md$', 'content/templates/']
+
+[pagination]
+  pagerSize = 20
+
+[permalinks]
+  posts = "/posts/:year/:month/:contentbasename/"
+  journal = "/journal/:slug/"
+
+[taxonomies]
+  tag = "tags"
+
+[outputs]
+  home    = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+
+# 搜索暂时停用；恢复时把 "SearchIndex" 加回 home 输出。
+[outputFormats.SearchIndex]
+  mediaType = "application/json"
+  baseName = "search-index"
+  isPlainText = true
+  notAlternative = true
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.goldmark.extensions]
+    typographer = false
+  [markup.highlight]
+    noClasses = false
+
+[params]
+  author = "Harper"
+  description = "Harper 的个人博客，记录生活、想法与不设主题的文字。"
+  avatar = "img/avatar-harper.png"
+  # fediverse 与社交链接暂未提供；留空时页脚不显示对应入口。
+  email = "heyharper@smailr.com"
+  fediverse = ""
+  # 站点默认社交卡片：关于页照片，1200×800。
+  ogImage = "images/about.jpeg"
+  ogImageWidth = 1200
+  ogImageHeight = 800
+  footerTagline = ""
+
+  [params.social]
+    mastodon = ""
+    flickr = ""
+
+[[menu.main]]
+  name = "POSTS"
+  pageRef = "/posts"
+  weight = 10
+
+[[menu.main]]
+  name = "JOURNAL"
+  pageRef = "/journal"
+  weight = 20
+
+[[menu.main]]
+  name = "ABOUT"
+  pageRef = "/about"
+  weight = 30
+
+[[menu.main]]
+  name = "RSS"
+  url = "/index.xml"
+  weight = 50

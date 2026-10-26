@@ -1,0 +1,16 @@
+{{- /*
+  [INPUT]: 当前页 Front Matter 的 cover / coverAlt / coverCaption
+  [OUTPUT]: 输出 .post-cover 图片与可选说明文字；无 cover 时不输出
+  [POS]: 文章卡片、单篇文章、日记共用的封面图片段。图片路径支持站内相对路径与绝对 URL。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{- with .Params.cover -}}
+{{- $src := . -}}
+{{- if not (hasPrefix $src "http") -}}{{- $src = $src | relURL -}}{{- end -}}
+<figure class="post-cover">
+  <img src="{{ $src }}" alt="{{ $.Params.coverAlt | default $.Title }}">
+  {{- with $.Params.coverCaption }}
+  <figcaption>{{ . }}</figcaption>
+  {{- end }}
+</figure>
+{{- end }}

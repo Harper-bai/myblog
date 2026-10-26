@@ -1,0 +1,49 @@
+{{- /*
+  [INPUT]: 字典 page（页面）与 mode（home 或 list）；依赖 cover.html / post-meta.html / thumb.html；按钮文案来自 i18n
+  [OUTPUT]: 输出首页/列表页的单张卡片，按 section 分派 posts、journal 两种排版；list 模式的中文卡片带 post-card--zh，正文容器带 reading-zh；home 模式保持原版排版
+  [POS]: 首页与各 section 列表的核心列表单元。两种类型的差异只在这里体现。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{- $page := .page -}}
+{{- $mode := .mode | default "list" -}}
+{{- $isZh := hasPrefix (partial "content-lang.html" $page) "zh" -}}
+{{- $useReading := and $isZh (ne $mode "home") -}}
+
+{{- if eq $page.Section "journal" -}}
+<article class="post-card{{ if $useReading }} post-card--zh{{ end }}">
+  {{- if eq $mode "list" }}
+  <div class="post-meta">
+    <time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ $page.Date.Format "2006-01-02" }}</time>
+  </div>
+  {{- end }}
+  <h2 class="post-title">
+    <a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a>
+  </h2>
+  {{ with $page.Params.cover }}{{ partial "cover.html" $page }}{{ end }}
+  <div class="post-body{{ if $useReading }} reading-zh{{ end }}">{{ $page.Content }}</div>
+</article>
+
+{{- else -}}
+<article class="post-card{{ if $useReading }} post-card--zh{{ end }}">
+  <h2 class="post-title">
+    <a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a>
+  </h2>
+  <div class="post-meta">{{ partial "post-meta.html" $page }}</div>
+  {{ with $page.Params.cover }}{{ partial "cover.html" $page }}{{ end }}
+  <div class="post-body-wrap">
+    {{ partial "thumb.html" $page }}
+    <div class="post-body{{ if $useReading }} reading-zh{{ end }}">
+      {{- if $page.Truncated -}}
+        {{ $page.Summary }}
+      {{- else -}}
+        {{ $page.Content }}
+      {{- end -}}
+    </div>
+    {{- if $page.Truncated }}
+    <a href="{{ $page.RelPermalink }}" class="read-more">{{ i18n "readMore" }} →</a>
+    {{- else }}
+    <a href="{{ $page.RelPermalink }}" class="post-permalink">{{ i18n "permalink" }} #</a>
+    {{- end }}
+  </div>
+</article>
+{{- end }}

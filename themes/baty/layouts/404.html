@@ -1,0 +1,17 @@
+{{- /*
+  [INPUT]: 依赖 i18n 文案
+  [OUTPUT]: 404 页面：标题、说明、返回首页与全部文章链接
+  [POS]: Hugo 404 模板。视觉上沿用普通页面的页头与正文样式。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{ define "main" }}
+<div class="container">
+  <header class="page-header">
+    <h1 class="page-title">{{ i18n "notFoundTitle" }}</h1>
+    <p class="page-subtitle">{{ i18n "notFoundSubtitle" }}</p>
+  </header>
+  <div class="page-body">
+    <p>返回<a href="{{ "/" | relURL }}">首页</a>，或浏览<a href="{{ "/posts/" | relURL }}">全部文章</a>。</p>
+  </div>
+</div>
+{{ end }}

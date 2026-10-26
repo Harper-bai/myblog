@@ -1,0 +1,10 @@
+{{- /*
+  [INPUT]: 依赖站点 BaseURL 与 Hugo 生成的 sitemap.xml 输出
+  [OUTPUT]: 输出 robots.txt：允许抓取全站，并声明 sitemap.xml 地址
+  [POS]: 主题根级模板，覆盖 Hugo 内置 robots.txt。内置版本不含 Sitemap 指令，站点启用 enableRobotsTXT 后由本文件接管。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+User-agent: *
+Allow: /
+
+Sitemap: {{ "sitemap.xml" | absURL }}

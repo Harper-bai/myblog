@@ -1,0 +1,79 @@
+{{- /*
+  [INPUT]: 依赖 Hugo Pipes（assets/css/styles.css、assets/css/zh-reading.css）、站点参数、当前页 Front Matter；依赖 content-lang.html
+  [OUTPUT]: 输出完整 <head>：标题、描述、favicon、样式、RSS、OpenGraph；不加载外部字体；中文内容页与 Journal 列表额外加载中文排版表；支持 ?theme=dark/light 临时主题预览
+  [POS]: baseof.html 的头部 partial。所有页面共享同一套元数据策略；zh-reading.css 在中文 posts/journal 单篇、layout: page 页面以及 Journal 列表出现，供 .reading-zh 正文使用。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{- $title := site.Title -}}
+{{- if eq .Kind "404" -}}
+  {{- $title = printf "%s — %s" (i18n "notFoundTitle") site.Title -}}
+{{- else if not .IsHome -}}
+  {{- $title = printf "%s — %s" .Title site.Title -}}
+{{- end -}}
+{{- $description := .Description | default site.Params.description -}}
+{{- $ogImage := site.Params.ogImage | absURL -}}
+{{- with .Params.cover -}}
+  {{- $ogImage = . | absURL -}}
+{{- end -}}
+{{- $css := resources.Get "css/styles.css" | minify | fingerprint -}}
+{{- $zhCSS := false -}}
+{{- $loadZh := and .IsPage (hasPrefix (partial "content-lang.html" .) "zh") -}}
+{{- if eq .Section "journal" -}}
+  {{- $loadZh = true -}}
+{{- end -}}
+{{- if $loadZh -}}
+  {{- $zhCSS = resources.Get "css/zh-reading.css" | minify | fingerprint -}}
+{{- end -}}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ $title }}</title>
+
+<script>
+  (() => {
+    const theme = (new URLSearchParams(window.location.search).get('theme') || '').toLowerCase();
+    if (theme === 'dark' || theme === 'light') {
+      document.documentElement.dataset.theme = theme;
+    }
+  })();
+</script>
+
+<link rel="icon" type="image/png" sizes="32x32" href="{{ "img/favicon-harper-32x32.png" | relURL }}">
+<link rel="icon" type="image/png" sizes="96x96" href="{{ "img/favicon-harper-96x96.png" | relURL }}">
+<link rel="shortcut icon" href="{{ "img/favicon-harper.ico" | relURL }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ "img/apple-touch-icon-harper.png" | relURL }}">
+<link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
+<link rel="me" href="{{ site.BaseURL }}">
+
+<meta name="author" content="{{ site.Params.author | default site.Title }}">
+{{- with site.Params.fediverse }}
+<meta name="fediverse:creator" content="{{ . }}">
+{{- end }}
+
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{- with $zhCSS }}
+<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
+{{- end }}
+{{- with site.Home.OutputFormats.Get "RSS" }}
+<link rel="alternate" type="{{ .MediaType.Type }}" href="{{ .RelPermalink }}" title="{{ site.Title }}">
+{{- end }}
+
+<meta name="description" content="{{ $description }}">
+<link rel="canonical" href="{{ .Permalink }}">
+
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:image" content="{{ $ogImage }}">
+<meta property="og:image:width" content="{{ site.Params.ogImageWidth | default 1200 }}">
+<meta property="og:image:height" content="{{ site.Params.ogImageHeight | default 630 }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="{{ $ogImage }}">
+
+{{- if .IsPage }}
+{{- with .Date }}
+<meta property="article:published_time" content="{{ .Format "2006-01-02T15:04:05Z07:00" }}">
+{{- end }}
+{{- end }}
+{{ block "head" . }}{{ end }}

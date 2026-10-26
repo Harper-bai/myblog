@@ -1,0 +1,18 @@
+{{- /*
+  [INPUT]: 页面标题、subtitle、正文
+  [OUTPUT]: 无卡片的静态页面，用于 About 等独立页；中文正文容器追加 reading-zh，沿用文章阅读排版
+  [POS]: page 类型的 single 模板。白底；带副标题的页头不画分隔线；中文正文与中文文章共用 762px 阅读栏。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{ define "main" }}
+{{- $contentLang := partial "content-lang.html" . -}}
+<div class="container">
+  <header class="page-header">
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{- with .Params.subtitle }}
+    <p class="page-subtitle">{{ . }}</p>
+    {{- end }}
+  </header>
+  <div class="page-body{{ if hasPrefix $contentLang "zh" }} reading-zh{{ end }}">{{ .Content }}</div>
+</div>
+{{ end }}

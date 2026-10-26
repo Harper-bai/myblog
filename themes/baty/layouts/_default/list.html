@@ -1,0 +1,24 @@
+{{- /*
+  [INPUT]: .Pages 与页面 Front Matter 的 subtitle
+  [OUTPUT]: 通用列表页：页头 + 归档列表
+  [POS]: 没有专用 list 模板的 section 使用它，例如将来新增的归档 section。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{ define "main" }}
+<div class="container">
+  <header class="page-header">
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{- with .Params.subtitle }}
+    <p class="page-subtitle">{{ . }}</p>
+    {{- end }}
+  </header>
+  <ul class="post-archive">
+    {{- range .Pages.ByDate.Reverse }}
+    <li>
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+    </li>
+    {{- end }}
+  </ul>
+</div>
+{{ end }}

@@ -1,0 +1,23 @@
+{{- /*
+  [INPUT]: 无
+  [OUTPUT]: 输出原生 <dialog> 灯箱脚本，点击正文图片放大，点击任意处关闭
+  [POS]: baseof.html 末尾的交互增强。只作用于 figure > img，不改变页面结构。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+<script>
+  document.querySelectorAll('figure img').forEach(function (img) {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', function () {
+      var dialog = document.createElement('dialog');
+      dialog.className = 'lightbox';
+      var clone = img.cloneNode();
+      clone.removeAttribute('width');
+      clone.removeAttribute('height');
+      dialog.append(clone);
+      document.body.append(dialog);
+      dialog.showModal();
+      dialog.addEventListener('click', function () { dialog.close(); });
+      dialog.addEventListener('close', function () { dialog.remove(); });
+    });
+  });
+</script>

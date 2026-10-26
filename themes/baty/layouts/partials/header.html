@@ -1,0 +1,29 @@
+{{- /*
+  [INPUT]: 依赖站点参数 avatar 及同路径 .webp、主菜单 site.Menus.main；导航无障碍标签来自 i18n
+  [OUTPUT]: 输出站点头部：头像、站名、主导航
+  [POS]: 所有页面共享的上方导航。导航项来自 hugo.toml 的 [[menu.main]]。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+<header class="site-header">
+  <div class="container container--wide">
+    <a href="{{ "/" | relURL }}" class="site-title">
+      {{- with site.Params.avatar }}
+      {{- $avatarWebp := replaceRE `\.png$` ".webp" . }}
+      <picture>
+        <source srcset="{{ $avatarWebp | relURL }}" type="image/webp">
+        <img src="{{ . | relURL }}" alt="{{ site.Params.author | default site.Title }}" class="site-avatar" width="256" height="256">
+      </picture>
+      {{- end }}
+      <span class="site-name">{{ site.Title }}</span>
+    </a>
+    {{- with site.Menus.main }}
+    <nav aria-label="{{ i18n "siteNav" }}">
+      <ul class="site-nav">
+        {{- range . }}
+        <li><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>
+        {{- end }}
+      </ul>
+    </nav>
+    {{- end }}
+  </div>
+</header>

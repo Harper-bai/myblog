@@ -1,0 +1,39 @@
+{{- /*
+  [INPUT]: 依赖 head.html / header.html / footer.html / lightbox.html 四个 partial；界面文案来自 i18n；依赖 Hugo 的 block 机制；依赖 content-lang.html 判定内容语言
+  [OUTPUT]: 提供全站 HTML 骨架，按页面类型设置 body class（home / single-post / single-page；中文页面追加 content-zh）
+  [POS]: 主题的唯一根模板。所有页面模板通过 define "main" 注入内容。content-zh 服务中文正文阅读排版，不改变 <html lang> 与界面文案语言。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{- $bodyClass := "" -}}
+{{- if .IsHome -}}
+  {{- $bodyClass = "home" -}}
+{{- else if and .IsPage (in (slice "posts" "journal") .Section) -}}
+  {{- $bodyClass = "single-post" -}}
+  {{- if hasPrefix (partial "content-lang.html" .) "zh" -}}
+    {{- $bodyClass = "single-post content-zh" -}}
+  {{- end -}}
+{{- else if .IsPage -}}
+  {{- $bodyClass = "single-page" -}}
+  {{- if hasPrefix (partial "content-lang.html" .) "zh" -}}
+    {{- $bodyClass = "single-page content-zh" -}}
+  {{- end -}}
+{{- end -}}
+<!DOCTYPE html>
+<html lang="{{ site.Language.Locale | default "en" }}">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body{{ with $bodyClass }} class="{{ . }}"{{ end }}>
+
+  <a class="skip-link" href="#main">{{ i18n "skipToContent" }}</a>
+
+  {{ partial "header.html" . }}
+
+  <main id="main">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  {{ partial "footer.html" . }}
+  {{ partial "lightbox.html" . }}
+</body>
+</html>

@@ -1,0 +1,56 @@
+# Theme UI strings — English fallback
+# Templates read these via i18n; add a key here and in zh-cn.toml together.
+
+[skipToContent]
+other = "Skip to content"
+
+[siteNav]
+other = "Site navigation"
+
+[socialLinks]
+other = "Social links"
+
+[recentPosts]
+other = "Recent posts"
+
+[readMore]
+other = "Read more"
+
+[permalink]
+other = "Permalink"
+
+[updated]
+other = "Updated"
+
+[newer]
+other = "← Newer"
+
+[older]
+other = "Older →"
+
+[pageNav]
+other = "Page navigation"
+
+[search]
+other = "Search"
+
+[searchPlaceholder]
+other = "Search posts and journal…"
+
+[replyByEmail]
+other = "Reply by email"
+
+[about]
+other = "About"
+
+[notFoundTitle]
+other = "Not Found"
+
+[notFoundSubtitle]
+other = "That page isn't here."
+
+[recentContent]
+other = "Recent content on {{ .Title }}"
+
+[noJournalEntries]
+other = "No journal entries yet."

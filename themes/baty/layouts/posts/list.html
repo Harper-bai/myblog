@@ -1,0 +1,27 @@
+{{- /*
+  [INPUT]: 依赖 .Pages 与 section Front Matter 的 subtitle
+  [OUTPUT]: /posts/ 的全量归档，按年份分组，显示标题与 "YYYY-MM-DD" 日期；列表采用文章正文的字号与 762px 栏宽
+  [POS]: Posts section 的列表模板。这里不分页，所有文章在一页内呈现。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{ define "main" }}
+<div class="container">
+  <header class="page-header">
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{- with .Params.subtitle }}
+    <p class="page-subtitle">{{ . }}</p>
+    {{- end }}
+  </header>
+  <ul class="post-archive post-archive--reading">
+    {{- range (.Pages.ByDate.Reverse).GroupByDate "2006" }}
+    <li class="archive-year"><span>{{ .Key }}</span></li>
+    {{- range .Pages }}
+    <li>
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+    </li>
+    {{- end }}
+    {{- end }}
+  </ul>
+</div>
+{{ end }}

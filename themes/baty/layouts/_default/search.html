@@ -1,0 +1,32 @@
+{{- /*
+  [INPUT]: 依赖 Hugo Pipes（assets/js/search.js）与首页 SearchIndex 输出格式；界面文案来自 i18n
+  [OUTPUT]: /search/ 客户端搜索页：输入框、状态文本、结果归档列表
+  [POS]: 搜索页模板。索引导航来自 home 的 search-index.json，由 search.js 读取。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{ define "main" }}
+{{- $js := resources.Get "js/search.js" | minify | fingerprint -}}
+<div class="container">
+  <header class="page-header">
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{- with .Params.subtitle }}
+    <p class="page-subtitle">{{ . }}</p>
+    {{- end }}
+  </header>
+
+  <form class="search-form" role="search" data-search-form
+    {{- with site.Home.OutputFormats.Get "SearchIndex" }} data-index="{{ .RelPermalink }}"{{ end }}>
+    <label class="visually-hidden" for="search-input">{{ i18n "search" }}</label>
+    <input id="search-input" class="search-input" type="search" name="q"
+      placeholder="{{ i18n "searchPlaceholder" }}" autocomplete="off" autofocus>
+  </form>
+
+  <p class="search-status" data-search-status aria-live="polite">输入关键词开始搜索…</p>
+  <ul class="post-archive search-results" data-search-results></ul>
+
+  <noscript>
+    <p class="search-status">搜索需要 JavaScript。可直接浏览 <a href="{{ "/posts/" | relURL }}">全部文章</a>。</p>
+  </noscript>
+</div>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+{{ end }}

@@ -1,0 +1,27 @@
+{{- /*
+  [INPUT]: 依赖 post-card.html / pagination.html、section Front Matter 的 subtitle 与 i18n noJournalEntries
+  [OUTPUT]: /journal/ 的分页卡片列表；无条目时显示空状态，空状态与阅读栏同宽同字号
+  [POS]: Journal section 的列表模板。每条日记显示日期、标题、封面与全文。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{ define "main" }}
+<div class="container">
+  <header class="page-header">
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{- with .Params.subtitle }}
+    <p class="page-subtitle">{{ . }}</p>
+    {{- end }}
+  </header>
+  {{- $paginator := .Paginate (.Pages.ByDate.Reverse) }}
+  {{- if not $paginator.Pages }}
+  <p class="page-subtitle journal-empty">{{ i18n "noJournalEntries" }}</p>
+  {{- else }}
+  <section class="post-list">
+    {{- range $paginator.Pages }}
+      {{ partial "post-card.html" (dict "page" . "mode" "list") }}
+    {{- end }}
+  </section>
+  {{- end }}
+  {{ partial "pagination.html" $paginator }}
+</div>
+{{ end }}

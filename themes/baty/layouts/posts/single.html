@@ -1,0 +1,32 @@
+{{- /*
+  [INPUT]: 当前 posts 页面的标题、日期、标签、封面、可选 thumb、正文、可选 lastmod；依赖 cover/thumb/post-meta/reply-footer；依赖 content-lang.html 标注内容语言
+  [OUTPUT]: 单篇长文的卡片式阅读页；标题与正文带 lang 属性；lastmod 与 date 不同日时在元信息中追加更新日期；中文内容的 body 由 baseof 追加 content-zh，正文容器追加 reading-zh
+  [POS]: Posts section 的 single 模板。标题条、封面、正文、邮件回复组成完整文章。它只标注标题与正文语言，不改界面文案。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{ define "main" }}
+{{- $contentLang := partial "content-lang.html" . -}}
+<div class="container">
+  <article>
+    <header class="post-header">
+      <h1 class="post-title" lang="{{ $contentLang }}">{{ .Title }}</h1>
+      <div class="post-meta">
+        {{ partial "post-meta.html" . }}
+        {{- if isset .Params "lastmod" }}
+          {{- $published := .Date.Format "2006-01-02" -}}
+          {{- $updated := .Lastmod.Format "2006-01-02" -}}
+          {{- if ne $updated $published }}
+        <span class="post-updated">{{ i18n "updated" }} {{ $updated }}</span>
+          {{- end }}
+        {{- end }}
+      </div>
+      {{ partial "cover.html" . }}
+    </header>
+    <div class="post-body-wrap">
+      {{ partial "thumb.html" . }}
+      <div class="post-body{{ if hasPrefix $contentLang "zh" }} reading-zh{{ end }}" lang="{{ $contentLang }}">{{ .Content }}</div>
+    </div>
+    {{ partial "reply-footer.html" . }}
+  </article>
+</div>
+{{ end }}

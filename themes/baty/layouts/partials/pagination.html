@@ -1,0 +1,16 @@
+{{- /*
+  [INPUT]: Hugo Paginator；无障碍标签与链接文案来自 i18n
+  [OUTPUT]: 输出 .pagination 导航，只有存在上一页或下一页时渲染
+  [POS]: 首页与 posts/journal 列表共用。链接文案来自 i18n（当前为英文：← Newer / Older →）。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{- if or .HasPrev .HasNext }}
+<nav class="pagination" aria-label="{{ i18n "pageNav" }}">
+  {{- with .Prev }}
+  <a href="{{ .URL }}" class="pagination-prev">{{ i18n "newer" }}</a>
+  {{- end }}
+  {{- with .Next }}
+  <a href="{{ .URL }}" class="pagination-next">{{ i18n "older" }}</a>
+  {{- end }}
+</nav>
+{{- end }}

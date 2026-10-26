@@ -1,0 +1,11 @@
+{{- /*
+  [INPUT]: 页面上下文，读取 thumb 参数；thumb 支持站内相对路径与绝对 URL
+  [OUTPUT]: 输出右浮动的小图 img.post-thumb；无 thumb 时不输出
+  [POS]: posts 的列表卡片、单页正文共用。与 cover.html 的区别是它浮动在正文右侧。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{- with .Params.thumb -}}
+{{- $src := . -}}
+{{- if not (hasPrefix $src "http") -}}{{- $src = $src | relURL -}}{{- end -}}
+<img src="{{ $src }}" alt="" class="post-thumb" aria-hidden="true">
+{{- end }}

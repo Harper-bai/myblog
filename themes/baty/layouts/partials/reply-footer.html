@@ -1,0 +1,11 @@
+{{- /*
+  [INPUT]: 站点参数 email；文案来自 i18n
+  [OUTPUT]: 输出文章底部的邮件回复入口；未配置 email 时不输出
+  [POS]: 单篇文章、日记共用的页脚 partial。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{- with site.Params.email }}
+<footer class="reply-footer">
+  <a class="reply-email" href="mailto:{{ . }}">✍️ {{ i18n "replyByEmail" }}</a>
+</footer>
+{{- end }}

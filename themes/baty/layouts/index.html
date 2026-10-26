@@ -1,0 +1,19 @@
+{{- /*
+  [INPUT]: 依赖 post-card.html / pagination.html；聚合 posts、journal 两个 section；区块标签来自 i18n
+  [OUTPUT]: 首页分页列表（每页 20 条），按日期倒序混合两种内容
+  [POS]: 站点首页模板。只负责选取与分页，卡片排版全部交给 post-card.html。
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/ -}}
+{{ define "main" }}
+<div class="container">
+  <section class="post-list" aria-label="{{ i18n "recentPosts" }}">
+    {{- $sections := slice "posts" "journal" -}}
+    {{- $pages := where site.RegularPages "Section" "in" $sections -}}
+    {{- $paginator := .Paginate ($pages.ByDate.Reverse) -}}
+    {{- range $paginator.Pages }}
+      {{ partial "post-card.html" (dict "page" . "mode" "home") }}
+    {{- end }}
+  </section>
+  {{ partial "pagination.html" $paginator }}
+</div>
+{{ end }}
