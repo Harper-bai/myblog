@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://harp83.us.kg/sitemap-index.xml
+
+Sitemap: http://localhost:1414/sitemap.xml
