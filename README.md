@@ -73,7 +73,7 @@ thumb: "/images/thumb.png"                      # 可选，卡片右浮动小图
 ```
 
 - 日期使用 ISO 8601 并带 `+08:00`；显示统一为 `YYYY-MM-DD`。
-- 文章可选 `lastmod`；仅当它与 `date` 不同日时，单篇文章标题下显示 `更新于 YYYY-MM-DD`。Hugo 未启用 git 信息读取，需手动维护该字段。
+- 文章可选 `lastmod`；仅当它与 `date` 不同日时，单篇文章标题下显示 `Updated YYYY-MM-DD`。Hugo 未启用 git 信息读取，需手动维护该字段。
 - 文章可选 `aliases`；用于承接迁移前的旧地址。当前 10 篇文章各有一条 `/blog/<旧 id>/` 别名，`content/posts/_index.md` 承接 `/blog/`。
 - 文章标题由模板输出唯一 H1；正文 Markdown 标题从 `##` 开始，层级连续，文内不写 `#` 标题。
 - 长文在第一段后放 `<!--more-->`；没有分隔符的短文在首页全文显示。
@@ -172,7 +172,7 @@ coverAlt: "图片说明"
 
 - 本站即 `https://github.com/Harper-bai/myblog`。2026-10-26 由 Astro 5 原地迁移为 Hugo：`src/`、`astro.config.mjs`、`package.json` 与依赖锁文件已移除，`public/` 静态资源目录让位给 Hugo 的输出目录。
 - 旧站 14 篇 `src/content/blog/*.md` 中保留 10 篇，转为 Hugo 文章并改用英文 slug 与 ISO 日期；另从 `2026-08-29` 博客快照补入 `2024-summary.md`，当前 11 篇。旧站独有的 4 篇（`2025-first-half`、`2026target`、`ai-from-zero`、`joy_dividend`）未迁入。
-- 旧站 10 篇保留文章的地址由 `/blog/<id>/` 改为 `/posts/YYYY/MM/<slug>/`；每篇 Front Matter 的 `aliases` 承接旧地址，`/blog/` 由 `content/posts/_index.md` 承接。旧站的 `/life/`、`/notes/`、`/terms/`、`/rss.xml`、`/sitemap-index.xml` 没有对应地址。
+- 旧站 10 篇保留文章的地址由 `/blog/<id>/` 改为 `/posts/YYYY/MM/<slug>/`；每篇 Front Matter 的 `aliases` 承接旧地址，`/blog/` 由 `content/posts/_index.md` 承接。旧站的 `/life/`、`/notes/`、`/terms/`、`/sitemap-index.xml` 没有对应地址；`/rss.xml` 由 `[outputFormats.RSS]` 的 `baseName = "rss"` 保留，与旧站订阅地址一致。
 - 旧站 `src/content/pages/about.md` 的文案未沿用；`content/about.md` 已重写为「关于我 / 关于 loose page / 其他一些界面」，不再引用旧站快照。
 - 旧站 `src/data/home-content.ts` 的首页独白未迁入；首页改为文章卡片流，不再渲染欢迎卡片。
 - 旧站 `src/data/media-content.ts` 迁移为 `content/media.md`；页面保留，当前不在主导航。

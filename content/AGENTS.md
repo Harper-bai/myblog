@@ -15,7 +15,7 @@ tags/_index.md: Tags 总览页标题 `Tags` 与副标题 `All tags.`。当前有
 ## 内容约定
 
 - 文章来自旧站 `Harper-bai/myblog` 与 `2026-08-29` 博客快照，当前 11 篇。标题、正文与链接保持原文；日期已转为 ISO 8601，并统一带 `+08:00`。10 篇保留旧站文章各带 `aliases`，指向迁移前的 `/blog/<id>/` 地址；改文件名或 permalink 时不要删除 `aliases`。
-- 可选 `lastmod` 使用 ISO 8601 与 `+08:00`；仅当它与 `date` 不同日时，单篇标题下显示 `更新于 YYYY-MM-DD`。`about-blog.md` 正文已有 2024-10-15 更新，Front Matter 已同步该日期。
+- 可选 `lastmod` 使用 ISO 8601 与 `+08:00`；仅当它与 `date` 不同日时，单篇标题下显示 `Updated YYYY-MM-DD`。`about-blog.md` 正文已有 2024-10-15 更新，Front Matter 已同步该日期。
 - 文件名使用英文 slug；文章地址由 `hugo.toml` 的 permalink 生成：`/posts/YYYY/MM/<文件名>/`。不要随意改文件名，否则旧链接失效。
 - 长文在第一段后放 `<!--more-->`；首页卡片读取摘要。`2024-summary.md` 在开篇段后放置分隔符。
 - `posts/2024-08.md` 的正文以月度清单开头，`<!--more-->` 放在「一句话总结 / 躺平但在不断翻腾。」之后，让首页卡片保留清单与总结句。

@@ -20,7 +20,7 @@ other = "Read more"
 other = "Permalink"
 
 [updated]
-other = "更新于"
+other = "Updated"
 
 [newer]
 other = "← Newer"
@@ -41,7 +41,7 @@ other = "搜索文章与日志…"
 other = "Reply by email"
 
 [about]
-other = "关于"
+other = "About"
 
 [notFoundTitle]
 other = "Not Found"

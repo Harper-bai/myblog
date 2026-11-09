@@ -23,6 +23,11 @@ ignoreFiles = ['^(?:.*/)?AGENTS\.md$', 'content/templates/']
   home    = ["HTML", "RSS"]
   section = ["HTML", "RSS"]
 
+# RSS 沿用旧 Astro 站的 /rss.xml；Hugo 默认的 baseName 是 index，会输出 /index.xml。
+# 旧站订阅者订阅的是 /rss.xml，改名后该地址失效。
+[outputFormats.RSS]
+  baseName = "rss"
+
 # 搜索暂时停用；恢复时把 "SearchIndex" 加回 home 输出。
 [outputFormats.SearchIndex]
   mediaType = "application/json"
@@ -72,5 +77,5 @@ ignoreFiles = ['^(?:.*/)?AGENTS\.md$', 'content/templates/']
 
 [[menu.main]]
   name = "RSS"
-  url = "/index.xml"
+  url = "/rss.xml"
   weight = 50
